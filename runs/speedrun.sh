@@ -10,13 +10,16 @@
 # 3) Example launch with wandb logging, but see below for setting up wandb first:
 # WANDB_RUN=speedrun screen -L -Logfile runs/speedrun.log -S speedrun bash runs/speedrun.sh
 
-# Default intermediate artifacts directory is in ~/.cache/nanochat
+# Default intermediate artifacts directory - use local cache to avoid AFS quota
 export OMP_NUM_THREADS=1
-export NANOCHAT_BASE_DIR="$HOME/.cache/nanochat"
+export NANOCHAT_BASE_DIR="$(pwd)/cache"
 mkdir -p $NANOCHAT_BASE_DIR
 
 # -----------------------------------------------------------------------------
 # Python venv setup with uv
+# Set UV cache to local directory to avoid AFS quota issues
+export UV_CACHE_DIR="$(pwd)/.uv_cache"
+export TMPDIR="/tmp"
 
 # install uv (if not already installed)
 command -v uv &> /dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -70,9 +73,10 @@ echo "Waiting for dataset download to complete..."
 wait $DATASET_DOWNLOAD_PID
 
 # d24 model (slightly overtrained is enough to beat GPT-2 => increase data:params ratio from compute optimal 10.5 (default) to 12)
-torchrun --standalone --nproc_per_node=8 -m scripts.base_train -- --depth=26 --target-param-data-ratio=8.25 --device-batch-size=16 --fp8 --run=$WANDB_RUN
+# medhaven: changed to 4 gpu from 8 
+torchrun --standalone --nproc_per_node=4 -m scripts.base_train -- --depth=26 --target-param-data-ratio=8.25 --device-batch-size=16 --fp8 --run=$WANDB_RUN
 # evaluate the model: CORE metric, BPB on train/val, and draw samples
-torchrun --standalone --nproc_per_node=8 -m scripts.base_eval -- --device-batch-size=16
+torchrun --standalone --nproc_per_node=4 -m scripts.base_eval -- --device-batch-size=16
 
 # -----------------------------------------------------------------------------
 # SFT (teach the model conversation special tokens, tool use, multiple choice)
@@ -82,8 +86,9 @@ torchrun --standalone --nproc_per_node=8 -m scripts.base_eval -- --device-batch-
 curl -L -o $NANOCHAT_BASE_DIR/identity_conversations.jsonl https://karpathy-public.s3.us-west-2.amazonaws.com/identity_conversations.jsonl
 
 # run SFT and eval the model
-torchrun --standalone --nproc_per_node=8 -m scripts.chat_sft -- --device-batch-size=16 --run=$WANDB_RUN
-torchrun --standalone --nproc_per_node=8 -m scripts.chat_eval -- -i sft
+# medhaven: changed to 4 gpu
+torchrun --standalone --nproc_per_node=4 -m scripts.chat_sft -- --device-batch-size=16 --run=$WANDB_RUN
+torchrun --standalone --nproc_per_node=4 -m scripts.chat_eval -- -i sft
 
 # chat with the model over CLI! Leave out the -p to chat interactively
 # python -m scripts.chat_cli -p "Why is the sky blue?"

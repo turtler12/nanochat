@@ -1,0 +1,143 @@
+========================================
+Job ID: 371071
+Node: andreas-h100-1
+GPUs: 4
+Config: MUON_PAD=1, MUON_PAD_ALPHA=0.03
+Start Time: Wed Feb 25 06:46:43 PM EST 2026
+========================================
+Wed Feb 25 18:46:43 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   41C    P0             65W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:21:00.0 Off |                    0 |
+| N/A   41C    P0             61W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 NVL                On  |   00000000:41:00.0 Off |                    0 |
+| N/A   42C    P0             65W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 NVL                On  |   00000000:E1:00.0 Off |                    0 |
+| N/A   43C    P0             65W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+no checksums to verify
+installing to /data/scratch/medhaven/.local/bin
+  uv
+  uvx
+everything's installed!
+Starting: padded_alpha0.03
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+=== Padded Muon Experiment ===
+  MUON_PAD=True, alpha=0.03
+  MUON_SV_LOG=True, every=500, layers=(auto: first+last)
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+Using Flash Attention 3
+Vocab size: 32,768
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 32768,
+  "n_layer": 20,
+  "n_head": 10,
+  "n_kv_head": 10,
+  "n_embd": 1280,
+  "window_pattern": "SSSL"
+}
+FP8 training enabled - converted 121 layers
+Parameter counts:
+wte                     : 41,943,040
+value_embeds            : 419,430,400
+lm_head                 : 41,943,040
+transformer_matrices    : 393,219,200
+scalars                 : 40
+total                   : 896,535,720
+Estimated FLOPs per token: 3.004189e+09
+Auto-computed optimal batch size: 1,048,576 tokens
+Scaling LRs by 1.4142 for batch size 1,048,576
+Scaling weight decay from 0.200000 to 0.071563
+Scaling the LR for the AdamW parameters 1/sqrt(1280/768) = 0.774597
+Calculated iterations from target data:param ratio: 4,357
+Total tokens: 4,568,645,632 | Iterations: 4,357
+Gradient accumulation steps: 8
+[padded_alpha0.03] Step 00000 | val_bpb: 3.169049
+[SV step=0] first_muon_group [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[SV step=0] last_muon_group [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[padded_alpha0.03] step 00000/04357 (0.00%) | loss: 10.398166 | dt: 28486.53ms | tok/s: 36,809
+[padded_alpha0.03] step 00050/04357 (1.15%) | loss: 5.620833 | dt: 2106.29ms | tok/s: 497,830 | eta: 150.2m
+[padded_alpha0.03] step 00100/04357 (2.30%) | loss: 4.744928 | dt: 2114.45ms | tok/s: 495,908 | eta: 149.3m
+[padded_alpha0.03] step 00150/04357 (3.44%) | loss: 4.096824 | dt: 2109.68ms | tok/s: 497,030 | eta: 147.8m
+[padded_alpha0.03] step 00200/04357 (4.59%) | loss: 3.740313 | dt: 2108.14ms | tok/s: 497,394 | eta: 146.1m
+[padded_alpha0.03] Step 00250 | val_bpb: 1.073754
+[padded_alpha0.03] step 00250/04357 (5.74%) | loss: 3.567347 | dt: 2128.23ms | tok/s: 492,699 | eta: 144.2m
+[padded_alpha0.03] step 00300/04357 (6.89%) | loss: 3.419333 | dt: 2093.03ms | tok/s: 500,985 | eta: 142.3m
+[padded_alpha0.03] step 00350/04357 (8.03%) | loss: 3.349512 | dt: 2080.43ms | tok/s: 504,020 | eta: 140.4m
+[padded_alpha0.03] step 00400/04357 (9.18%) | loss: 3.314087 | dt: 2078.64ms | tok/s: 504,451 | eta: 138.4m
+[padded_alpha0.03] step 00450/04357 (10.33%) | loss: 3.243937 | dt: 2081.68ms | tok/s: 503,716 | eta: 136.5m
+[padded_alpha0.03] Step 00500 | val_bpb: 0.971577
+[SV step=500] first_muon_group [10, 32] | sigma_max=1.4571e-03 | p05=0.0145 p50=0.0382 p95=0.6361
+[SV step=500] last_muon_group [5120, 1280] | sigma_max=3.4466e-03 | p05=0.0068 p50=0.0155 p95=0.0560
+[padded_alpha0.03] step 00500/04357 (11.48%) | loss: 3.202259 | dt: 2208.81ms | tok/s: 474,725 | eta: 134.7m
+[padded_alpha0.03] step 00550/04357 (12.62%) | loss: 3.170518 | dt: 2070.95ms | tok/s: 506,325 | eta: 132.8m
+[padded_alpha0.03] step 00600/04357 (13.77%) | loss: 3.133081 | dt: 2079.70ms | tok/s: 504,194 | eta: 131.0m
+[padded_alpha0.03] step 00650/04357 (14.92%) | loss: 3.146056 | dt: 2069.72ms | tok/s: 506,626 | eta: 129.2m
+[padded_alpha0.03] step 00700/04357 (16.07%) | loss: 3.126567 | dt: 2096.62ms | tok/s: 500,125 | eta: 127.3m
+[padded_alpha0.03] Step 00750 | val_bpb: 0.934188
+[padded_alpha0.03] step 00750/04357 (17.21%) | loss: 3.046622 | dt: 2098.46ms | tok/s: 499,687 | eta: 125.5m
+[padded_alpha0.03] step 00800/04357 (18.36%) | loss: 3.052837 | dt: 2069.59ms | tok/s: 506,658 | eta: 123.7m
+[padded_alpha0.03] step 00850/04357 (19.51%) | loss: 3.017640 | dt: 2063.09ms | tok/s: 508,254 | eta: 121.9m
+[padded_alpha0.03] step 00900/04357 (20.66%) | loss: 3.055295 | dt: 2075.55ms | tok/s: 505,203 | eta: 120.1m
+[padded_alpha0.03] step 00950/04357 (21.80%) | loss: 3.006024 | dt: 2065.62ms | tok/s: 507,633 | eta: 118.3m
+[padded_alpha0.03] Step 01000 | val_bpb: 0.912356
+[SV step=1000] first_muon_group [10, 32] | sigma_max=1.0057e-03 | p05=0.0162 p50=0.0802 p95=0.7455
+[SV step=1000] last_muon_group [5120, 1280] | sigma_max=2.2450e-03 | p05=0.0077 p50=0.0176 p95=0.0632
+[padded_alpha0.03] step 01000/04357 (22.95%) | loss: 3.014035 | dt: 2207.93ms | tok/s: 474,914 | eta: 116.6m
+[padded_alpha0.03] step 01050/04357 (24.10%) | loss: 3.000817 | dt: 2067.28ms | tok/s: 507,224 | eta: 114.8m
+[padded_alpha0.03] step 01100/04357 (25.25%) | loss: 2.988225 | dt: 2071.56ms | tok/s: 506,176 | eta: 113.0m
+[padded_alpha0.03] step 01150/04357 (26.39%) | loss: 2.983683 | dt: 2059.53ms | tok/s: 509,134 | eta: 111.2m
+[padded_alpha0.03] step 01200/04357 (27.54%) | loss: 2.963598 | dt: 2058.94ms | tok/s: 509,278 | eta: 109.4m
+[padded_alpha0.03] Step 01250 | val_bpb: 0.897998
+[padded_alpha0.03] step 01250/04357 (28.69%) | loss: 2.983796 | dt: 2084.36ms | tok/s: 503,069 | eta: 107.7m
+[padded_alpha0.03] step 01300/04357 (29.84%) | loss: 2.975335 | dt: 2060.71ms | tok/s: 508,841 | eta: 105.9m
+[padded_alpha0.03] step 01350/04357 (30.98%) | loss: 2.959355 | dt: 2057.17ms | tok/s: 509,716 | eta: 104.2m
+[padded_alpha0.03] step 01400/04357 (32.13%) | loss: 2.920581 | dt: 2058.52ms | tok/s: 509,383 | eta: 102.4m
+[padded_alpha0.03] step 01450/04357 (33.28%) | loss: 2.941590 | dt: 2061.09ms | tok/s: 508,747 | eta: 100.6m
+[padded_alpha0.03] Step 01500 | val_bpb: 0.887578
+[SV step=1500] first_muon_group [10, 32] | sigma_max=5.6992e-04 | p05=0.0294 p50=0.1707 p95=0.8726
+[SV step=1500] last_muon_group [5120, 1280] | sigma_max=2.3612e-03 | p05=0.0066 p50=0.0152 p95=0.0549
+[padded_alpha0.03] step 01500/04357 (34.43%) | loss: 2.910050 | dt: 2208.23ms | tok/s: 474,848 | eta: 98.9m
+[padded_alpha0.03] step 01550/04357 (35.57%) | loss: 2.932661 | dt: 2059.49ms | tok/s: 509,143 | eta: 97.1m
+[padded_alpha0.03] step 01600/04357 (36.72%) | loss: 2.909949 | dt: 2061.35ms | tok/s: 508,683 | eta: 95.4m
+[padded_alpha0.03] step 01650/04357 (37.87%) | loss: 2.934145 | dt: 2061.10ms | tok/s: 508,745 | eta: 93.6m
+[padded_alpha0.03] step 01700/04357 (39.02%) | loss: 2.908418 | dt: 2059.18ms | tok/s: 509,220 | eta: 91.9m
+[padded_alpha0.03] Step 01750 | val_bpb: 0.879196
+[padded_alpha0.03] step 01750/04357 (40.17%) | loss: 2.901244 | dt: 2088.90ms | tok/s: 501,975 | eta: 90.1m
+[padded_alpha0.03] step 01800/04357 (41.31%) | loss: 2.897319 | dt: 2057.30ms | tok/s: 509,685 | eta: 88.4m
+[padded_alpha0.03] step 01850/04357 (42.46%) | loss: 2.863217 | dt: 2056.62ms | tok/s: 509,854 | eta: 86.6m
+[padded_alpha0.03] step 01900/04357 (43.61%) | loss: 2.889849 | dt: 2059.13ms | tok/s: 509,233 | eta: 84.9m

@@ -1,0 +1,6 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [3332566]: mask 0xffff000000000000ffff0000 set
+downloading uv 0.10.6 x86_64-unknown-linux-gnu
+Resolved 134 packages in 170ms
+Audited 121 packages in 817ms
+2026-02-25 18:47:54,477 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 4
+[2026-02-25T19:57:27.619] error: *** JOB 371071 ON andreas-h100-1 CANCELLED AT 2026-02-25T19:57:27 DUE to SIGNAL Terminated ***

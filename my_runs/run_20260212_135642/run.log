@@ -1,0 +1,12 @@
+[2026-02-12 13:56:42] ===================================================
+[2026-02-12 13:56:42] Starting nanochat speedrun
+[2026-02-12 13:56:42] Run name: run_20260212_135642
+[2026-02-12 13:56:42] Output directory: /data/scratch/medhaven/nanochat/my_runs/run_20260212_135642
+[2026-02-12 13:56:42] ===================================================
+[2026-02-12 13:56:42] Cache directory: /data/scratch/medhaven/nanochat/cache
+[2026-02-12 13:56:42] Setting up Python virtual environment...
+[2026-02-12 13:56:43] Installing dependencies (this may take a few minutes)...
+runs/speedrun_myrun.sh: line 52: uv: command not found
+[2026-02-12 13:56:43] WandB run name: dummy
+[2026-02-12 13:56:43] Initializing report...
+Reset report and wrote header to /data/scratch/medhaven/nanochat/cache/report/header.md

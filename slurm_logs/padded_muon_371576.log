@@ -1,0 +1,234 @@
+========================================
+Job ID: 371576
+Node: andreas-h100-1
+GPUs: 4
+Config: MUON_PAD=0, MUON_PAD_ALPHA=0.03
+Start Time: Wed Feb 25 08:28:30 PM EST 2026
+========================================
+Wed Feb 25 20:28:30 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   65C    P0             77W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:21:00.0 Off |                    0 |
+| N/A   65C    P0             71W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 NVL                On  |   00000000:41:00.0 Off |                    0 |
+| N/A   65C    P0             76W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 NVL                On  |   00000000:61:00.0 Off |                    0 |
+| N/A   64C    P0             71W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting: baseline
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+=== Padded Muon Experiment ===
+  MUON_PAD=False, alpha=0.03, SKIP_ORTH=False
+  MUON_SV_LOG=True, every=500
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+Using Flash Attention 3
+Vocab size: 32,768
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 32768,
+  "n_layer": 20,
+  "n_head": 10,
+  "n_kv_head": 10,
+  "n_embd": 1280,
+  "window_pattern": "SSSL"
+}
+FP8 training enabled - converted 121 layers
+Parameter counts:
+wte                     : 41,943,040
+value_embeds            : 419,430,400
+lm_head                 : 41,943,040
+transformer_matrices    : 393,219,200
+scalars                 : 40
+total                   : 896,535,720
+Estimated FLOPs per token: 3.004189e+09
+Auto-computed optimal batch size: 1,048,576 tokens
+Scaling LRs by 1.4142 for batch size 1,048,576
+Scaling weight decay from 0.200000 to 0.071563
+Scaling the LR for the AdamW parameters 1/sqrt(1280/768) = 0.774597
+Calculated iterations from target data:param ratio: 4,357
+Total tokens: 4,568,645,632 | Iterations: 4,357
+SV logging groups: {140576722231552: 'largest_[5120, 1280]', 140576722187008: 'smallest_[10, 32]'}
+Gradient accumulation steps: 8
+[baseline] Step 00000 | val_bpb: 3.169049
+[SV step=0] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[SV step=0] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[SV step=0] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[SV step=0] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[baseline] step 00000/04357 (0.00%) | loss: 10.398166 | dt: 28826.49ms | tok/s: 36,375
+[baseline] step 00050/04357 (1.15%) | loss: 5.592781 | dt: 2034.80ms | tok/s: 515,321 | eta: 145.2m
+[baseline] step 00100/04357 (2.30%) | loss: 4.696495 | dt: 2044.34ms | tok/s: 512,917 | eta: 144.2m
+[baseline] step 00150/04357 (3.44%) | loss: 4.013214 | dt: 2042.79ms | tok/s: 513,305 | eta: 142.7m
+[baseline] step 00200/04357 (4.59%) | loss: 3.667023 | dt: 2025.78ms | tok/s: 517,616 | eta: 141.1m
+[baseline] Step 00250 | val_bpb: 1.054158
+[baseline] step 00250/04357 (5.74%) | loss: 3.504427 | dt: 2028.39ms | tok/s: 516,949 | eta: 139.1m
+[baseline] step 00300/04357 (6.89%) | loss: 3.360826 | dt: 2006.50ms | tok/s: 522,589 | eta: 137.2m
+[baseline] step 00350/04357 (8.03%) | loss: 3.296248 | dt: 1998.46ms | tok/s: 524,691 | eta: 135.3m
+[baseline] step 00400/04357 (9.18%) | loss: 3.262846 | dt: 2000.87ms | tok/s: 524,059 | eta: 133.4m
+[baseline] step 00450/04357 (10.33%) | loss: 3.196256 | dt: 1999.22ms | tok/s: 524,492 | eta: 131.5m
+[baseline] Step 00500 | val_bpb: 0.958567
+[SV step=500] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=4.6471e-05 | p05=0.0318 p50=0.0830 p95=0.7037
+[SV step=500] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1396e+00 | p05=0.7864 p50=0.9494 p95=0.9971
+[SV step=500] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=2.2724e-04 | p05=0.0061 p50=0.0137 p95=0.0499
+[SV step=500] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1436e+00 | p05=0.7537 p50=0.8685 p95=0.9930
+[baseline] step 00500/04357 (11.48%) | loss: 3.156568 | dt: 2248.97ms | tok/s: 466,246 | eta: 129.7m
+[baseline] step 00550/04357 (12.62%) | loss: 3.125803 | dt: 1994.51ms | tok/s: 525,732 | eta: 127.8m
+[baseline] step 00600/04357 (13.77%) | loss: 3.091530 | dt: 1991.58ms | tok/s: 526,503 | eta: 126.0m
+[baseline] step 00650/04357 (14.92%) | loss: 3.106645 | dt: 1980.58ms | tok/s: 529,427 | eta: 124.2m
+[baseline] step 00700/04357 (16.07%) | loss: 3.086433 | dt: 1981.86ms | tok/s: 529,085 | eta: 122.4m
+[baseline] Step 00750 | val_bpb: 0.923434
+[baseline] step 00750/04357 (17.21%) | loss: 3.006819 | dt: 1989.90ms | tok/s: 526,948 | eta: 120.6m
+[baseline] step 00800/04357 (18.36%) | loss: 3.017150 | dt: 1980.27ms | tok/s: 529,511 | eta: 118.9m
+[baseline] step 00850/04357 (19.51%) | loss: 2.981575 | dt: 1977.03ms | tok/s: 530,380 | eta: 117.1m
+[baseline] step 00900/04357 (20.66%) | loss: 3.017206 | dt: 1973.51ms | tok/s: 531,326 | eta: 115.4m
+[baseline] step 00950/04357 (21.80%) | loss: 2.969820 | dt: 1976.91ms | tok/s: 530,412 | eta: 113.6m
+[baseline] Step 01000 | val_bpb: 0.902144
+[SV step=1000] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=5.1101e-05 | p05=0.0344 p50=0.1072 p95=0.6969
+[SV step=1000] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1422e+00 | p05=0.7676 p50=0.8515 p95=0.9831
+[SV step=1000] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.5035e-04 | p05=0.0062 p50=0.0140 p95=0.0539
+[SV step=1000] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1434e+00 | p05=0.7536 p50=0.8655 p95=0.9929
+[baseline] step 01000/04357 (22.95%) | loss: 2.977807 | dt: 2202.86ms | tok/s: 476,007 | eta: 111.9m
+[baseline] step 01050/04357 (24.10%) | loss: 2.966695 | dt: 1984.12ms | tok/s: 528,483 | eta: 110.2m
+[baseline] step 01100/04357 (25.25%) | loss: 2.954412 | dt: 1982.77ms | tok/s: 528,844 | eta: 108.5m
+[baseline] step 01150/04357 (26.39%) | loss: 2.949801 | dt: 1978.49ms | tok/s: 529,987 | eta: 106.8m
+[baseline] step 01200/04357 (27.54%) | loss: 2.930684 | dt: 1981.40ms | tok/s: 529,210 | eta: 105.1m
+[baseline] Step 01250 | val_bpb: 0.888615
+[baseline] step 01250/04357 (28.69%) | loss: 2.950235 | dt: 1984.24ms | tok/s: 528,451 | eta: 103.4m
+[baseline] step 01300/04357 (29.84%) | loss: 2.944073 | dt: 1975.92ms | tok/s: 530,678 | eta: 101.7m
+[baseline] step 01350/04357 (30.98%) | loss: 2.925514 | dt: 1980.21ms | tok/s: 529,526 | eta: 100.0m
+[baseline] step 01400/04357 (32.13%) | loss: 2.886897 | dt: 1968.07ms | tok/s: 532,794 | eta: 98.3m
+[baseline] step 01450/04357 (33.28%) | loss: 2.909827 | dt: 1970.90ms | tok/s: 532,028 | eta: 96.6m
+[baseline] Step 01500 | val_bpb: 0.878093
+[SV step=1500] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=4.2821e-05 | p05=0.0619 p50=0.1350 p95=0.9409
+[SV step=1500] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1496e+00 | p05=0.8047 p50=0.9102 p95=0.9942
+[SV step=1500] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.4688e-04 | p05=0.0053 p50=0.0120 p95=0.0479
+[SV step=1500] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1430e+00 | p05=0.7530 p50=0.8562 p95=0.9917
+[baseline] step 01500/04357 (34.43%) | loss: 2.878062 | dt: 2193.05ms | tok/s: 478,136 | eta: 94.9m
+[baseline] step 01550/04357 (35.57%) | loss: 2.900155 | dt: 1977.23ms | tok/s: 530,325 | eta: 93.2m
+[baseline] step 01600/04357 (36.72%) | loss: 2.879312 | dt: 1977.11ms | tok/s: 530,358 | eta: 91.7m
+[baseline] step 01650/04357 (37.87%) | loss: 2.904357 | dt: 1980.48ms | tok/s: 529,454 | eta: 90.0m
+[baseline] step 01700/04357 (39.02%) | loss: 2.875870 | dt: 1978.80ms | tok/s: 529,904 | eta: 88.4m
+[baseline] Step 01750 | val_bpb: 0.870137
+[baseline] step 01750/04357 (40.17%) | loss: 2.869407 | dt: 1980.08ms | tok/s: 529,562 | eta: 86.7m
+[baseline] step 01800/04357 (41.31%) | loss: 2.866432 | dt: 1980.95ms | tok/s: 529,328 | eta: 85.0m
+[baseline] step 01850/04357 (42.46%) | loss: 2.835001 | dt: 1977.63ms | tok/s: 530,219 | eta: 83.3m
+[baseline] step 01900/04357 (43.61%) | loss: 2.857738 | dt: 1977.15ms | tok/s: 530,346 | eta: 81.6m
+[baseline] step 01950/04357 (44.76%) | loss: 2.845676 | dt: 1979.96ms | tok/s: 529,593 | eta: 80.0m
+[baseline] Step 02000 | val_bpb: 0.863275
+[SV step=2000] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=4.6975e-05 | p05=0.0525 p50=0.1322 p95=0.7507
+[SV step=2000] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1414e+00 | p05=0.7823 p50=0.8818 p95=0.9963
+[SV step=2000] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=9.5422e-05 | p05=0.0071 p50=0.0164 p95=0.0681
+[SV step=2000] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1438e+00 | p05=0.7534 p50=0.8677 p95=0.9929
+[baseline] step 02000/04357 (45.90%) | loss: 2.857592 | dt: 2192.42ms | tok/s: 478,273 | eta: 78.3m
+[baseline] step 02050/04357 (47.05%) | loss: 2.839942 | dt: 1977.13ms | tok/s: 530,351 | eta: 76.6m
+[baseline] step 02100/04357 (48.20%) | loss: 2.834914 | dt: 1976.61ms | tok/s: 530,493 | eta: 74.9m
+[baseline] step 02150/04357 (49.35%) | loss: 2.867454 | dt: 1971.96ms | tok/s: 531,742 | eta: 73.3m
+[baseline] step 02200/04357 (50.49%) | loss: 2.822256 | dt: 1974.32ms | tok/s: 531,108 | eta: 71.6m
+[baseline] Step 02250 | val_bpb: 0.856243
+[baseline] step 02250/04357 (51.64%) | loss: 2.826065 | dt: 1983.08ms | tok/s: 528,760 | eta: 69.9m
+[baseline] step 02300/04357 (52.79%) | loss: 2.811255 | dt: 1973.95ms | tok/s: 531,205 | eta: 68.2m
+[baseline] step 02350/04357 (53.94%) | loss: 2.832011 | dt: 1972.54ms | tok/s: 531,585 | eta: 66.6m
+[baseline] step 02400/04357 (55.08%) | loss: 2.775766 | dt: 1973.99ms | tok/s: 531,196 | eta: 64.9m
+[baseline] step 02450/04357 (56.23%) | loss: 2.804412 | dt: 1975.11ms | tok/s: 530,895 | eta: 63.2m
+[baseline] Step 02500 | val_bpb: 0.846122
+[SV step=2500] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=4.4766e-05 | p05=0.0591 p50=0.1514 p95=0.8509
+[SV step=2500] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1401e+00 | p05=0.7831 p50=0.8543 p95=0.9673
+[SV step=2500] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=9.8394e-05 | p05=0.0063 p50=0.0147 p95=0.0612
+[SV step=2500] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1434e+00 | p05=0.7536 p50=0.8645 p95=0.9927
+[baseline] step 02500/04357 (57.38%) | loss: 2.810997 | dt: 2194.32ms | tok/s: 477,859 | eta: 61.6m
+[baseline] step 02550/04357 (58.53%) | loss: 2.765244 | dt: 1970.50ms | tok/s: 532,137 | eta: 59.9m
+[baseline] step 02600/04357 (59.67%) | loss: 2.760914 | dt: 1970.50ms | tok/s: 532,136 | eta: 58.2m
+[baseline] step 02650/04357 (60.82%) | loss: 2.760092 | dt: 1969.48ms | tok/s: 532,413 | eta: 56.6m
+[baseline] step 02700/04357 (61.97%) | loss: 2.796311 | dt: 1963.06ms | tok/s: 534,154 | eta: 54.9m
+[baseline] Step 02750 | val_bpb: 0.836723
+[baseline] step 02750/04357 (63.12%) | loss: 2.730322 | dt: 1979.05ms | tok/s: 529,838 | eta: 53.2m
+[baseline] step 02800/04357 (64.26%) | loss: 2.769529 | dt: 1960.78ms | tok/s: 534,774 | eta: 51.6m
+[baseline] step 02850/04357 (65.41%) | loss: 2.778333 | dt: 1966.74ms | tok/s: 533,154 | eta: 49.9m
+[baseline] step 02900/04357 (66.56%) | loss: 2.749595 | dt: 1977.04ms | tok/s: 530,376 | eta: 48.2m
+[baseline] step 02950/04357 (67.71%) | loss: 2.717003 | dt: 1963.68ms | tok/s: 533,985 | eta: 46.6m
+[baseline] Step 03000 | val_bpb: 0.827781
+[SV step=3000] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=3.3641e-05 | p05=0.0914 p50=0.2204 p95=0.8293
+[SV step=3000] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1440e+00 | p05=0.7663 p50=0.9129 p95=0.9990
+[SV step=3000] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.0162e-04 | p05=0.0063 p50=0.0144 p95=0.0598
+[SV step=3000] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1434e+00 | p05=0.7537 p50=0.8648 p95=0.9930
+[baseline] step 03000/04357 (68.85%) | loss: 2.734833 | dt: 2195.99ms | tok/s: 477,495 | eta: 44.9m
+[baseline] step 03050/04357 (70.00%) | loss: 2.711914 | dt: 1982.83ms | tok/s: 528,827 | eta: 43.3m
+[baseline] step 03100/04357 (71.15%) | loss: 2.704527 | dt: 1966.62ms | tok/s: 533,187 | eta: 41.6m
+[baseline] step 03150/04357 (72.30%) | loss: 2.697351 | dt: 1967.72ms | tok/s: 532,889 | eta: 39.9m
+[baseline] step 03200/04357 (73.45%) | loss: 2.705240 | dt: 1978.62ms | tok/s: 529,954 | eta: 38.3m
+[baseline] Step 03250 | val_bpb: 0.819111
+[baseline] step 03250/04357 (74.59%) | loss: 2.701596 | dt: 1985.72ms | tok/s: 528,058 | eta: 36.6m
+[baseline] step 03300/04357 (75.74%) | loss: 2.670698 | dt: 1968.79ms | tok/s: 532,599 | eta: 35.0m
+[baseline] step 03350/04357 (76.89%) | loss: 2.700008 | dt: 1973.74ms | tok/s: 531,264 | eta: 33.3m
+[baseline] step 03400/04357 (78.04%) | loss: 2.698769 | dt: 1976.96ms | tok/s: 530,397 | eta: 31.7m
+[baseline] step 03450/04357 (79.18%) | loss: 2.685265 | dt: 1979.86ms | tok/s: 529,620 | eta: 30.0m
+[baseline] Step 03500 | val_bpb: 0.811220
+[SV step=3500] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=3.5298e-05 | p05=0.1028 p50=0.2543 p95=0.8513
+[SV step=3500] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1432e+00 | p05=0.7768 p50=0.8800 p95=0.9983
+[SV step=3500] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=8.4236e-05 | p05=0.0081 p50=0.0184 p95=0.0741
+[SV step=3500] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1440e+00 | p05=0.7553 p50=0.8746 p95=0.9938
+[baseline] step 03500/04357 (80.33%) | loss: 2.634825 | dt: 2195.09ms | tok/s: 477,692 | eta: 28.3m
+[baseline] step 03550/04357 (81.48%) | loss: 2.647108 | dt: 1979.45ms | tok/s: 529,730 | eta: 26.7m
+[baseline] step 03600/04357 (82.63%) | loss: 2.652869 | dt: 1962.27ms | tok/s: 534,367 | eta: 25.0m
+[baseline] step 03650/04357 (83.77%) | loss: 2.665551 | dt: 1983.47ms | tok/s: 528,656 | eta: 23.4m
+[baseline] step 03700/04357 (84.92%) | loss: 2.638619 | dt: 1980.24ms | tok/s: 529,520 | eta: 21.7m
+[baseline] Step 03750 | val_bpb: 0.803777
+[baseline] step 03750/04357 (86.07%) | loss: 2.641051 | dt: 1989.05ms | tok/s: 527,175 | eta: 20.1m
+[baseline] step 03800/04357 (87.22%) | loss: 2.631701 | dt: 1979.21ms | tok/s: 529,794 | eta: 18.4m
+[baseline] step 03850/04357 (88.36%) | loss: 2.646982 | dt: 1974.47ms | tok/s: 531,066 | eta: 16.8m
+[baseline] step 03900/04357 (89.51%) | loss: 2.624555 | dt: 1975.15ms | tok/s: 530,885 | eta: 15.1m
+[baseline] step 03950/04357 (90.66%) | loss: 2.638402 | dt: 1978.04ms | tok/s: 530,108 | eta: 13.5m
+[baseline] Step 04000 | val_bpb: 0.797136
+[SV step=4000] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=3.7197e-05 | p05=0.1135 p50=0.2785 p95=0.9111
+[SV step=4000] baseline/post smallest_[10, 32] [10, 32] | sigma_max=1.1391e+00 | p05=0.7914 p50=0.9265 p95=0.9976
+[SV step=4000] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=9.4549e-05 | p05=0.0078 p50=0.0176 p95=0.0689
+[SV step=4000] baseline/post largest_[5120, 1280] [5120, 1280] | sigma_max=1.1440e+00 | p05=0.7553 p50=0.8731 p95=0.9935
+[baseline] step 04000/04357 (91.81%) | loss: 2.647512 | dt: 2193.00ms | tok/s: 478,147 | eta: 11.8m
+[baseline] step 04050/04357 (92.95%) | loss: 2.620808 | dt: 1975.80ms | tok/s: 530,710 | eta: 10.1m
+[baseline] step 04100/04357 (94.10%) | loss: 2.634047 | dt: 1982.27ms | tok/s: 528,977 | eta: 8.5m
+[baseline] step 04150/04357 (95.25%) | loss: 2.630296 | dt: 1978.57ms | tok/s: 529,967 | eta: 6.8m
+[baseline] step 04200/04357 (96.40%) | loss: 2.601376 | dt: 1964.07ms | tok/s: 533,879 | eta: 5.2m
+[baseline] Step 04250 | val_bpb: 0.792166
+[baseline] step 04250/04357 (97.54%) | loss: 2.593334 | dt: 1986.36ms | tok/s: 527,887 | eta: 3.5m
+[baseline] step 04300/04357 (98.69%) | loss: 2.616120 | dt: 1981.66ms | tok/s: 529,140 | eta: 1.9m
+[baseline] step 04350/04357 (99.84%) | loss: 2.633536 | dt: 1981.58ms | tok/s: 529,161 | eta: 0.2m
+[baseline] Step 04357 | val_bpb: 0.791251
+Results saved to padded_muon_results/baseline/val_loss.json
+[baseline] Done. Min val bpb: 0.791251
+Peak memory: 40719.93 MiB
+Total training time: 143.58m
+========================================
+[baseline] Job completed at: Wed Feb 25 10:59:48 PM EST 2026
+========================================

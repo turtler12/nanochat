@@ -1,0 +1,2 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [412080]: mask 0xc0000000000000009 set
+/var/lib/slurm/slurmd/job356445/slurm_script: 4: source: not found

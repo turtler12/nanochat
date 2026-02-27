@@ -1,0 +1,195 @@
+========================================
+Job ID: 356440
+Node: andreas-h100-1
+GPUs: 4
+Config: intercept=0.0, SN=no
+Start Time: Fri Feb 20 03:58:59 EST 2026
+========================================
+Fri Feb 20 03:58:59 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   64C    P0             76W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:21:00.0 Off |                    0 |
+| N/A   64C    P0             70W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 NVL                On  |   00000000:41:00.0 Off |                    0 |
+| N/A   42C    P0             65W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 NVL                On  |   00000000:61:00.0 Off |                    0 |
+| N/A   41C    P0             63W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting: affine_0.0_NO_SN
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+=== Affine sweep: intercept=0.0, SN=NO_SN ===
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+Using Flash Attention 3
+Vocab size: 32,768
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 32768,
+  "n_layer": 20,
+  "n_head": 10,
+  "n_kv_head": 10,
+  "n_embd": 1280,
+  "window_pattern": "SSSL"
+}
+FP8 training enabled - converted 121 layers
+Parameter counts:
+wte                     : 41,943,040
+value_embeds            : 419,430,400
+lm_head                 : 41,943,040
+transformer_matrices    : 393,219,200
+scalars                 : 40
+total                   : 896,535,720
+Estimated FLOPs per token: 3.004189e+09
+Auto-computed optimal batch size: 1,048,576 tokens
+Scaling LRs by 1.4142 for batch size 1,048,576
+Scaling weight decay from 0.200000 to 0.071563
+Scaling the LR for the AdamW parameters ∝1/√(1280/768) = 0.774597
+Calculated number of iterations from target data:param ratio: 4,357
+Total tokens: 4,568,645,632 | Iterations: 4,357
+Gradient accumulation steps: 8
+[affine_0.000_NO_SN] Step 00000 | val_bpb: 3.169049
+[affine_0.000_NO_SN] step 00000/04357 (0.00%) | loss: 10.398166 | dt: 27723.71ms | tok/s: 37,822
+[affine_0.000_NO_SN] step 00050/04357 (1.15%) | loss: 5.812156 | dt: 4845.86ms | tok/s: 216,386 | eta: 350.5m
+[affine_0.000_NO_SN] step 00100/04357 (2.30%) | loss: 5.730561 | dt: 4889.17ms | tok/s: 214,468 | eta: 345.7m
+[affine_0.000_NO_SN] step 00150/04357 (3.44%) | loss: 5.683820 | dt: 4969.91ms | tok/s: 210,985 | eta: 343.0m
+[affine_0.000_NO_SN] step 00200/04357 (4.59%) | loss: 5.650702 | dt: 4906.99ms | tok/s: 213,690 | eta: 340.3m
+[affine_0.000_NO_SN] Step 00250 | val_bpb: 1.637425
+[affine_0.000_NO_SN] step 00250/04357 (5.74%) | loss: 5.438985 | dt: 4997.87ms | tok/s: 209,804 | eta: 336.5m
+[affine_0.000_NO_SN] step 00300/04357 (6.89%) | loss: 5.214292 | dt: 4931.33ms | tok/s: 212,635 | eta: 332.6m
+[affine_0.000_NO_SN] step 00350/04357 (8.03%) | loss: 5.056222 | dt: 4990.69ms | tok/s: 210,106 | eta: 328.9m
+[affine_0.000_NO_SN] step 00400/04357 (9.18%) | loss: 4.934363 | dt: 4996.99ms | tok/s: 209,841 | eta: 325.4m
+[affine_0.000_NO_SN] step 00450/04357 (10.33%) | loss: 4.772745 | dt: 4992.82ms | tok/s: 210,016 | eta: 321.7m
+[affine_0.000_NO_SN] Step 00500 | val_bpb: 1.420147
+[affine_0.000_NO_SN] step 00500/04357 (11.48%) | loss: 4.720438 | dt: 5034.43ms | tok/s: 208,280 | eta: 318.1m
+[affine_0.000_NO_SN] step 00550/04357 (12.62%) | loss: 4.612335 | dt: 4999.97ms | tok/s: 209,716 | eta: 314.3m
+[affine_0.000_NO_SN] step 00600/04357 (13.77%) | loss: 4.513290 | dt: 4998.24ms | tok/s: 209,789 | eta: 310.5m
+[affine_0.000_NO_SN] step 00650/04357 (14.92%) | loss: 4.526527 | dt: 4965.63ms | tok/s: 211,166 | eta: 306.6m
+[affine_0.000_NO_SN] step 00700/04357 (16.07%) | loss: 4.486047 | dt: 5015.99ms | tok/s: 209,046 | eta: 302.6m
+[affine_0.000_NO_SN] Step 00750 | val_bpb: 1.319049
+[affine_0.000_NO_SN] step 00750/04357 (17.21%) | loss: 4.327670 | dt: 5040.65ms | tok/s: 208,023 | eta: 298.6m
+[affine_0.000_NO_SN] step 00800/04357 (18.36%) | loss: 4.314279 | dt: 5005.02ms | tok/s: 209,504 | eta: 294.6m
+[affine_0.000_NO_SN] step 00850/04357 (19.51%) | loss: 4.247140 | dt: 4985.88ms | tok/s: 210,309 | eta: 290.5m
+[affine_0.000_NO_SN] step 00900/04357 (20.66%) | loss: 4.256688 | dt: 5019.16ms | tok/s: 208,914 | eta: 286.4m
+[affine_0.000_NO_SN] step 00950/04357 (21.80%) | loss: 4.189883 | dt: 4937.71ms | tok/s: 212,360 | eta: 282.3m
+[affine_0.000_NO_SN] Step 01000 | val_bpb: 1.303957
+[affine_0.000_NO_SN] step 01000/04357 (22.95%) | loss: 4.189988 | dt: 4990.47ms | tok/s: 210,115 | eta: 278.1m
+[affine_0.000_NO_SN] step 01050/04357 (24.10%) | loss: 4.098775 | dt: 4943.17ms | tok/s: 212,126 | eta: 274.0m
+[affine_0.000_NO_SN] step 01100/04357 (25.25%) | loss: 4.108444 | dt: 4960.62ms | tok/s: 211,379 | eta: 269.9m
+[affine_0.000_NO_SN] step 01150/04357 (26.39%) | loss: 4.054426 | dt: 5018.87ms | tok/s: 208,926 | eta: 265.7m
+[affine_0.000_NO_SN] step 01200/04357 (27.54%) | loss: 4.012493 | dt: 5114.92ms | tok/s: 205,003 | eta: 261.6m
+[affine_0.000_NO_SN] Step 01250 | val_bpb: 1.246718
+[affine_0.000_NO_SN] step 01250/04357 (28.69%) | loss: 4.114747 | dt: 5057.25ms | tok/s: 207,341 | eta: 257.4m
+[affine_0.000_NO_SN] step 01300/04357 (29.84%) | loss: 3.969089 | dt: 4928.65ms | tok/s: 212,751 | eta: 253.3m
+[affine_0.000_NO_SN] step 01350/04357 (30.98%) | loss: 3.986161 | dt: 4940.91ms | tok/s: 212,223 | eta: 249.1m
+[affine_0.000_NO_SN] step 01400/04357 (32.13%) | loss: 3.911325 | dt: 4955.08ms | tok/s: 211,616 | eta: 245.0m
+[affine_0.000_NO_SN] step 01450/04357 (33.28%) | loss: 3.933102 | dt: 4944.47ms | tok/s: 212,070 | eta: 240.8m
+[affine_0.000_NO_SN] Step 01500 | val_bpb: 1.176505
+[affine_0.000_NO_SN] step 01500/04357 (34.43%) | loss: 3.873156 | dt: 4970.22ms | tok/s: 210,971 | eta: 236.7m
+[affine_0.000_NO_SN] step 01550/04357 (35.57%) | loss: 3.875255 | dt: 4939.79ms | tok/s: 212,271 | eta: 232.5m
+[affine_0.000_NO_SN] step 01600/04357 (36.72%) | loss: 3.879517 | dt: 4997.80ms | tok/s: 209,807 | eta: 228.4m
+[affine_0.000_NO_SN] step 01650/04357 (37.87%) | loss: 3.853662 | dt: 4921.01ms | tok/s: 213,081 | eta: 224.2m
+[affine_0.000_NO_SN] step 01700/04357 (39.02%) | loss: 3.850665 | dt: 5004.10ms | tok/s: 209,543 | eta: 220.0m
+[affine_0.000_NO_SN] Step 01750 | val_bpb: 1.154575
+[affine_0.000_NO_SN] step 01750/04357 (40.17%) | loss: 3.812260 | dt: 5016.90ms | tok/s: 209,008 | eta: 215.9m
+[affine_0.000_NO_SN] step 01800/04357 (41.31%) | loss: 3.802718 | dt: 4921.83ms | tok/s: 213,046 | eta: 211.7m
+[affine_0.000_NO_SN] step 01850/04357 (42.46%) | loss: 3.795736 | dt: 4937.78ms | tok/s: 212,357 | eta: 207.6m
+[affine_0.000_NO_SN] step 01900/04357 (43.61%) | loss: 3.788187 | dt: 4913.09ms | tok/s: 213,424 | eta: 203.4m
+[affine_0.000_NO_SN] step 01950/04357 (44.76%) | loss: 3.805828 | dt: 4936.66ms | tok/s: 212,405 | eta: 199.2m
+[affine_0.000_NO_SN] Step 02000 | val_bpb: 1.138750
+[affine_0.000_NO_SN] step 02000/04357 (45.90%) | loss: 3.774842 | dt: 4975.25ms | tok/s: 210,758 | eta: 195.1m
+[affine_0.000_NO_SN] step 02050/04357 (47.05%) | loss: 3.744078 | dt: 4917.28ms | tok/s: 213,243 | eta: 190.9m
+[affine_0.000_NO_SN] step 02100/04357 (48.20%) | loss: 3.769982 | dt: 4933.24ms | tok/s: 212,553 | eta: 186.8m
+[affine_0.000_NO_SN] step 02150/04357 (49.35%) | loss: 3.757209 | dt: 4954.86ms | tok/s: 211,625 | eta: 182.6m
+[affine_0.000_NO_SN] step 02200/04357 (50.49%) | loss: 3.731425 | dt: 5010.47ms | tok/s: 209,277 | eta: 178.5m
+[affine_0.000_NO_SN] Step 02250 | val_bpb: 1.166474
+[affine_0.000_NO_SN] step 02250/04357 (51.64%) | loss: 3.759997 | dt: 5077.48ms | tok/s: 206,515 | eta: 174.4m
+[affine_0.000_NO_SN] step 02300/04357 (52.79%) | loss: 3.703576 | dt: 4916.95ms | tok/s: 213,257 | eta: 170.2m
+[affine_0.000_NO_SN] step 02350/04357 (53.94%) | loss: 3.718523 | dt: 4914.73ms | tok/s: 213,353 | eta: 166.1m
+[affine_0.000_NO_SN] step 02400/04357 (55.08%) | loss: 3.677929 | dt: 5031.23ms | tok/s: 208,413 | eta: 161.9m
+[affine_0.000_NO_SN] step 02450/04357 (56.23%) | loss: 3.686280 | dt: 4929.04ms | tok/s: 212,734 | eta: 157.7m
+[affine_0.000_NO_SN] Step 02500 | val_bpb: 1.119277
+[affine_0.000_NO_SN] step 02500/04357 (57.38%) | loss: 3.742040 | dt: 4997.66ms | tok/s: 209,813 | eta: 153.6m
+[affine_0.000_NO_SN] step 02550/04357 (58.53%) | loss: 3.645824 | dt: 4923.92ms | tok/s: 212,955 | eta: 149.5m
+[affine_0.000_NO_SN] step 02600/04357 (59.67%) | loss: 3.670017 | dt: 4906.29ms | tok/s: 213,720 | eta: 145.3m
+[affine_0.000_NO_SN] step 02650/04357 (60.82%) | loss: 3.640293 | dt: 4962.08ms | tok/s: 211,317 | eta: 141.2m
+[affine_0.000_NO_SN] step 02700/04357 (61.97%) | loss: 3.713490 | dt: 4944.26ms | tok/s: 212,079 | eta: 137.0m
+[affine_0.000_NO_SN] Step 02750 | val_bpb: 1.104952
+[affine_0.000_NO_SN] step 02750/04357 (63.12%) | loss: 3.614611 | dt: 4946.00ms | tok/s: 212,004 | eta: 132.9m
+[affine_0.000_NO_SN] step 02800/04357 (64.26%) | loss: 3.669390 | dt: 5060.34ms | tok/s: 207,214 | eta: 128.7m
+[affine_0.000_NO_SN] step 02850/04357 (65.41%) | loss: 3.661889 | dt: 4985.15ms | tok/s: 210,340 | eta: 124.6m
+[affine_0.000_NO_SN] step 02900/04357 (66.56%) | loss: 3.629328 | dt: 4910.11ms | tok/s: 213,554 | eta: 120.4m
+[affine_0.000_NO_SN] step 02950/04357 (67.71%) | loss: 3.596775 | dt: 4909.53ms | tok/s: 213,579 | eta: 116.3m
+[affine_0.000_NO_SN] Step 03000 | val_bpb: 1.096231
+[affine_0.000_NO_SN] step 03000/04357 (68.85%) | loss: 3.612515 | dt: 4961.66ms | tok/s: 211,335 | eta: 112.1m
+[affine_0.000_NO_SN] step 03050/04357 (70.00%) | loss: 3.621410 | dt: 4942.24ms | tok/s: 212,166 | eta: 108.0m
+[affine_0.000_NO_SN] step 03100/04357 (71.15%) | loss: 3.590821 | dt: 4902.81ms | tok/s: 213,872 | eta: 103.9m
+[affine_0.000_NO_SN] step 03150/04357 (72.30%) | loss: 3.579773 | dt: 4903.30ms | tok/s: 213,851 | eta: 99.7m
+[affine_0.000_NO_SN] step 03200/04357 (73.45%) | loss: 3.600876 | dt: 4902.81ms | tok/s: 213,872 | eta: 95.6m
+[affine_0.000_NO_SN] Step 03250 | val_bpb: 1.089487
+[affine_0.000_NO_SN] step 03250/04357 (74.59%) | loss: 3.600196 | dt: 4953.83ms | tok/s: 211,669 | eta: 91.4m
+[affine_0.000_NO_SN] step 03300/04357 (75.74%) | loss: 3.574472 | dt: 4909.42ms | tok/s: 213,584 | eta: 87.3m
+[affine_0.000_NO_SN] step 03350/04357 (76.89%) | loss: 3.600882 | dt: 4912.66ms | tok/s: 213,443 | eta: 83.2m
+[affine_0.000_NO_SN] step 03400/04357 (78.04%) | loss: 3.591932 | dt: 4904.99ms | tok/s: 213,777 | eta: 79.0m
+[affine_0.000_NO_SN] step 03450/04357 (79.18%) | loss: 3.581338 | dt: 4899.19ms | tok/s: 214,030 | eta: 74.9m
+[affine_0.000_NO_SN] Step 03500 | val_bpb: 1.082564
+[affine_0.000_NO_SN] step 03500/04357 (80.33%) | loss: 3.525188 | dt: 4957.27ms | tok/s: 211,522 | eta: 70.7m
+[affine_0.000_NO_SN] step 03550/04357 (81.48%) | loss: 3.549218 | dt: 4896.82ms | tok/s: 214,133 | eta: 66.6m
+[affine_0.000_NO_SN] step 03600/04357 (82.63%) | loss: 3.543522 | dt: 4907.65ms | tok/s: 213,661 | eta: 62.5m
+[affine_0.000_NO_SN] step 03650/04357 (83.77%) | loss: 3.572719 | dt: 4898.11ms | tok/s: 214,077 | eta: 58.3m
+[affine_0.000_NO_SN] step 03700/04357 (84.92%) | loss: 3.529407 | dt: 4911.01ms | tok/s: 213,515 | eta: 54.2m
+[affine_0.000_NO_SN] Step 03750 | val_bpb: 1.077440
+[affine_0.000_NO_SN] step 03750/04357 (86.07%) | loss: 3.541266 | dt: 4954.36ms | tok/s: 211,647 | eta: 50.1m
+[affine_0.000_NO_SN] step 03800/04357 (87.22%) | loss: 3.535189 | dt: 4903.65ms | tok/s: 213,835 | eta: 45.9m
+[affine_0.000_NO_SN] step 03850/04357 (88.36%) | loss: 3.539131 | dt: 4899.90ms | tok/s: 213,999 | eta: 41.8m
+[affine_0.000_NO_SN] step 03900/04357 (89.51%) | loss: 3.530545 | dt: 4893.77ms | tok/s: 214,267 | eta: 37.7m
+[affine_0.000_NO_SN] step 03950/04357 (90.66%) | loss: 3.545407 | dt: 4914.57ms | tok/s: 213,360 | eta: 33.6m
+[affine_0.000_NO_SN] Step 04000 | val_bpb: 1.074079
+[affine_0.000_NO_SN] step 04000/04357 (91.81%) | loss: 3.545957 | dt: 4950.35ms | tok/s: 211,818 | eta: 29.4m
+[affine_0.000_NO_SN] step 04050/04357 (92.95%) | loss: 3.539842 | dt: 4900.31ms | tok/s: 213,981 | eta: 25.3m
+[affine_0.000_NO_SN] step 04100/04357 (94.10%) | loss: 3.553720 | dt: 4908.76ms | tok/s: 213,613 | eta: 21.2m
+[affine_0.000_NO_SN] step 04150/04357 (95.25%) | loss: 3.553528 | dt: 4916.25ms | tok/s: 213,287 | eta: 17.1m
+[affine_0.000_NO_SN] step 04200/04357 (96.40%) | loss: 3.513950 | dt: 4902.56ms | tok/s: 213,883 | eta: 12.9m
+[affine_0.000_NO_SN] Step 04250 | val_bpb: 1.071872
+[affine_0.000_NO_SN] step 04250/04357 (97.54%) | loss: 3.512978 | dt: 4945.61ms | tok/s: 212,021 | eta: 8.8m
+[affine_0.000_NO_SN] step 04300/04357 (98.69%) | loss: 3.542848 | dt: 4899.06ms | tok/s: 214,036 | eta: 4.7m
+[affine_0.000_NO_SN] step 04350/04357 (99.84%) | loss: 3.548728 | dt: 4914.69ms | tok/s: 213,355 | eta: 0.6m
+[affine_0.000_NO_SN] Step 04357 | val_bpb: 1.071511
+Results saved to /data/scratch/medhaven/nanochat/affine_sweep_results/affine_0.000_NO_SN/val_loss.json
+[affine_0.000_NO_SN] Done. Min val bpb: 1.071511
+Peak memory: 37792.66 MiB
+Total training time: 358.11m
+========================================
+[affine_0.0_NO_SN] Job completed at: Fri Feb 20 10:04:36 EST 2026
+========================================

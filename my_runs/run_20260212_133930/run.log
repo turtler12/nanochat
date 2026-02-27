@@ -1,0 +1,93 @@
+[2026-02-12 13:39:30] ===================================================
+[2026-02-12 13:39:30] Starting nanochat speedrun
+[2026-02-12 13:39:30] Run name: run_20260212_133930
+[2026-02-12 13:39:30] Output directory: /data/scratch/medhaven/nanochat/my_runs/run_20260212_133930
+[2026-02-12 13:39:30] ===================================================
+[2026-02-12 13:39:30] Cache directory: /afs/csail.mit.edu/u/m/medhaven/.cache/nanochat
+[2026-02-12 13:39:30] Setting up Python virtual environment...
+Resolved 134 packages in 9ms
+Downloading scipy (35.9MiB)
+Downloading nvidia-nvjitlink-cu12 (37.4MiB)
+Downloading nvidia-nvshmem-cu12 (118.9MiB)
+Downloading nvidia-curand-cu12 (60.7MiB)
+Downloading nvidia-cusolver-cu12 (255.1MiB)
+Downloading nvidia-nccl-cu12 (307.4MiB)
+Downloading nvidia-cusparselt-cu12 (273.9MiB)
+Downloading nvidia-cuda-nvrtc-cu12 (84.0MiB)
+Downloading nvidia-cufft-cu12 (184.2MiB)
+Downloading nvidia-cusparse-cu12 (274.9MiB)
+Downloading nvidia-cudnn-cu12 (674.0MiB)
+Downloading nvidia-cublas-cu12 (566.8MiB)
+Downloading triton (162.4MiB)
+Downloading pyarrow (40.8MiB)
+Downloading torch (859.2MiB)
+  × Failed to download `nvidia-cufft-cu12==11.3.3.83`
+  ├─▶ Failed to extract archive:
+  │   nvidia_cufft_cu12-11.3.3.83-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+  ├─▶ I/O operation failed during extraction
+  ╰─▶ failed to flush file
+      `/afs/csail.mit.edu/u/m/medhaven/.cache/uv/.tmpkB33ej/nvidia/cufft/lib/libcufft.so.11`:
+      Disk quota exceeded (os error 122)
+  help: `nvidia-cufft-cu12` (v11.3.3.83) was included because `nanochat[gpu]`
+        (v0.1.0) depends on `torch` (v2.9.1+cu128) which depends on
+        `nvidia-cufft-cu12`
+[2026-02-12 13:39:50] WandB run name: dummy
+[2026-02-12 13:39:50] Initializing report...
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/scratch/medhaven/nanochat/nanochat/report.py", line 12, in <module>
+    import psutil
+ModuleNotFoundError: No module named 'psutil'
+[2026-02-12 13:39:50] ===================================================
+[2026-02-12 13:39:50] Stage 1: Tokenizer Training
+[2026-02-12 13:39:50] ===================================================
+[2026-02-12 13:39:50] Found 0 existing data shards in cache
+[2026-02-12 13:39:50] Downloading initial 8 data shards for tokenizer training...
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/scratch/medhaven/nanochat/nanochat/dataset.py", line 13, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+[2026-02-12 13:39:50] Starting background download of remaining data shards (up to 370 total)...
+[2026-02-12 13:39:50] Training tokenizer...
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/scratch/medhaven/nanochat/scripts/tok_train.py", line 8, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'
+[2026-02-12 13:39:50] Evaluating tokenizer...
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/scratch/medhaven/nanochat/scripts/tok_eval.py", line 5, in <module>
+    from nanochat.tokenizer import get_tokenizer, RustBPETokenizer
+  File "/data/scratch/medhaven/nanochat/nanochat/tokenizer.py", line 34, in <module>
+    from tokenizers import Tokenizer as HFTokenizer
+ModuleNotFoundError: No module named 'tokenizers'
+[2026-02-12 13:39:50] ===================================================
+[2026-02-12 13:39:50] Stage 2: Base Model Pretraining
+[2026-02-12 13:39:50] ===================================================
+[2026-02-12 13:39:50] Waiting for dataset download to complete...
+[2026-02-12 13:39:50] Starting base model training (depth=26, 4 GPUs)...
+[2026-02-12 13:39:50] This will take approximately 5 hours...
+/afs/csail.mit.edu/u/m/medhaven/.local/lib/python3.10/site-packages/torch/_subclasses/functional_tensor.py:279: UserWarning: Failed to initialize NumPy: No module named 'numpy' (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:84.)
+  cpu = _conversion_method_template(device=torch.device("cpu"))
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main

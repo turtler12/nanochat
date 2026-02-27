@@ -1,0 +1,119 @@
+{
+  "run_tag": "baseline",
+  "muon_pad": false,
+  "muon_pad_alpha": 0.03,
+  "num_iterations": 4357,
+  "total_batch_size": 1048576,
+  "min_val_bpb": 0.7912510381904851,
+  "val_loss_log": [
+    {
+      "step": 0,
+      "val_bpb": 3.1690492232385834
+    },
+    {
+      "step": 250,
+      "val_bpb": 1.0541578659418074
+    },
+    {
+      "step": 500,
+      "val_bpb": 0.95856659838671
+    },
+    {
+      "step": 750,
+      "val_bpb": 0.9234342721171132
+    },
+    {
+      "step": 1000,
+      "val_bpb": 0.902144056909464
+    },
+    {
+      "step": 1250,
+      "val_bpb": 0.8886154865272285
+    },
+    {
+      "step": 1500,
+      "val_bpb": 0.8780930194175565
+    },
+    {
+      "step": 1750,
+      "val_bpb": 0.8701368373812522
+    },
+    {
+      "step": 2000,
+      "val_bpb": 0.8632750217188655
+    },
+    {
+      "step": 2250,
+      "val_bpb": 0.856242760501379
+    },
+    {
+      "step": 2500,
+      "val_bpb": 0.846121762795815
+    },
+    {
+      "step": 2750,
+      "val_bpb": 0.836722525493085
+    },
+    {
+      "step": 3000,
+      "val_bpb": 0.8277806804959484
+    },
+    {
+      "step": 3250,
+      "val_bpb": 0.8191110595707669
+    },
+    {
+      "step": 3500,
+      "val_bpb": 0.8112199366435789
+    },
+    {
+      "step": 3750,
+      "val_bpb": 0.8037766042751113
+    },
+    {
+      "step": 4000,
+      "val_bpb": 0.7971359197528334
+    },
+    {
+      "step": 4250,
+      "val_bpb": 0.7921655318396457
+    },
+    {
+      "step": 4357,
+      "val_bpb": 0.7912510381904851
+    }
+  ],
+  "user_config": {
+    "run": "dummy",
+    "device_type": "",
+    "fp8": true,
+    "fp8_recipe": "tensorwise",
+    "depth": 20,
+    "aspect_ratio": 64,
+    "head_dim": 128,
+    "max_seq_len": 2048,
+    "window_pattern": "SSSL",
+    "num_iterations": -1,
+    "target_flops": -1.0,
+    "target_param_data_ratio": 10.5,
+    "device_batch_size": 16,
+    "total_batch_size": -1,
+    "embedding_lr": 0.3,
+    "unembedding_lr": 0.004,
+    "weight_decay": 0.2,
+    "matrix_lr": 0.02,
+    "scalar_lr": 0.5,
+    "adam_beta1": 0.8,
+    "adam_beta2": 0.95,
+    "warmup_ratio": 0.0,
+    "warmdown_ratio": 0.5,
+    "final_lr_frac": 0.0,
+    "eval_every": 250,
+    "eval_tokens": 20971520,
+    "core_metric_every": -1,
+    "sample_every": -1,
+    "save_every": -1,
+    "results_dir": "padded_muon_results",
+    "seed": 42
+  }
+}

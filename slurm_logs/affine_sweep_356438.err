@@ -1,0 +1,5 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [472475]: mask 0xffff000000000000ffff0000 set
+Resolved 134 packages in 33ms
+Audited 121 packages in 579ms
+[2026-02-19T21:54:38.580] error: *** JOB 356438 ON andreas-h100-1 CANCELLED AT 2026-02-19T21:54:38 DUE to SIGNAL Terminated ***
+W0219 21:54:38.583000 472492 torch/distributed/elastic/agent/server/api.py:725] Received Signals.SIGTERM death signal, shutting down workers

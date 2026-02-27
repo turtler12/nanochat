@@ -1,0 +1,129 @@
+========================================
+Job ID: 371079
+Node: andreas-h100-1
+GPUs: 4
+Config: MUON_PAD=0, MUON_PAD_ALPHA=0.03
+Start Time: Wed Feb 25 07:02:55 PM EST 2026
+========================================
+Wed Feb 25 19:02:55 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:61:00.0 Off |                    0 |
+| N/A   38C    P0             62W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:81:00.0 Off |                    0 |
+| N/A   41C    P0             64W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 NVL                On  |   00000000:A1:00.0 Off |                    0 |
+| N/A   40C    P0             64W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 NVL                On  |   00000000:C1:00.0 Off |                    0 |
+| N/A   41C    P0             63W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting: baseline
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+=== Padded Muon Experiment ===
+  MUON_PAD=False, alpha=0.03
+  MUON_SV_LOG=True, every=500, layers=(auto: first+last)
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+Using Flash Attention 3
+Vocab size: 32,768
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 32768,
+  "n_layer": 20,
+  "n_head": 10,
+  "n_kv_head": 10,
+  "n_embd": 1280,
+  "window_pattern": "SSSL"
+}
+FP8 training enabled - converted 121 layers
+Parameter counts:
+wte                     : 41,943,040
+value_embeds            : 419,430,400
+lm_head                 : 41,943,040
+transformer_matrices    : 393,219,200
+scalars                 : 40
+total                   : 896,535,720
+Estimated FLOPs per token: 3.004189e+09
+Auto-computed optimal batch size: 1,048,576 tokens
+Scaling LRs by 1.4142 for batch size 1,048,576
+Scaling weight decay from 0.200000 to 0.071563
+Scaling the LR for the AdamW parameters 1/sqrt(1280/768) = 0.774597
+Calculated iterations from target data:param ratio: 4,357
+Total tokens: 4,568,645,632 | Iterations: 4,357
+Gradient accumulation steps: 8
+[baseline] Step 00000 | val_bpb: 3.169049
+[SV step=0] first_muon_group [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[SV step=0] last_muon_group [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p50=0.0000 p95=0.0000
+[baseline] step 00000/04357 (0.00%) | loss: 10.398166 | dt: 26702.00ms | tok/s: 39,269
+[baseline] step 00050/04357 (1.15%) | loss: 5.592271 | dt: 2078.71ms | tok/s: 504,435 | eta: 148.0m
+[baseline] step 00100/04357 (2.30%) | loss: 4.695668 | dt: 2099.60ms | tok/s: 499,416 | eta: 147.6m
+[baseline] step 00150/04357 (3.44%) | loss: 4.013826 | dt: 2100.77ms | tok/s: 499,138 | eta: 146.5m
+[baseline] step 00200/04357 (4.59%) | loss: 3.668234 | dt: 2099.58ms | tok/s: 499,422 | eta: 144.9m
+[baseline] Step 00250 | val_bpb: 1.052493
+[baseline] step 00250/04357 (5.74%) | loss: 3.505062 | dt: 2120.16ms | tok/s: 494,573 | eta: 143.3m
+[baseline] step 00300/04357 (6.89%) | loss: 3.362889 | dt: 2079.86ms | tok/s: 504,157 | eta: 141.4m
+[baseline] step 00350/04357 (8.03%) | loss: 3.293394 | dt: 2079.76ms | tok/s: 504,181 | eta: 139.6m
+[baseline] step 00400/04357 (9.18%) | loss: 3.262704 | dt: 2080.04ms | tok/s: 504,112 | eta: 137.7m
+[baseline] step 00450/04357 (10.33%) | loss: 3.195829 | dt: 2075.25ms | tok/s: 505,275 | eta: 135.8m
+[baseline] Step 00500 | val_bpb: 0.958238
+[SV step=500] first_muon_group [10, 32] | sigma_max=8.3480e-04 | p05=0.0211 p50=0.0550 p95=0.6763
+[SV step=500] last_muon_group [5120, 1280] | sigma_max=2.4092e-03 | p05=0.0062 p50=0.0146 p95=0.0565
+[baseline] step 00500/04357 (11.48%) | loss: 3.155754 | dt: 2205.23ms | tok/s: 475,494 | eta: 134.0m
+[baseline] step 00550/04357 (12.62%) | loss: 3.127078 | dt: 2066.97ms | tok/s: 507,301 | eta: 132.1m
+[baseline] step 00600/04357 (13.77%) | loss: 3.090741 | dt: 2063.12ms | tok/s: 508,246 | eta: 130.3m
+[baseline] step 00650/04357 (14.92%) | loss: 3.103677 | dt: 2061.34ms | tok/s: 508,685 | eta: 128.5m
+[baseline] step 00700/04357 (16.07%) | loss: 3.087032 | dt: 2059.20ms | tok/s: 509,214 | eta: 126.6m
+[baseline] Step 00750 | val_bpb: 0.922467
+[baseline] step 00750/04357 (17.21%) | loss: 3.006808 | dt: 2088.67ms | tok/s: 502,030 | eta: 124.8m
+[baseline] step 00800/04357 (18.36%) | loss: 3.015052 | dt: 2057.37ms | tok/s: 509,668 | eta: 123.1m
+[baseline] step 00850/04357 (19.51%) | loss: 2.980633 | dt: 2059.26ms | tok/s: 509,199 | eta: 121.3m
+[baseline] step 00900/04357 (20.66%) | loss: 3.017186 | dt: 2061.24ms | tok/s: 508,710 | eta: 119.5m
+[baseline] step 00950/04357 (21.80%) | loss: 2.968741 | dt: 2058.15ms | tok/s: 509,474 | eta: 117.7m
+[baseline] Step 01000 | val_bpb: 0.901872
+[SV step=1000] first_muon_group [10, 32] | sigma_max=3.5011e-04 | p05=0.0572 p50=0.1720 p95=0.9082
+[SV step=1000] last_muon_group [5120, 1280] | sigma_max=1.8449e-03 | p05=0.0056 p50=0.0132 p95=0.0534
+[baseline] step 01000/04357 (22.95%) | loss: 2.977497 | dt: 2196.36ms | tok/s: 477,416 | eta: 116.0m
+[baseline] step 01050/04357 (24.10%) | loss: 2.964887 | dt: 2058.56ms | tok/s: 509,374 | eta: 114.2m
+[baseline] step 01100/04357 (25.25%) | loss: 2.954014 | dt: 2059.95ms | tok/s: 509,030 | eta: 112.4m
+[baseline] step 01150/04357 (26.39%) | loss: 2.949793 | dt: 2057.36ms | tok/s: 509,669 | eta: 110.7m
+[baseline] step 01200/04357 (27.54%) | loss: 2.930277 | dt: 2057.83ms | tok/s: 509,553 | eta: 108.9m
+[baseline] Step 01250 | val_bpb: 0.888383
+[baseline] step 01250/04357 (28.69%) | loss: 2.948635 | dt: 2081.13ms | tok/s: 503,849 | eta: 107.2m
+[baseline] step 01300/04357 (29.84%) | loss: 2.943617 | dt: 2054.46ms | tok/s: 510,390 | eta: 105.4m
+[baseline] step 01350/04357 (30.98%) | loss: 2.923877 | dt: 2058.48ms | tok/s: 509,393 | eta: 103.7m
+[baseline] step 01400/04357 (32.13%) | loss: 2.886718 | dt: 2057.65ms | tok/s: 509,598 | eta: 101.9m
+[baseline] step 01450/04357 (33.28%) | loss: 2.908449 | dt: 2061.51ms | tok/s: 508,645 | eta: 100.2m
+[baseline] Step 01500 | val_bpb: 0.877907
+[SV step=1500] first_muon_group [10, 32] | sigma_max=8.4125e-04 | p05=0.0276 p50=0.0750 p95=0.8022
+[SV step=1500] last_muon_group [5120, 1280] | sigma_max=1.3117e-03 | p05=0.0066 p50=0.0157 p95=0.0656
+[baseline] step 01500/04357 (34.43%) | loss: 2.877648 | dt: 2196.25ms | tok/s: 477,439 | eta: 98.4m

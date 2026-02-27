@@ -1,0 +1,122 @@
+{
+  "run_tag": "spectralpad_gamma0.1_pi1_pb4",
+  "pad_ratio": 0.1,
+  "power_iters": 1,
+  "power_batch": 4,
+  "sv_log": true,
+  "sv_log_every": 250,
+  "num_iterations": 4357,
+  "total_batch_size": 1048576,
+  "min_val_bpb": 1.0195101078310753,
+  "val_loss_log": [
+    {
+      "step": 0,
+      "val_bpb": 3.1690492232385834
+    },
+    {
+      "step": 250,
+      "val_bpb": 1.6008296580428092
+    },
+    {
+      "step": 500,
+      "val_bpb": 1.455470732479635
+    },
+    {
+      "step": 750,
+      "val_bpb": 1.2425590368486754
+    },
+    {
+      "step": 1000,
+      "val_bpb": 1.1619994495045005
+    },
+    {
+      "step": 1250,
+      "val_bpb": 1.1454222953938387
+    },
+    {
+      "step": 1500,
+      "val_bpb": 1.1249439224324154
+    },
+    {
+      "step": 1750,
+      "val_bpb": 1.1138746794826215
+    },
+    {
+      "step": 2000,
+      "val_bpb": 1.0925833586192717
+    },
+    {
+      "step": 2250,
+      "val_bpb": 1.0837243796072709
+    },
+    {
+      "step": 2500,
+      "val_bpb": 1.0648270942976252
+    },
+    {
+      "step": 2750,
+      "val_bpb": 1.0557412812897968
+    },
+    {
+      "step": 3000,
+      "val_bpb": 1.0662973836097276
+    },
+    {
+      "step": 3250,
+      "val_bpb": 1.0419606214078374
+    },
+    {
+      "step": 3500,
+      "val_bpb": 1.0313071050014482
+    },
+    {
+      "step": 3750,
+      "val_bpb": 1.0262686901664744
+    },
+    {
+      "step": 4000,
+      "val_bpb": 1.0219638487926088
+    },
+    {
+      "step": 4250,
+      "val_bpb": 1.019823997665219
+    },
+    {
+      "step": 4357,
+      "val_bpb": 1.0195101078310753
+    }
+  ],
+  "user_config": {
+    "run": "dummy",
+    "device_type": "",
+    "fp8": true,
+    "fp8_recipe": "tensorwise",
+    "depth": 20,
+    "aspect_ratio": 64,
+    "head_dim": 128,
+    "max_seq_len": 2048,
+    "window_pattern": "SSSL",
+    "num_iterations": -1,
+    "target_flops": -1.0,
+    "target_param_data_ratio": 10.5,
+    "device_batch_size": 16,
+    "total_batch_size": -1,
+    "embedding_lr": 0.3,
+    "unembedding_lr": 0.004,
+    "weight_decay": 0.2,
+    "matrix_lr": 0.02,
+    "scalar_lr": 0.5,
+    "adam_beta1": 0.8,
+    "adam_beta2": 0.95,
+    "warmup_ratio": 0.0,
+    "warmdown_ratio": 0.5,
+    "final_lr_frac": 0.0,
+    "eval_every": 250,
+    "eval_tokens": 20971520,
+    "core_metric_every": -1,
+    "sample_every": -1,
+    "save_every": -1,
+    "results_dir": "spectralpadded_results",
+    "seed": 42
+  }
+}
