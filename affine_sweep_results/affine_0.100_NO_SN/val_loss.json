@@ -1,0 +1,54 @@
+{
+  "run_tag": "affine_0.100_NO_SN",
+  "map_kind": "affine",
+  "affine_intercept": 0.1,
+  "sn_mode": "no",
+  "depth": 20,
+  "num_iterations": 4357,
+  "total_batch_size": 1048576,
+  "min_val_bpb": 0.868841,
+  "val_loss_log": [
+    {
+      "step": 0,
+      "val_bpb": 3.169049
+    },
+    {
+      "step": 250,
+      "val_bpb": 1.405825
+    },
+    {
+      "step": 500,
+      "val_bpb": 1.051902
+    },
+    {
+      "step": 750,
+      "val_bpb": 0.97123
+    },
+    {
+      "step": 1000,
+      "val_bpb": 0.937924
+    },
+    {
+      "step": 1250,
+      "val_bpb": 0.921593
+    },
+    {
+      "step": 1500,
+      "val_bpb": 0.900615
+    },
+    {
+      "step": 1750,
+      "val_bpb": 0.901999
+    },
+    {
+      "step": 2000,
+      "val_bpb": 0.876679
+    },
+    {
+      "step": 2250,
+      "val_bpb": 0.868841
+    }
+  ],
+  "note": "canceled early at step ~2300 (52.8% done)",
+  "user_config": {}
+}

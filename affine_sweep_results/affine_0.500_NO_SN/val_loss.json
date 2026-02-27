@@ -1,0 +1,121 @@
+{
+  "run_tag": "affine_0.500_NO_SN",
+  "affine_intercept": 0.5,
+  "sn_mode": "no",
+  "depth": 20,
+  "num_iterations": 4357,
+  "total_batch_size": 1048576,
+  "min_val_bpb": 0.7941979597868667,
+  "val_loss_log": [
+    {
+      "step": 0,
+      "val_bpb": 3.1690492232385834
+    },
+    {
+      "step": 250,
+      "val_bpb": 1.0869206556603277
+    },
+    {
+      "step": 500,
+      "val_bpb": 0.9722886585165407
+    },
+    {
+      "step": 750,
+      "val_bpb": 0.9304257986508954
+    },
+    {
+      "step": 1000,
+      "val_bpb": 0.9088370564040993
+    },
+    {
+      "step": 1250,
+      "val_bpb": 0.8936223610785342
+    },
+    {
+      "step": 1500,
+      "val_bpb": 0.882821268732325
+    },
+    {
+      "step": 1750,
+      "val_bpb": 0.8748597911871393
+    },
+    {
+      "step": 2000,
+      "val_bpb": 0.8665398484253561
+    },
+    {
+      "step": 2250,
+      "val_bpb": 0.8595746830511711
+    },
+    {
+      "step": 2500,
+      "val_bpb": 0.8490124123362793
+    },
+    {
+      "step": 2750,
+      "val_bpb": 0.8398186524166347
+    },
+    {
+      "step": 3000,
+      "val_bpb": 0.8307750289026428
+    },
+    {
+      "step": 3250,
+      "val_bpb": 0.8223044260035592
+    },
+    {
+      "step": 3500,
+      "val_bpb": 0.8142046251109949
+    },
+    {
+      "step": 3750,
+      "val_bpb": 0.8066371101496346
+    },
+    {
+      "step": 4000,
+      "val_bpb": 0.8000366365794133
+    },
+    {
+      "step": 4250,
+      "val_bpb": 0.7950626989295028
+    },
+    {
+      "step": 4357,
+      "val_bpb": 0.7941979597868667
+    }
+  ],
+  "user_config": {
+    "affine_intercept": 0.5,
+    "sn_mode": "no",
+    "results_dir": "/data/scratch/medhaven/nanochat/affine_sweep_results",
+    "run": "dummy",
+    "device_type": "",
+    "fp8": true,
+    "fp8_recipe": "tensorwise",
+    "depth": 20,
+    "aspect_ratio": 64,
+    "head_dim": 128,
+    "max_seq_len": 2048,
+    "window_pattern": "SSSL",
+    "num_iterations": -1,
+    "target_flops": -1.0,
+    "target_param_data_ratio": 10.5,
+    "device_batch_size": 16,
+    "total_batch_size": -1,
+    "embedding_lr": 0.3,
+    "unembedding_lr": 0.004,
+    "weight_decay": 0.2,
+    "matrix_lr": 0.02,
+    "scalar_lr": 0.5,
+    "adam_beta1": 0.8,
+    "adam_beta2": 0.95,
+    "warmup_ratio": 0.0,
+    "warmdown_ratio": 0.5,
+    "final_lr_frac": 0.0,
+    "eval_every": 250,
+    "eval_tokens": 20971520,
+    "core_metric_every": -1,
+    "sample_every": -1,
+    "save_every": -1
+  }
+}
