@@ -21,7 +21,8 @@
       "Bash(.venv/bin/python -c \"import ast; ast.parse\\(open\\(''scripts/muon_spectralpadded.py''\\).read\\(\\)\\); print\\(''OK''\\)\")",
       "Bash(.venv/bin/python scripts/plot_spectralpadded.py)",
       "Bash(.venv/bin/python -c \":*)",
-      "Bash(.venv/bin/python scripts/testing_plot.py)"
+      "Bash(.venv/bin/python scripts/testing_plot.py)",
+      "Bash(.venv/bin/python scripts/testing_plot_v2.py)"
     ]
   }
 }

@@ -1,0 +1,249 @@
+========================================
+Job ID: 381169
+Node: andreas-h100-1
+GPUs: 4
+Config: PAD_RATIO=0.1, POWER_ITERS=1, POWER_BATCH=4, SV_LOG=1
+Start Time: Fri Feb 27 08:53:01 PM EST 2026
+========================================
+Fri Feb 27 20:53:01 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:41:00.0 Off |                    0 |
+| N/A   38C    P0             64W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:61:00.0 Off |                    0 |
+| N/A   38C    P0             62W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 NVL                On  |   00000000:81:00.0 Off |                    0 |
+| N/A   41C    P0             63W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 NVL                On  |   00000000:A1:00.0 Off |                    0 |
+| N/A   39C    P0             64W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting: spectralpad_gamma0.1_pi1_pb4
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+=== Spectral-Padded Muon Experiment ===
+  PAD_RATIO=0.1, POWER_ITERS=1, POWER_BATCH=4
+  SV_LOG=True, every=250
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+Using Flash Attention 3
+Vocab size: 32,768
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 32768,
+  "n_layer": 20,
+  "n_head": 10,
+  "n_kv_head": 10,
+  "n_embd": 1280,
+  "window_pattern": "SSSL"
+}
+FP8 training enabled - converted 121 layers
+Parameter counts:
+wte                     : 41,943,040
+value_embeds            : 419,430,400
+lm_head                 : 41,943,040
+transformer_matrices    : 393,219,200
+scalars                 : 40
+total                   : 896,535,720
+Estimated FLOPs per token: 3.004189e+09
+Auto-computed optimal batch size: 1,048,576 tokens
+Scaling LRs by 1.4142 for batch size 1,048,576
+Scaling weight decay from 0.200000 to 0.071563
+Scaling the LR for the AdamW parameters 1/sqrt(1280/768) = 0.774597
+SV logging groups: {139806899522944: 'largest_[5120, 1280]', 139807978436736: 'smallest_[10, 32]'}
+Calculated iterations from target data:param ratio: 4,357
+Total tokens: 4,568,645,632 | Iterations: 4,357
+Gradient accumulation steps: 8
+[spectralpad_gamma0.1_pi1_pb4] Step 00000 | val_bpb: 3.169049
+[SV step=0] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[spectralpad_gamma0.1_pi1_pb4] step 00000/04357 (0.00%) | loss: 10.398166 | dt: 27414.39ms | tok/s: 38,249
+[spectralpad_gamma0.1_pi1_pb4] step 00050/04357 (1.15%) | loss: 5.841186 | dt: 2039.31ms | tok/s: 514,181 | eta: 144.7m
+[spectralpad_gamma0.1_pi1_pb4] step 00100/04357 (2.30%) | loss: 5.739995 | dt: 2069.08ms | tok/s: 506,784 | eta: 144.6m
+[spectralpad_gamma0.1_pi1_pb4] step 00150/04357 (3.44%) | loss: 5.677685 | dt: 2069.08ms | tok/s: 506,782 | eta: 143.6m
+[spectralpad_gamma0.1_pi1_pb4] step 00200/04357 (4.59%) | loss: 5.638780 | dt: 2064.44ms | tok/s: 507,923 | eta: 142.2m
+[spectralpad_gamma0.1_pi1_pb4] Step 00250 | val_bpb: 1.657449
+[SV step=250] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=1.6519e-05 | p05=0.0397 p25=0.0662 p50=0.1526 p75=0.3275 p95=0.8333
+[SV step=250] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1181e+00 | p05=0.7650 p25=0.8176 p50=0.9129 p75=0.9663 p95=0.9964
+[SV step=250] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=1.4868e-05 | p05=0.0397 p25=0.0663 p50=0.1527 p75=0.3275 p95=0.8333
+[SV step=250] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=2.1076e-06 | p05=0.0005 p25=0.0008 p50=0.0014 p75=0.0028 p95=0.0114
+[SV step=250] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1418e+00 | p05=0.2448 p25=0.3871 p50=0.6222 p75=0.8594 p95=0.9913
+[SV step=250] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.8982e-06 | p05=0.0007 p25=0.0011 p50=0.0018 p75=0.0034 p95=0.0120
+[spectralpad_gamma0.1_pi1_pb4] step 00250/04357 (5.74%) | loss: 5.509714 | dt: 2394.86ms | tok/s: 437,845 | eta: 140.7m
+[spectralpad_gamma0.1_pi1_pb4] step 00300/04357 (6.89%) | loss: 5.121938 | dt: 2058.82ms | tok/s: 509,308 | eta: 139.0m
+[spectralpad_gamma0.1_pi1_pb4] step 00350/04357 (8.03%) | loss: 4.697786 | dt: 2059.60ms | tok/s: 509,115 | eta: 137.3m
+[spectralpad_gamma0.1_pi1_pb4] step 00400/04357 (9.18%) | loss: 4.442905 | dt: 2056.23ms | tok/s: 509,950 | eta: 135.6m
+[spectralpad_gamma0.1_pi1_pb4] step 00450/04357 (10.33%) | loss: 4.203960 | dt: 2060.54ms | tok/s: 508,883 | eta: 134.0m
+[spectralpad_gamma0.1_pi1_pb4] Step 00500 | val_bpb: 1.237498
+[SV step=500] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=1.2552e-05 | p05=0.0047 p25=0.0077 p50=0.0180 p75=0.0392 p95=0.6858
+[SV step=500] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1222e+00 | p05=0.7950 p25=0.8103 p50=0.8281 p75=0.9030 p95=0.9859
+[SV step=500] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=1.1298e-05 | p05=0.0047 p25=0.0078 p50=0.0181 p75=0.0393 p95=0.6858
+[SV step=500] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=2.0578e-06 | p05=0.0009 p25=0.0013 p50=0.0021 p75=0.0039 p95=0.0151
+[SV step=500] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1424e+00 | p05=0.4212 p25=0.6164 p50=0.7977 p75=0.9326 p95=0.9960
+[SV step=500] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.8534e-06 | p05=0.0011 p25=0.0017 p50=0.0026 p75=0.0045 p95=0.0155
+[spectralpad_gamma0.1_pi1_pb4] step 00500/04357 (11.48%) | loss: 4.126971 | dt: 2396.34ms | tok/s: 437,573 | eta: 132.3m
+[spectralpad_gamma0.1_pi1_pb4] step 00550/04357 (12.62%) | loss: 3.951520 | dt: 2055.75ms | tok/s: 510,068 | eta: 130.6m
+[spectralpad_gamma0.1_pi1_pb4] step 00600/04357 (13.77%) | loss: 3.892737 | dt: 2060.06ms | tok/s: 509,001 | eta: 128.9m
+[spectralpad_gamma0.1_pi1_pb4] step 00650/04357 (14.92%) | loss: 3.947414 | dt: 2069.04ms | tok/s: 506,793 | eta: 127.3m
+[spectralpad_gamma0.1_pi1_pb4] step 00700/04357 (16.07%) | loss: 3.822368 | dt: 2071.33ms | tok/s: 506,233 | eta: 125.6m
+[spectralpad_gamma0.1_pi1_pb4] Step 00750 | val_bpb: 1.131570
+[SV step=750] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=2.1923e-06 | p05=0.0216 p25=0.0308 p50=0.1081 p75=0.2968 p95=0.7397
+[SV step=750] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1370e+00 | p05=0.7552 p25=0.7681 p50=0.7866 p75=0.8216 p95=0.9457
+[SV step=750] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=1.9740e-06 | p05=0.0221 p25=0.0313 p50=0.1086 p75=0.2971 p95=0.7398
+[SV step=750] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=4.8613e-07 | p05=0.0038 p25=0.0058 p50=0.0091 p75=0.0159 p95=0.0526
+[SV step=750] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1435e+00 | p05=0.7256 p25=0.7947 p50=0.8929 p75=0.9686 p95=0.9969
+[SV step=750] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=4.3855e-07 | p05=0.0057 p25=0.0082 p50=0.0116 p75=0.0179 p95=0.0548
+[spectralpad_gamma0.1_pi1_pb4] step 00750/04357 (17.21%) | loss: 3.721466 | dt: 2402.38ms | tok/s: 436,474 | eta: 123.9m
+[spectralpad_gamma0.1_pi1_pb4] step 00800/04357 (18.36%) | loss: 3.770407 | dt: 2073.35ms | tok/s: 505,739 | eta: 122.2m
+[spectralpad_gamma0.1_pi1_pb4] step 00850/04357 (19.51%) | loss: 3.695997 | dt: 2075.72ms | tok/s: 505,161 | eta: 120.6m
+[spectralpad_gamma0.1_pi1_pb4] step 00900/04357 (20.66%) | loss: 3.858159 | dt: 2065.37ms | tok/s: 507,693 | eta: 118.9m
+[spectralpad_gamma0.1_pi1_pb4] step 00950/04357 (21.80%) | loss: 3.624267 | dt: 2072.76ms | tok/s: 505,884 | eta: 117.2m
+[spectralpad_gamma0.1_pi1_pb4] Step 01000 | val_bpb: 1.089966
+[SV step=1000] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=7.7599e-06 | p05=0.0185 p25=0.0331 p50=0.0855 p75=0.2502 p95=0.7175
+[SV step=1000] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1360e+00 | p05=0.7607 p25=0.7987 p50=0.8717 p75=0.9816 p95=0.9988
+[SV step=1000] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=6.9848e-06 | p05=0.0187 p25=0.0332 p50=0.0856 p75=0.2503 p95=0.7176
+[SV step=1000] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=9.5035e-07 | p05=0.0025 p25=0.0039 p50=0.0060 p75=0.0106 p95=0.0360
+[SV step=1000] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1433e+00 | p05=0.7007 p25=0.7908 p50=0.8899 p75=0.9673 p95=0.9970
+[SV step=1000] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=8.5616e-07 | p05=0.0035 p25=0.0051 p50=0.0074 p75=0.0116 p95=0.0371
+[spectralpad_gamma0.1_pi1_pb4] step 01000/04357 (22.95%) | loss: 3.628032 | dt: 2415.95ms | tok/s: 434,023 | eta: 115.5m
+[spectralpad_gamma0.1_pi1_pb4] step 01050/04357 (24.10%) | loss: 3.543378 | dt: 2071.99ms | tok/s: 506,071 | eta: 113.8m
+[spectralpad_gamma0.1_pi1_pb4] step 01100/04357 (25.25%) | loss: 4.474803 | dt: 2074.34ms | tok/s: 505,497 | eta: 112.1m
+[spectralpad_gamma0.1_pi1_pb4] step 01150/04357 (26.39%) | loss: 4.198985 | dt: 2082.30ms | tok/s: 503,567 | eta: 110.4m
+[spectralpad_gamma0.1_pi1_pb4] step 01200/04357 (27.54%) | loss: 3.983846 | dt: 2081.53ms | tok/s: 503,752 | eta: 108.7m
+[spectralpad_gamma0.1_pi1_pb4] Step 01250 | val_bpb: 1.166793
+[SV step=1250] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=4.2683e-07 | p05=0.0099 p25=0.0233 p50=0.0839 p75=0.3359 p95=0.8601
+[SV step=1250] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1456e+00 | p05=0.7626 p25=0.7836 p50=0.8459 p75=0.9131 p95=0.9990
+[SV step=1250] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=3.8515e-07 | p05=0.0125 p25=0.0260 p50=0.0862 p75=0.3374 p95=0.8604
+[SV step=1250] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=3.4893e-08 | p05=0.0003 p25=0.0005 p50=0.0009 p75=0.0017 p95=0.0078
+[SV step=1250] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1373e+00 | p05=0.0093 p25=0.0149 p50=0.0253 p75=0.0507 p95=0.2261
+[SV step=1250] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=3.2314e-08 | p05=0.0006 p25=0.0010 p50=0.0017 p75=0.0035 p95=0.0155
+[spectralpad_gamma0.1_pi1_pb4] step 01250/04357 (28.69%) | loss: 3.873976 | dt: 2419.62ms | tok/s: 433,364 | eta: 107.1m
+[spectralpad_gamma0.1_pi1_pb4] step 01300/04357 (29.84%) | loss: 3.791272 | dt: 2083.98ms | tok/s: 503,161 | eta: 105.4m
+[spectralpad_gamma0.1_pi1_pb4] step 01350/04357 (30.98%) | loss: 3.735964 | dt: 2083.74ms | tok/s: 503,218 | eta: 103.7m
+[spectralpad_gamma0.1_pi1_pb4] step 01400/04357 (32.13%) | loss: 3.665023 | dt: 2081.05ms | tok/s: 503,869 | eta: 102.0m
+[spectralpad_gamma0.1_pi1_pb4] step 01450/04357 (33.28%) | loss: 3.665917 | dt: 2083.30ms | tok/s: 503,324 | eta: 100.3m
+[spectralpad_gamma0.1_pi1_pb4] Step 01500 | val_bpb: 1.099042
+[SV step=1500] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=4.4314e-06 | p05=0.0111 p25=0.0280 p50=0.0915 p75=0.4147 p95=0.7982
+[SV step=1500] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.0939e+00 | p05=0.7900 p25=0.8431 p50=0.9175 p75=0.9613 p95=0.9867
+[SV step=1500] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=3.9891e-06 | p05=0.0114 p25=0.0283 p50=0.0918 p75=0.4149 p95=0.7983
+[SV step=1500] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.7059e-07 | p05=0.0038 p25=0.0059 p50=0.0095 p75=0.0169 p95=0.0535
+[SV step=1500] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1423e+00 | p05=0.4177 p25=0.6121 p50=0.7964 p75=0.9323 p95=0.9959
+[SV step=1500] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.5462e-07 | p05=0.0069 p25=0.0104 p50=0.0158 p75=0.0241 p95=0.0598
+[spectralpad_gamma0.1_pi1_pb4] step 01500/04357 (34.43%) | loss: 3.613595 | dt: 2414.25ms | tok/s: 434,328 | eta: 98.6m
+[spectralpad_gamma0.1_pi1_pb4] step 01550/04357 (35.57%) | loss: 3.606422 | dt: 2080.03ms | tok/s: 504,115 | eta: 96.8m
+[spectralpad_gamma0.1_pi1_pb4] step 01600/04357 (36.72%) | loss: 3.568063 | dt: 2083.92ms | tok/s: 503,174 | eta: 95.1m
+[spectralpad_gamma0.1_pi1_pb4] step 01650/04357 (37.87%) | loss: 3.585832 | dt: 2083.81ms | tok/s: 503,201 | eta: 93.4m
+[spectralpad_gamma0.1_pi1_pb4] step 01700/04357 (39.02%) | loss: 3.539327 | dt: 2083.24ms | tok/s: 503,339 | eta: 91.7m
+[spectralpad_gamma0.1_pi1_pb4] Step 01750 | val_bpb: 1.070156
+[SV step=1750] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=1.0496e-05 | p05=0.0126 p25=0.0260 p50=0.0501 p75=0.3588 p95=0.7377
+[SV step=1750] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1437e+00 | p05=0.7634 p25=0.7900 p50=0.8737 p75=0.9196 p95=0.9853
+[SV step=1750] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=9.4468e-06 | p05=0.0127 p25=0.0261 p50=0.0502 p75=0.3589 p95=0.7377
+[SV step=1750] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=5.2609e-07 | p05=0.0026 p25=0.0040 p50=0.0064 p75=0.0114 p95=0.0346
+[SV step=1750] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1428e+00 | p05=0.5973 p25=0.7654 p50=0.8678 p75=0.9602 p95=0.9968
+[SV step=1750] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=4.7435e-07 | p05=0.0040 p25=0.0060 p50=0.0088 p75=0.0133 p95=0.0367
+[spectralpad_gamma0.1_pi1_pb4] step 01750/04357 (40.17%) | loss: 3.530917 | dt: 2416.36ms | tok/s: 433,948 | eta: 90.0m
+[spectralpad_gamma0.1_pi1_pb4] step 01800/04357 (41.31%) | loss: 3.526235 | dt: 2073.28ms | tok/s: 505,757 | eta: 88.3m
+[spectralpad_gamma0.1_pi1_pb4] step 01850/04357 (42.46%) | loss: 3.490460 | dt: 2070.69ms | tok/s: 506,389 | eta: 86.6m
+[spectralpad_gamma0.1_pi1_pb4] step 01900/04357 (43.61%) | loss: 3.493266 | dt: 2070.03ms | tok/s: 506,551 | eta: 84.8m
+[spectralpad_gamma0.1_pi1_pb4] step 01950/04357 (44.76%) | loss: 3.462197 | dt: 2072.37ms | tok/s: 505,979 | eta: 83.1m
+[spectralpad_gamma0.1_pi1_pb4] Step 02000 | val_bpb: 1.048705
+[SV step=2000] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=4.5801e-05 | p05=0.0086 p25=0.0242 p50=0.1072 p75=0.2149 p95=0.7295
+[SV step=2000] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1236e+00 | p05=0.7611 p25=0.7846 p50=0.8270 p75=0.8953 p95=0.9906
+[SV step=2000] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=4.1224e-05 | p05=0.0086 p25=0.0243 p50=0.1072 p75=0.2150 p95=0.7295
+[SV step=2000] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.7705e-07 | p05=0.0026 p25=0.0040 p50=0.0062 p75=0.0105 p95=0.0272
+[SV step=2000] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1418e+00 | p05=0.3029 p25=0.4516 p50=0.6629 p75=0.8678 p95=0.9918
+[SV step=2000] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.6040e-07 | p05=0.0047 p25=0.0071 p50=0.0108 p75=0.0170 p95=0.0324
+[spectralpad_gamma0.1_pi1_pb4] step 02000/04357 (45.90%) | loss: 3.513267 | dt: 2400.14ms | tok/s: 436,880 | eta: 81.4m
+[spectralpad_gamma0.1_pi1_pb4] step 02050/04357 (47.05%) | loss: 3.512211 | dt: 2079.14ms | tok/s: 504,331 | eta: 79.7m
+[spectralpad_gamma0.1_pi1_pb4] step 02100/04357 (48.20%) | loss: 3.429922 | dt: 2072.14ms | tok/s: 506,036 | eta: 78.0m
+[spectralpad_gamma0.1_pi1_pb4] step 02150/04357 (49.35%) | loss: 3.640792 | dt: 2075.54ms | tok/s: 505,207 | eta: 76.2m
+[spectralpad_gamma0.1_pi1_pb4] step 02200/04357 (50.49%) | loss: 3.463582 | dt: 2070.93ms | tok/s: 506,331 | eta: 74.5m
+[spectralpad_gamma0.1_pi1_pb4] Step 02250 | val_bpb: 1.027428
+[SV step=2250] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=7.7039e-06 | p05=0.0048 p25=0.0255 p50=0.0576 p75=0.2462 p95=0.7886
+[SV step=2250] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1347e+00 | p05=0.8050 p25=0.8472 p50=0.8801 p75=0.9639 p95=0.9987
+[SV step=2250] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=6.9345e-06 | p05=0.0049 p25=0.0257 p50=0.0577 p75=0.2463 p95=0.7886
+[SV step=2250] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.2381e-08 | p05=0.0034 p25=0.0052 p50=0.0081 p75=0.0138 p95=0.0343
+[SV step=2250] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1412e+00 | p05=0.0356 p25=0.0547 p50=0.0853 p75=0.1442 p95=0.3523
+[SV step=2250] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.2244e-08 | p05=0.0064 p25=0.0098 p50=0.0153 p75=0.0260 p95=0.0641
+[spectralpad_gamma0.1_pi1_pb4] step 02250/04357 (51.64%) | loss: 3.399583 | dt: 2414.03ms | tok/s: 434,367 | eta: 72.8m
+[spectralpad_gamma0.1_pi1_pb4] step 02300/04357 (52.79%) | loss: 3.402519 | dt: 2079.46ms | tok/s: 504,254 | eta: 71.1m
+[spectralpad_gamma0.1_pi1_pb4] step 02350/04357 (53.94%) | loss: 3.403537 | dt: 2080.56ms | tok/s: 503,988 | eta: 69.3m
+[spectralpad_gamma0.1_pi1_pb4] step 02400/04357 (55.08%) | loss: 3.318002 | dt: 2081.77ms | tok/s: 503,694 | eta: 67.6m
+[spectralpad_gamma0.1_pi1_pb4] step 02450/04357 (56.23%) | loss: 3.390777 | dt: 2075.47ms | tok/s: 505,222 | eta: 65.9m
+[spectralpad_gamma0.1_pi1_pb4] Step 02500 | val_bpb: 1.057381
+[SV step=2500] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=2.0402e-05 | p05=0.0057 p25=0.0194 p50=0.0594 p75=0.2093 p95=0.6928
+[SV step=2500] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1330e+00 | p05=0.7720 p25=0.7886 p50=0.8555 p75=0.9342 p95=0.9828
+[SV step=2500] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=1.8363e-05 | p05=0.0058 p25=0.0194 p50=0.0595 p75=0.2093 p95=0.6928
+[SV step=2500] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=2.1427e-08 | p05=0.0013 p25=0.0020 p50=0.0032 p75=0.0056 p95=0.0162
+[SV step=2500] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1400e+00 | p05=0.0234 p25=0.0364 p50=0.0580 p75=0.1009 p95=0.2884
+[SV step=2500] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=2.0258e-08 | p05=0.0025 p25=0.0040 p50=0.0063 p75=0.0110 p95=0.0316
+[spectralpad_gamma0.1_pi1_pb4] step 02500/04357 (57.38%) | loss: 3.535573 | dt: 2403.78ms | tok/s: 436,220 | eta: 64.2m
+[spectralpad_gamma0.1_pi1_pb4] step 02550/04357 (58.53%) | loss: 3.400736 | dt: 2063.99ms | tok/s: 508,032 | eta: 62.4m
+[spectralpad_gamma0.1_pi1_pb4] step 02600/04357 (59.67%) | loss: 3.337417 | dt: 2079.88ms | tok/s: 504,151 | eta: 60.7m
+[spectralpad_gamma0.1_pi1_pb4] step 02650/04357 (60.82%) | loss: 3.317122 | dt: 2072.12ms | tok/s: 506,040 | eta: 59.0m
+[spectralpad_gamma0.1_pi1_pb4] step 02700/04357 (61.97%) | loss: 3.327463 | dt: 2076.40ms | tok/s: 504,997 | eta: 57.3m
+[spectralpad_gamma0.1_pi1_pb4] Step 02750 | val_bpb: 1.018487
+[SV step=2750] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=3.0777e-05 | p05=0.0259 p25=0.0454 p50=0.1663 p75=0.3062 p95=0.8554
+[SV step=2750] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.0941e+00 | p05=0.8386 p25=0.8621 p50=0.9058 p75=0.9714 p95=0.9915
+[SV step=2750] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=2.7700e-05 | p05=0.0259 p25=0.0454 p50=0.1663 p75=0.3062 p95=0.8554
+[SV step=2750] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=6.0088e-08 | p05=0.0011 p25=0.0017 p50=0.0027 p75=0.0049 p95=0.0150
+[SV step=2750] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1410e+00 | p05=0.0528 p25=0.0822 p50=0.1315 p75=0.2327 p95=0.6528
+[SV step=2750] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=5.5202e-08 | p05=0.0022 p25=0.0034 p50=0.0054 p75=0.0096 p95=0.0282
+[spectralpad_gamma0.1_pi1_pb4] step 02750/04357 (63.12%) | loss: 3.378483 | dt: 2412.62ms | tok/s: 434,621 | eta: 55.5m
+[spectralpad_gamma0.1_pi1_pb4] step 02800/04357 (64.26%) | loss: 3.320198 | dt: 2080.44ms | tok/s: 504,017 | eta: 53.8m
+[spectralpad_gamma0.1_pi1_pb4] step 02850/04357 (65.41%) | loss: 3.319702 | dt: 2078.59ms | tok/s: 504,464 | eta: 52.1m
+[spectralpad_gamma0.1_pi1_pb4] step 02900/04357 (66.56%) | loss: 3.307167 | dt: 2073.20ms | tok/s: 505,775 | eta: 50.4m
+[spectralpad_gamma0.1_pi1_pb4] step 02950/04357 (67.71%) | loss: 3.244179 | dt: 2076.12ms | tok/s: 505,064 | eta: 48.6m
+[spectralpad_gamma0.1_pi1_pb4] Step 03000 | val_bpb: 0.987844
+[SV step=3000] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=1.0419e-05 | p05=0.0215 p25=0.0497 p50=0.1282 p75=0.2422 p95=0.7966
+[SV step=3000] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1130e+00 | p05=0.8052 p25=0.8617 p50=0.8801 p75=0.9337 p95=0.9964
+[SV step=3000] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=9.3781e-06 | p05=0.0216 p25=0.0498 p50=0.1283 p75=0.2423 p95=0.7966
+[SV step=3000] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=3.1042e-08 | p05=0.0029 p25=0.0046 p50=0.0072 p75=0.0122 p95=0.0313
+[SV step=3000] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1412e+00 | p05=0.0758 p25=0.1178 p50=0.1843 p75=0.3100 p95=0.7148
+[SV step=3000] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=2.9017e-08 | p05=0.0058 p25=0.0090 p50=0.0142 p75=0.0240 p95=0.0583
+[spectralpad_gamma0.1_pi1_pb4] step 03000/04357 (68.85%) | loss: 3.267214 | dt: 2413.35ms | tok/s: 434,489 | eta: 46.9m
+[spectralpad_gamma0.1_pi1_pb4] step 03050/04357 (70.00%) | loss: 3.238223 | dt: 2078.16ms | tok/s: 504,569 | eta: 45.2m
+[spectralpad_gamma0.1_pi1_pb4] step 03100/04357 (71.15%) | loss: 3.282466 | dt: 2072.90ms | tok/s: 505,850 | eta: 43.4m
+[spectralpad_gamma0.1_pi1_pb4] step 03150/04357 (72.30%) | loss: 3.229500 | dt: 2074.77ms | tok/s: 505,394 | eta: 41.7m
+[spectralpad_gamma0.1_pi1_pb4] step 03200/04357 (73.45%) | loss: 3.239903 | dt: 2073.97ms | tok/s: 505,589 | eta: 40.0m
+[spectralpad_gamma0.1_pi1_pb4] Step 03250 | val_bpb: 0.978639
+[SV step=3250] spectralpad_gamma0.1_pi1_pb4/pre smallest_[10, 32] [10, 32] | sigma_max=2.2520e-05 | p05=0.0171 p25=0.0423 p50=0.0890 p75=0.1859 p95=0.6951
+[SV step=3250] spectralpad_gamma0.1_pi1_pb4/polar smallest_[10, 32] [10, 32] | sigma_max=1.1218e+00 | p05=0.7683 p25=0.7870 p50=0.8701 p75=0.9406 p95=0.9895
+[SV step=3250] spectralpad_gamma0.1_pi1_pb4/blended smallest_[10, 32] [10, 32] | sigma_max=2.0269e-05 | p05=0.0172 p25=0.0424 p50=0.0891 p75=0.1859 p95=0.6951
+[SV step=3250] spectralpad_gamma0.1_pi1_pb4/pre largest_[5120, 1280] [5120, 1280] | sigma_max=4.6578e-08 | p05=0.0024 p25=0.0038 p50=0.0059 p75=0.0101 p95=0.0254
+[SV step=3250] spectralpad_gamma0.1_pi1_pb4/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.1413e+00 | p05=0.0926 p25=0.1434 p50=0.2239 p75=0.3742 p95=0.7862
+[SV step=3250] spectralpad_gamma0.1_pi1_pb4/blended largest_[5120, 1280] [5120, 1280] | sigma_max=4.3030e-08 | p05=0.0048 p25=0.0075 p50=0.0117 p75=0.0197 p95=0.0463
+[spectralpad_gamma0.1_pi1_pb4] step 03250/04357 (74.59%) | loss: 3.237311 | dt: 2406.96ms | tok/s: 435,643 | eta: 38.3m
+[spectralpad_gamma0.1_pi1_pb4] step 03300/04357 (75.74%) | loss: 3.201966 | dt: 2073.71ms | tok/s: 505,653 | eta: 36.5m
