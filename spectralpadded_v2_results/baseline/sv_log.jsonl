@@ -1,0 +1,6 @@
+{"step": 0, "variant": "baseline", "stage": "pre", "layer_id": "smallest_[10, 32]", "shape": [10, 32], "sigma_max": 9.999999960041972e-13, "p05": 0.0, "p25": 0.0, "p50": 0.0, "p75": 0.0, "p95": 0.0}
+{"step": 0, "variant": "baseline", "stage": "polar", "layer_id": "smallest_[10, 32]", "shape": [10, 32], "sigma_max": 9.999999960041972e-13, "p05": 0.0, "p25": 0.0, "p50": 0.0, "p75": 0.0, "p95": 0.0}
+{"step": 0, "variant": "baseline", "stage": "blended", "layer_id": "smallest_[10, 32]", "shape": [10, 32], "sigma_max": 9.999999960041972e-13, "p05": 0.0, "p25": 0.0, "p50": 0.0, "p75": 0.0, "p95": 0.0, "sigma_hat": 9.99999993922529e-09}
+{"step": 0, "variant": "baseline", "stage": "pre", "layer_id": "largest_[5120, 1280]", "shape": [5120, 1280], "sigma_max": 9.999999960041972e-13, "p05": 0.0, "p25": 0.0, "p50": 0.0, "p75": 0.0, "p95": 0.0}
+{"step": 0, "variant": "baseline", "stage": "polar", "layer_id": "largest_[5120, 1280]", "shape": [5120, 1280], "sigma_max": 9.999999960041972e-13, "p05": 0.0, "p25": 0.0, "p50": 0.0, "p75": 0.0, "p95": 0.0}
+{"step": 0, "variant": "baseline", "stage": "blended", "layer_id": "largest_[5120, 1280]", "shape": [5120, 1280], "sigma_max": 9.999999960041972e-13, "p05": 0.0, "p25": 0.0, "p50": 0.0, "p75": 0.0, "p95": 0.0, "sigma_hat": 9.99999993922529e-09}

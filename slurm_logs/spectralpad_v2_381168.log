@@ -1,0 +1,93 @@
+========================================
+Job ID: 381168
+Node: andreas-h100-1
+GPUs: 4
+Config: PAD_RATIO=0.0, POWER_ITERS=1, POWER_BATCH=4, SV_LOG=1
+Start Time: Fri Feb 27 08:26:53 PM EST 2026
+========================================
+Fri Feb 27 20:26:53 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   40C    P0             65W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:21:00.0 Off |                    0 |
+| N/A   42C    P0             62W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 NVL                On  |   00000000:C1:00.0 Off |                    0 |
+| N/A   43C    P0             64W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 NVL                On  |   00000000:E1:00.0 Off |                    0 |
+| N/A   44C    P0             65W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting: baseline
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+=== Spectral-Padded Muon Experiment ===
+  PAD_RATIO=0.0, POWER_ITERS=1, POWER_BATCH=4
+  SV_LOG=True, every=250
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+Using Flash Attention 3
+Vocab size: 32,768
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 32768,
+  "n_layer": 20,
+  "n_head": 10,
+  "n_kv_head": 10,
+  "n_embd": 1280,
+  "window_pattern": "SSSL"
+}
+FP8 training enabled - converted 121 layers
+Parameter counts:
+wte                     : 41,943,040
+value_embeds            : 419,430,400
+lm_head                 : 41,943,040
+transformer_matrices    : 393,219,200
+scalars                 : 40
+total                   : 896,535,720
+Estimated FLOPs per token: 3.004189e+09
+Auto-computed optimal batch size: 1,048,576 tokens
+Scaling LRs by 1.4142 for batch size 1,048,576
+Scaling weight decay from 0.200000 to 0.071563
+Scaling the LR for the AdamW parameters 1/sqrt(1280/768) = 0.774597
+SV logging groups: {140326088178496: 'largest_[5120, 1280]', 140331357555776: 'smallest_[10, 32]'}
+Calculated iterations from target data:param ratio: 4,357
+Total tokens: 4,568,645,632 | Iterations: 4,357
+Gradient accumulation steps: 8
+[baseline] Step 00000 | val_bpb: 3.169049
+[SV step=0] baseline/pre smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] baseline/polar smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] baseline/blended smallest_[10, 32] [10, 32] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] baseline/pre largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] baseline/polar largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[SV step=0] baseline/blended largest_[5120, 1280] [5120, 1280] | sigma_max=1.0000e-12 | p05=0.0000 p25=0.0000 p50=0.0000 p75=0.0000 p95=0.0000
+[baseline] step 00000/04357 (0.00%) | loss: 10.398166 | dt: 35736.55ms | tok/s: 29,341
+[baseline] step 00050/04357 (1.15%) | loss: 5.840651 | dt: 2061.77ms | tok/s: 508,581 | eta: 146.6m
