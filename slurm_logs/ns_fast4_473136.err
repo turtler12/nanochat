@@ -1,0 +1,10 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [3296102]: mask 0xffff000000000000ffff0000 set
+Resolved 134 packages in 46ms
+Audited 121 packages in 529ms
+2026-03-05 00:08:30,167 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 4
+2026-03-05 02:43:07,363 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/ns_fast4_d20/optim_004357_rank2.pt
+2026-03-05 02:43:07,748 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/ns_fast4_d20/optim_004357_rank1.pt
+2026-03-05 02:43:07,812 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/ns_fast4_d20/optim_004357_rank3.pt
+2026-03-05 02:43:08,106 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved model parameters to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/ns_fast4_d20/model_004357.pt
+2026-03-05 02:43:08,128 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved metadata to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/ns_fast4_d20/meta_004357.json
+2026-03-05 02:43:10,603 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/ns_fast4_d20/optim_004357_rank0.pt

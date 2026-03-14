@@ -1,0 +1,71 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [44448]: mask 0xff00ff0000000000fe01ff000000 set
+Resolved 134 packages in 32ms
+Audited 121 packages in 818ms
+2026-03-03 19:56:49,999 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 4
+2026-03-03 22:34:14,332 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/pi_v2_b03_d20/optim_004357_rank1.pt
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[rank1]:     return _run_code(code, main_globals, None,
+[rank1]:   File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+[rank1]:     exec(code, run_globals)
+[rank1]:   File "/data/scratch/medhaven/nanochat/scripts/polar_interp_train.py", line 513, in <module>
+[rank1]:     "power_iters": POWER_ITERS, "power_batch": POWER_BATCH,
+[rank1]: NameError: name 'POWER_ITERS' is not defined
+2026-03-03 22:34:14,730 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/pi_v2_b03_d20/optim_004357_rank2.pt
+2026-03-03 22:34:14,777 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/pi_v2_b03_d20/optim_004357_rank3.pt
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[rank2]:     return _run_code(code, main_globals, None,
+[rank2]:   File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+[rank2]:     exec(code, run_globals)
+[rank2]:   File "/data/scratch/medhaven/nanochat/scripts/polar_interp_train.py", line 513, in <module>
+[rank2]:     "power_iters": POWER_ITERS, "power_batch": POWER_BATCH,
+[rank2]: NameError: name 'POWER_ITERS' is not defined
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[rank3]:     return _run_code(code, main_globals, None,
+[rank3]:   File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+[rank3]:     exec(code, run_globals)
+[rank3]:   File "/data/scratch/medhaven/nanochat/scripts/polar_interp_train.py", line 513, in <module>
+[rank3]:     "power_iters": POWER_ITERS, "power_batch": POWER_BATCH,
+[rank3]: NameError: name 'POWER_ITERS' is not defined
+2026-03-03 22:34:23,717 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved model parameters to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/pi_v2_b03_d20/model_004357.pt
+2026-03-03 22:34:23,727 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved metadata to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/pi_v2_b03_d20/meta_004357.json
+W0303 22:34:23.885000 44498 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 44684 closing signal SIGTERM
+W0303 22:34:23.896000 44498 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 44685 closing signal SIGTERM
+E0303 22:34:24.786000 44498 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: 1) local_rank: 2 (pid: 44686) of binary: /data/scratch/medhaven/nanochat/.venv/bin/python
+Traceback (most recent call last):
+  File "/data/scratch/medhaven/nanochat/.venv/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts.polar_interp_train FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-03-03_22:34:23
+  host      : andreas-h100-1.csail.mit.edu
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 44687)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-03-03_22:34:23
+  host      : andreas-h100-1.csail.mit.edu
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 44686)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

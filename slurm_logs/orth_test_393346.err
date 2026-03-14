@@ -1,0 +1,5 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [3910891]: mask 0xf000000000000001e set
+Traceback (most recent call last):
+  File "/data/scratch/medhaven/nanochat/orthogonal_space_test.py", line 34, in <module>
+    if device == 'cuda':
+NameError: name 'device' is not defined

@@ -1,0 +1,5 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [1111687]: mask 0xff00000000000000fe01 set
+Resolved 134 packages in 10ms
+Audited 121 packages in 824ms
+2026-03-12 13:53:06,935 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
+[2026-03-12T14:42:43.783] error: *** JOB 555146 ON andreas-h100-1 CANCELLED AT 2026-03-12T14:42:43 DUE to SIGNAL Terminated ***

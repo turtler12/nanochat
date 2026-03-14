@@ -45,8 +45,7 @@
       "Bash(git -C /data/scratch/medhaven/nanochat diff HEAD -- nanochat/gpt.py)",
       "Bash(scontrol show:*)",
       "Bash(scancel 555199)",
-      "Bash(.venv/bin/python -c \"import py_compile; py_compile.compile\\(''/data/scratch/medhaven/nanochat/scripts/spectral_diagnostic_train.py'', doraise=True\\); print\\(''OK''\\)\")",
-      "Bash(.venv/bin/python plot_softmax_results.py)"
+      "Bash(.venv/bin/python -c \"import py_compile; py_compile.compile\\(''/data/scratch/medhaven/nanochat/scripts/spectral_diagnostic_train.py'', doraise=True\\); print\\(''OK''\\)\")"
     ]
   }
 }

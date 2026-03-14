@@ -1,0 +1,2 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [3925409]: mask 0xf000000000000001e set
+[2026-03-02T14:49:37.129] error: *** JOB 393387 ON andreas-h100-1 CANCELLED AT 2026-03-02T14:49:37 DUE to SIGNAL Terminated ***

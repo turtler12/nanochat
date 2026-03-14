@@ -1,0 +1,78 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [1861233]: mask 0xff00000000000001fe set
+Resolved 134 packages in 9ms
+Audited 121 packages in 533ms
+2026-03-12 15:10:44,818 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
+[rank1]:[E312 15:25:24.744173135 ProcessGroupNCCL.cpp:2057] [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Exception raised from c10_cuda_check_implementation at /pytorch/c10/cuda/CUDAException.cpp:44 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7f8cd8d7cb80 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x11fb7 (0x7f8cd9101fb7 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libc10_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::finishedGPUExecutionInternal() const + 0x50 (0x7f8c7ac37bc0 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::WorkNCCL::isCompleted() + 0x68 (0x7f8c7ac47298 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x969 (0x7f8c7ac4b499 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: c10d::ProcessGroupNCCL::Watchdog::run() + 0xdf (0x7f8c7ac4d40f in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #6: <unknown function> + 0xdc253 (0x7f8cded4c253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #7: <unknown function> + 0x94ac3 (0x7f8cdf993ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #8: <unknown function> + 0x1268d0 (0x7f8cdfa258d0 in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Exception raised from c10_cuda_check_implementation at /pytorch/c10/cuda/CUDAException.cpp:44 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7f8cd8d7cb80 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x11fb7 (0x7f8cd9101fb7 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libc10_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::WorkNCCL::finishedGPUExecutionInternal() const + 0x50 (0x7f8c7ac37bc0 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::WorkNCCL::isCompleted() + 0x68 (0x7f8c7ac47298 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x969 (0x7f8c7ac4b499 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: c10d::ProcessGroupNCCL::Watchdog::run() + 0xdf (0x7f8c7ac4d40f in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #6: <unknown function> + 0xdc253 (0x7f8cded4c253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #7: <unknown function> + 0x94ac3 (0x7f8cdf993ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #8: <unknown function> + 0x1268d0 (0x7f8cdfa258d0 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2063 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7f8cd8d7cb80 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe34731 (0x7f8c7ac23731 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x9504a1 (0x7f8c7a73f4a1 in /data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xdc253 (0x7f8cded4c253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #4: <unknown function> + 0x94ac3 (0x7f8cdf993ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #5: <unknown function> + 0x1268d0 (0x7f8cdfa258d0 in /lib/x86_64-linux-gnu/libc.so.6)
+
+W0312 15:25:25.094000 1862700 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 1872591 closing signal SIGTERM
+E0312 15:25:25.716000 1862700 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: -6) local_rank: 1 (pid: 1872597) of binary: /data/scratch/medhaven/nanochat/.venv/bin/python
+Traceback (most recent call last):
+  File "/data/scratch/medhaven/nanochat/.venv/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+========================================================
+scripts.spectral_diagnostic_train FAILED
+--------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+--------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-03-12_15:25:25
+  host      : andreas-h100-1.csail.mit.edu
+  rank      : 1 (local_rank: 1)
+  exitcode  : -6 (pid: 1872597)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 1872597
+========================================================

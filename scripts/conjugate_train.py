@@ -1,14 +1,12 @@
 """
-Train model. From root directory of the project, run as:
+Conjugate Muon training experiment.
 
-python -m scripts.base_train
+After Newton-Schulz orthogonalization, subtracts the projection of the current update
+onto the previous step's update, then renormalizes. This encourages successive updates
+to explore orthogonal directions in matrix space (conjugate-gradient style).
 
-or distributed as:
-
-torchrun --nproc_per_node=8 -m scripts.base_train
-
-If you are only on CPU/Macbook, you'll want to train a much much smaller LLM. Example:
-python -m scripts.base_train --depth=4 --max-seq-len=512 --device-batch-size=1 --eval-tokens=512 --core-metric-every=-1 --total-batch-size=512 --num-iterations=20
+Run as:
+    torchrun --standalone --nproc_per_node=2 -m scripts.conjugate_train -- --depth 20 --conjugate ...
 """
 
 import os
@@ -27,7 +25,7 @@ import torch
 from nanochat.gpt import GPT, GPTConfig
 from nanochat.dataloader import tokenizing_distributed_data_loader_bos_bestfit, tokenizing_distributed_data_loader_with_state_bos_bestfit
 from nanochat.common import compute_init, compute_cleanup, print0, DummyWandb, print_banner, get_base_dir, autodetect_device_type, get_peak_flops
-from nanochat.optim import set_ns_mode
+from nanochat.optim import polar_express_coeffs
 from nanochat.tokenizer import get_tokenizer, get_token_bytes
 from nanochat.checkpoint_manager import save_checkpoint, load_checkpoint
 from nanochat.loss_eval import evaluate_bpb
@@ -64,9 +62,9 @@ parser.add_argument("--unembedding-lr", type=float, default=0.004, help="learnin
 parser.add_argument("--weight-decay", type=float, default=0.2, help="cautious weight decay for the Muon optimizer (for weights)")
 parser.add_argument("--matrix-lr", type=float, default=0.02, help="learning rate for matrix parameters (Muon)")
 parser.add_argument("--scalar-lr", type=float, default=0.5, help="learning rate for scalars (resid_lambdas, x0_lambdas)")
-parser.add_argument("--ns-mode", type=str, default="baseline", choices=["baseline", "fast4"], help="Newton-Schulz coefficient mode: baseline (5×quintic, 15mm) or fast4 (4×quintic, 12mm)")
 parser.add_argument("--adam-beta1", type=float, default=0.8, help="Adam beta1 for embedding/unembedding")
 parser.add_argument("--adam-beta2", type=float, default=0.95, help="Adam beta2 for embedding/unembedding")
+parser.add_argument("--conjugate", action="store_true", help="enable conjugate direction in Muon (subtract projection onto previous update)")
 parser.add_argument("--warmup-ratio", type=float, default=0.0, help="ratio of iterations for LR warmup")
 parser.add_argument("--warmdown-ratio", type=float, default=0.5, help="ratio of iterations for LR warmdown")
 parser.add_argument("--final-lr-frac", type=float, default=0.0, help="final LR as fraction of initial LR")
@@ -83,9 +81,8 @@ parser.add_argument("--model-tag", type=str, default=None, help="override model 
 args = parser.parse_args()
 user_config = vars(args).copy()  # for logging
 
-# Set Newton-Schulz coefficient mode (must happen before torch.compile)
-_ns_coeffs, _ns_steps = set_ns_mode(args.ns_mode)
-print(f"Newton-Schulz mode: {args.ns_mode} ({_ns_steps} iterations, {_ns_steps * 3} matmuls)")
+_ns_steps = len(polar_express_coeffs)
+print(f"Newton-Schulz: {_ns_steps} iterations, {_ns_steps * 3} matmuls")
 
 # -----------------------------------------------------------------------------
 # Compute init and wandb logging
@@ -304,17 +301,56 @@ if weight_decay_scaled != args.weight_decay:
     print0(f"Scaling weight decay from {args.weight_decay:.6f} to {weight_decay_scaled:.6f} for depth {args.depth}")
 
 # -----------------------------------------------------------------------------
-# Initialize the Optimizer (combined MuonAdamW: Muon for matrix params, AdamW for rest)
-optimizer = model.setup_optimizer(
-    # AdamW hyperparameters
+# Initialize the Optimizer (Conjugate Muon for matrix params, AdamW for rest)
+from nanochat.optim_conjugate import ConjugateMuonAdamW, DistConjugateMuonAdamW
+from nanochat.common import get_dist_info
+
+def setup_conjugate_optimizer(model, unembedding_lr, embedding_lr, scalar_lr, adam_betas, matrix_lr, weight_decay, ns_steps, conjugate):
+    model_dim = model.config.n_embd
+    _ddp, _rank, _local_rank, _world_size = get_dist_info()
+
+    matrix_params = list(model.transformer.h.parameters())
+    value_embeds_params = list(model.value_embeds.parameters())
+    embedding_params = list(model.transformer.wte.parameters())
+    lm_head_params = list(model.lm_head.parameters())
+    resid_params = [model.resid_lambdas]
+    x0_params = [model.x0_lambdas]
+
+    dmodel_lr_scale = (model_dim / 768) ** -0.5
+    print0(f"Scaling the LR for the AdamW parameters ∝1/√({model_dim}/768) = {dmodel_lr_scale:.6f}")
+
+    param_groups = [
+        dict(kind='adamw', params=lm_head_params, lr=unembedding_lr * dmodel_lr_scale, betas=adam_betas, eps=1e-10, weight_decay=0.0),
+        dict(kind='adamw', params=embedding_params, lr=embedding_lr * dmodel_lr_scale, betas=adam_betas, eps=1e-10, weight_decay=0.0),
+        dict(kind='adamw', params=value_embeds_params, lr=embedding_lr * dmodel_lr_scale, betas=adam_betas, eps=1e-10, weight_decay=0.0),
+        dict(kind='adamw', params=resid_params, lr=scalar_lr * 0.01, betas=adam_betas, eps=1e-10, weight_decay=0.0),
+        dict(kind='adamw', params=x0_params, lr=scalar_lr, betas=(0.96, 0.95), eps=1e-10, weight_decay=0.0),
+    ]
+    for shape in sorted({p.shape for p in matrix_params}):
+        group_params = [p for p in matrix_params if p.shape == shape]
+        param_groups.append(dict(
+            kind='muon', params=group_params, lr=matrix_lr,
+            momentum=0.95, ns_steps=ns_steps, beta2=0.95, weight_decay=weight_decay,
+            conjugate=conjugate,
+        ))
+
+    Factory = DistConjugateMuonAdamW if _ddp else ConjugateMuonAdamW
+    optimizer = Factory(param_groups)
+    for group in optimizer.param_groups:
+        group["initial_lr"] = group["lr"]
+    return optimizer
+
+print0(f"Conjugate mode: {args.conjugate}")
+optimizer = setup_conjugate_optimizer(
+    orig_model,
     unembedding_lr=args.unembedding_lr * batch_lr_scale,
     embedding_lr=args.embedding_lr * batch_lr_scale,
     scalar_lr=args.scalar_lr * batch_lr_scale,
     adam_betas=(args.adam_beta1, args.adam_beta2),
-    # Muon hyperparameters
     matrix_lr=args.matrix_lr * batch_lr_scale,
     weight_decay=weight_decay_scaled,
     ns_steps=_ns_steps,
+    conjugate=args.conjugate,
 )
 
 if resuming:

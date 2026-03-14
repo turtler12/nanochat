@@ -1,0 +1,9 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [857017]: mask 0xff00000000000000ff00000000 set
+Resolved 134 packages in 9ms
+Audited 121 packages in 510ms
+[W313 13:15:19.562117042 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[W313 13:15:21.409918657 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+2026-03-13 13:15:21,749 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
+/data/scratch/medhaven/nanochat/nanochat/optim_softmax.py:62: UserWarning: torch.linalg.svd: During SVD computation with the selected cusolver driver, batches 0 failed to converge. A more accurate method will be used to compute the SVD as a fallback. Check doc at https://pytorch.org/docs/stable/generated/torch.linalg.svd.html (Triggered internally at /pytorch/aten/src/ATen/native/cuda/linalg/BatchLinearAlgebraLib.cpp:702.)
+  U, S, Vh = torch.linalg.svd(grad_i.float(), full_matrices=False)
+[2026-03-13T18:51:24.455] error: *** JOB 557139 ON andreas-h100-1 CANCELLED AT 2026-03-13T18:51:24 DUE to SIGNAL Terminated ***
