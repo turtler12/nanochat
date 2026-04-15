@@ -1,4 +1,0 @@
-cpu-bind=MASK - andreas-h100-1, task  0  0 [3632082]: mask 0x7fff000000000000ffff01 set
-Resolved 134 packages in 33ms
-Audited 121 packages in 563ms
-2026-02-20 16:00:55,805 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 4

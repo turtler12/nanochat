@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-#SBATCH --job-name=smv2_0.01
+#SBATCH --job-name=smv2_0.75
 #SBATCH --account=lingo
 #SBATCH --partition=lingo-h100
 #SBATCH --qos=lingo-main
 #SBATCH --time=08:00:00
-#SBATCH --output=/data/scratch/medhaven/nanochat/slurm_logs/smv2_eta0.01_%j.log
-#SBATCH --error=/data/scratch/medhaven/nanochat/slurm_logs/smv2_eta0.01_%j.err
+#SBATCH --output=/data/scratch/medhaven/nanochat/slurm_logs/smv2_eta0.75_%j.log
+#SBATCH --error=/data/scratch/medhaven/nanochat/slurm_logs/smv2_eta0.75_%j.err
 #SBATCH --gpus=2
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=128G
@@ -14,7 +14,7 @@
 echo "========================================"
 echo "Job ID: $SLURM_JOB_ID"
 echo "Node: $SLURM_NODELIST"
-echo "Config: SoftmaxMuon v2 eta=0.01"
+echo "Config: SoftmaxMuon v2 eta=0.75"
 echo "Start Time: $(date)"
 echo "========================================"
 
@@ -38,13 +38,13 @@ torchrun --standalone --nproc_per_node=2 --master_port=$((29500 + RANDOM % 1000)
     --depth 20 \
     --device-batch-size 16 \
     --eval-every 250 \
-    --target-param-data-ratio 10.5 \
+    --target-param-data-ratio 10.75 \
     --fp8 \
-    --eta 0.01 \
+    --eta 0.75 \
     --spectral-log-every 100 \
-    --model-tag softmax_v2_eta0.01_d20 \
+    --model-tag softmax_v2_eta0.75_d20 \
     --run dummy
 
 echo "========================================"
-echo "SoftmaxMuon v2 eta=0.01 completed at: $(date)"
+echo "SoftmaxMuon v2 eta=0.75 completed at: $(date)"
 echo "========================================"

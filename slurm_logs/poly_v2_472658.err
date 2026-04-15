@@ -1,5 +1,0 @@
-cpu-bind=MASK - andreas-h100-1, task  0  0 [3231490]: mask 0xffff000000000000ffff set
-Resolved 134 packages in 33ms
-Audited 121 packages in 573ms
-/data/scratch/medhaven/nanochat/poly_search_v2.py:1140: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-  ax2.legend(fontsize=7)

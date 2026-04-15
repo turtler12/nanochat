@@ -46,7 +46,11 @@
       "Bash(scontrol show:*)",
       "Bash(scancel 555199)",
       "Bash(.venv/bin/python -c \"import py_compile; py_compile.compile\\(''/data/scratch/medhaven/nanochat/scripts/spectral_diagnostic_train.py'', doraise=True\\); print\\(''OK''\\)\")",
-      "Bash(.venv/bin/python plot_softmax_results.py)"
+      "Bash(.venv/bin/python plot_softmax_results.py)",
+      "Bash(scancel 559318 559319)",
+      "Bash(scancel 561072)",
+      "Bash(scancel 563881 563882 563883 563884 563885 563892)",
+      "Bash(sacct -j 566937,566938,566939,566940,566941,566942 --format=JobID,JobName,State,Elapsed,ExitCode -n)"
     ]
   }
 }

@@ -1,7 +1,0 @@
-cpu-bind=MASK - andreas-h100-1, task  0  0 [855561]: mask 0x7f00000000000000ff01 set
-Resolved 134 packages in 9ms
-Audited 121 packages in 512ms
-[W313 13:14:56.317400333 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
-[W313 13:14:56.317400383 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
-2026-03-13 13:14:56,948 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
-[2026-03-13T18:51:24.457] error: *** JOB 557137 ON andreas-h100-1 CANCELLED AT 2026-03-13T18:51:24 DUE to SIGNAL Terminated ***

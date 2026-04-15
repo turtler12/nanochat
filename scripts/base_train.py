@@ -27,7 +27,7 @@ import torch
 from nanochat.gpt import GPT, GPTConfig
 from nanochat.dataloader import tokenizing_distributed_data_loader_bos_bestfit, tokenizing_distributed_data_loader_with_state_bos_bestfit
 from nanochat.common import compute_init, compute_cleanup, print0, DummyWandb, print_banner, get_base_dir, autodetect_device_type, get_peak_flops
-from nanochat.optim import set_ns_mode
+from nanochat.optim import polar_express_coeffs
 from nanochat.tokenizer import get_tokenizer, get_token_bytes
 from nanochat.checkpoint_manager import save_checkpoint, load_checkpoint
 from nanochat.loss_eval import evaluate_bpb
@@ -83,9 +83,9 @@ parser.add_argument("--model-tag", type=str, default=None, help="override model 
 args = parser.parse_args()
 user_config = vars(args).copy()  # for logging
 
-# Set Newton-Schulz coefficient mode (must happen before torch.compile)
-_ns_coeffs, _ns_steps = set_ns_mode(args.ns_mode)
-print(f"Newton-Schulz mode: {args.ns_mode} ({_ns_steps} iterations, {_ns_steps * 3} matmuls)")
+# Newton-Schulz iterations (baseline = 5 Polar Express steps)
+_ns_steps = 5
+print(f"Newton-Schulz mode: baseline ({_ns_steps} iterations, {_ns_steps * 3} matmuls)")
 
 # -----------------------------------------------------------------------------
 # Compute init and wandb logging

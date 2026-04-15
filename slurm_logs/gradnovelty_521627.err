@@ -1,8 +1,0 @@
-cpu-bind=MASK - andreas-h100-1, task  0  0 [3652253]: mask 0xf80e000000000001f00e00 set
-Resolved 134 packages in 10ms
-Audited 121 packages in 563ms
-2026-03-10 23:16:44,344 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
-2026-03-11 05:37:16,556 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/gradnovelty_d20/optim_004357_rank1.pt
-2026-03-11 05:37:19,664 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved model parameters to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/gradnovelty_d20/model_004357.pt
-2026-03-11 05:37:19,674 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved metadata to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/gradnovelty_d20/meta_004357.json
-2026-03-11 05:37:26,956 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat/cache/base_checkpoints/gradnovelty_d20/optim_004357_rank0.pt
