@@ -25,8 +25,13 @@ eta_runs = {
     -0.1:  f"{BASE}/eta_sweep_neg0.1_lr0.02_d12",
     -0.05: f"{BASE}/eta_sweep_neg0.05_lr0.02_d12",
     0.0:   f"{BASE}/verify_muon_d12",  # Muon baseline (eta=0)
+    0.01:  f"{BASE}/verify_taylor_eta0.01_d12",
     0.05:  f"{BASE}/eta_sweep_pos0.05_lr0.02_d12",
     0.1:   f"{BASE}/eta_sweep_pos0.1_lr0.02_d12",  # new run; fallback to existing
+    0.3:   f"{BASE}/verify_taylor_eta0.3_d12",
+    1.0:   f"{BASE}/verify_taylor_eta1.0_d12",
+    2.0:   f"{BASE}/verify_taylor_eta2.0_d12",
+    5.0:   f"{BASE}/verify_taylor_eta5.0_d12",
 }
 
 # Fallback for eta=0.1 if new run not found
@@ -178,7 +183,7 @@ ax2.set_ylabel("Val BPB", fontsize=12)
 ax2.set_title("Val BPB Curves (all etas)", fontsize=13)
 ax2.legend(fontsize=8, ncol=2)
 ax2.grid(True, alpha=0.3)
-ax2.set_xlim(left=200)
+ax2.set_xlim(left=0)
 ax2.set_ylim(top=1.05)
 
 # Panel 3: Train loss curves for all runs
@@ -199,7 +204,7 @@ ax3.set_ylabel("Train Loss (smoothed)", fontsize=12)
 ax3.set_title("Train Loss Curves (all etas)", fontsize=13)
 ax3.legend(fontsize=8, ncol=2)
 ax3.grid(True, alpha=0.3)
-ax3.set_xlim(left=200)
+ax3.set_xlim(left=0)
 
 fig.tight_layout()
 os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)

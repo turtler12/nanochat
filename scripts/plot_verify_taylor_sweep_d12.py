@@ -99,7 +99,7 @@ if baseline_loss is not None:
 
 # Full SVD softmax runs
 svd_label_added = False
-for svd_eta_str, svd_eta_val in [("0.01", 0.01), ("0.1", 0.1), ("0.5", 0.5)]:
+for svd_eta_str, svd_eta_val in [("0.01", 0.01), ("0.1", 0.1), ("0.5", 0.5), ("2.0", 2.0), ("5.0", 5.0), ("10.0", 10.0)]:
     svd_path = os.path.join(BASE, f"verify_svd_softmax_eta{svd_eta_str}_d12", "train_log.jsonl")
     if not os.path.exists(svd_path):
         print(f"  Full SVD eta={svd_eta_str}: not found yet")

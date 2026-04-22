@@ -11,11 +11,3 @@ eval_bundle/
 # Local setup
 CLAUDE.md
 wandb/
-
-## These patterns keep the directory in version control
-## But ignore the files
-# Local work products
-cache/*
-! cache/.gitkeep
-slurm_logs/*
-! slurm_logs/.gitkeep

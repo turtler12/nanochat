@@ -25,6 +25,9 @@ runs = {
     "Full SVD eta=0.01": {"dir": f"{BASE}/verify_svd_softmax_eta0.01_d12", "color": "#ff69b4", "ls": "-.", "lw": 2.0},
     "Full SVD eta=0.1":  {"dir": f"{BASE}/verify_svd_softmax_eta0.1_d12",  "color": "#e377c2", "ls": "-.", "lw": 2.0},
     "Full SVD eta=0.5":  {"dir": f"{BASE}/verify_svd_softmax_eta0.5_d12",  "color": "#c44e7b", "ls": "-.", "lw": 2.0},
+    "Full SVD eta=2.0":  {"dir": f"{BASE}/verify_svd_softmax_eta2.0_d12",  "color": "#7b2c8c", "ls": "-.", "lw": 2.0},
+    "Full SVD eta=5.0":  {"dir": f"{BASE}/verify_svd_softmax_eta5.0_d12",  "color": "#5a1a6b", "ls": "-.", "lw": 2.0},
+    "Full SVD eta=10.0": {"dir": f"{BASE}/verify_svd_softmax_eta10.0_d12", "color": "#3d0f4a", "ls": "-.", "lw": 2.0},
 }
 
 def load_train_log(path):
