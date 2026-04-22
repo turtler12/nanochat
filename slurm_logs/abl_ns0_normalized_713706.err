@@ -1,0 +1,2 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [1332860]: mask 0xf000000000000000f0000000 set
+bash: line 1: .venv/bin/activate: No such file or directory
