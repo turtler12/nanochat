@@ -38,7 +38,7 @@ uv sync --extra gpu
 source .venv/bin/activate
 
 torchrun --standalone --nproc_per_node=1 \
-    -m scripts.ablation_train \
+    -m scripts.ablation_train -- \
     --update-mode "$MODE" \
     --depth 12 \
     --num-iterations 2205 \
