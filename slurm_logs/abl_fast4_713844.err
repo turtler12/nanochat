@@ -1,0 +1,19 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [1360805]: mask 0x7800000000000000700001 set
+Resolved 134 packages in 15ms
+Installed 1 package in 6m 27s
+ + torch==2.9.1+cu128
+usage: torchrun [-h] [--nnodes NNODES] [--nproc-per-node NPROC_PER_NODE]
+                [--rdzv-backend RDZV_BACKEND] [--rdzv-endpoint RDZV_ENDPOINT]
+                [--rdzv-id RDZV_ID] [--rdzv-conf RDZV_CONF] [--standalone]
+                [--max-restarts MAX_RESTARTS]
+                [--monitor-interval MONITOR_INTERVAL]
+                [--start-method {spawn,fork,forkserver}]
+                [--event-log-handler EVENT_LOG_HANDLER] [--role ROLE] [-m]
+                [--no-python] [--run-path] [--log-dir LOG_DIR] [-r REDIRECTS]
+                [-t TEE] [--local-ranks-filter LOCAL_RANKS_FILTER]
+                [--node-rank NODE_RANK] [--master-addr MASTER_ADDR]
+                [--master-port MASTER_PORT] [--local-addr LOCAL_ADDR]
+                [--logs-specs LOGS_SPECS]
+                [--numa-binding {node,socket,exclusive,core-complex}]
+                training_script ...
+torchrun: error: ambiguous option: --run could match --run-path, --run_path
