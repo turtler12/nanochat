@@ -40,10 +40,11 @@ command -v uv &> /dev/null || { curl -LsSf https://astral.sh/uv/install.sh | sh;
 uv sync --extra gpu
 source .venv/bin/activate
 
-# Rebuild tokenizer if missing (cache may have been cleared)
+# Fail fast if tokenizer or data is missing rather than training on empty data
 if [ ! -f "cache/tokenizer/tokenizer.pkl" ]; then
-    echo "Tokenizer not found, rebuilding from dataset..."
-    python -m scripts.tok_train
+    echo "ERROR: Tokenizer not found at cache/tokenizer/tokenizer.pkl"
+    echo "Run setup first: python -m nanochat.dataset -n 370 && python -m scripts.tok_train"
+    exit 1
 fi
 
 echo "Starting ablation mode: $ABLATION_MODE"
