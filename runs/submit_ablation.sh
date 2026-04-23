@@ -31,7 +31,7 @@ cd /data/scratch/medhaven/nanochat
 export PATH="$HOME/.local/bin:$PATH"
 export TMPDIR="/tmp"
 export OMP_NUM_THREADS=1
-export NANOCHAT_BASE_DIR="$(pwd)/cache"
+export NANOCHAT_BASE_DIR="/data/scratch/medhaven/nanochat_cache"
 export UV_CACHE_DIR="$(pwd)/.uv_cache"
 
 # Setup venv
@@ -41,9 +41,8 @@ uv sync --extra gpu
 source .venv/bin/activate
 
 # Fail fast if tokenizer or data is missing rather than training on empty data
-if [ ! -f "cache/tokenizer/tokenizer.pkl" ]; then
-    echo "ERROR: Tokenizer not found at cache/tokenizer/tokenizer.pkl"
-    echo "Run setup first: python -m nanochat.dataset -n 370 && python -m scripts.tok_train"
+if [ ! -f "$NANOCHAT_BASE_DIR/tokenizer/tokenizer.pkl" ]; then
+    echo "ERROR: Tokenizer not found at $NANOCHAT_BASE_DIR/tokenizer/tokenizer.pkl"
     exit 1
 fi
 
