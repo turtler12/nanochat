@@ -10,6 +10,7 @@
 #SBATCH --gpus=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
+#SBATCH --export=ALL
 #
 # Single ablation run. Expects env var:
 #   ABLATION_MODE  - e.g. "muon", "ns1", "ns0_normalized"
