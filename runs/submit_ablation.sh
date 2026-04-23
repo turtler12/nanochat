@@ -4,7 +4,7 @@
 #SBATCH --account=lingo
 #SBATCH --partition=lingo-h100
 #SBATCH --qos=lingo-main
-#SBATCH --time=02:30:00
+#SBATCH --time=03:30:00
 #SBATCH --output=/data/scratch/medhaven/nanochat/slurm_logs/abl_%x_%j.log
 #SBATCH --error=/data/scratch/medhaven/nanochat/slurm_logs/abl_%x_%j.err
 #SBATCH --gpus=1
@@ -39,6 +39,12 @@ command -v uv &> /dev/null || { curl -LsSf https://astral.sh/uv/install.sh | sh;
 [ -d ".venv" ] || uv venv
 uv sync --extra gpu
 source .venv/bin/activate
+
+# Rebuild tokenizer if missing (cache may have been cleared)
+if [ ! -f "cache/tokenizer/tokenizer.pkl" ]; then
+    echo "Tokenizer not found, rebuilding from dataset..."
+    python -m scripts.tok_train
+fi
 
 echo "Starting ablation mode: $ABLATION_MODE"
 torchrun --standalone --nproc_per_node=1 \
