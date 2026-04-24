@@ -1,0 +1,59 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [3505181]: mask 0xf000000000000000f0000000000 set
+Resolved 134 packages in 9ms
+Checked 121 packages in 512ms
+usage: ablation_train.py [-h] [--run RUN] [--device-type DEVICE_TYPE] [--fp8]
+                         [--fp8-recipe {rowwise,tensorwise}] [--depth DEPTH]
+                         [--aspect-ratio ASPECT_RATIO] [--head-dim HEAD_DIM]
+                         [--max-seq-len MAX_SEQ_LEN]
+                         [--window-pattern WINDOW_PATTERN]
+                         [--num-iterations NUM_ITERATIONS]
+                         [--target-flops TARGET_FLOPS]
+                         [--target-param-data-ratio TARGET_PARAM_DATA_RATIO]
+                         [--device-batch-size DEVICE_BATCH_SIZE]
+                         [--total-batch-size TOTAL_BATCH_SIZE]
+                         [--embedding-lr EMBEDDING_LR]
+                         [--unembedding-lr UNEMBEDDING_LR]
+                         [--weight-decay WEIGHT_DECAY] [--matrix-lr MATRIX_LR]
+                         [--scalar-lr SCALAR_LR] [--adam-beta1 ADAM_BETA1]
+                         [--adam-beta2 ADAM_BETA2]
+                         [--warmup-ratio WARMUP_RATIO]
+                         [--warmdown-ratio WARMDOWN_RATIO]
+                         [--final-lr-frac FINAL_LR_FRAC]
+                         [--resume-from-step RESUME_FROM_STEP]
+                         [--eval-every EVAL_EVERY] [--eval-tokens EVAL_TOKENS]
+                         [--core-metric-every CORE_METRIC_EVERY]
+                         [--core-metric-max-per-task CORE_METRIC_MAX_PER_TASK]
+                         [--sample-every SAMPLE_EVERY]
+                         [--save-every SAVE_EVERY] [--model-tag MODEL_TAG]
+                         [--update-mode {muon,fast4,ns3,ns2,ns1,ns0_normalized,ns0_sign}]
+ablation_train.py: error: argument --update-mode: invalid choice: '' (choose from 'muon', 'fast4', 'ns3', 'ns2', 'ns1', 'ns0_normalized', 'ns0_sign')
+E0423 18:25:00.532000 3505256 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: 2) local_rank: 0 (pid: 3506306) of binary: /data/scratch/medhaven/nanochat/.venv/bin/python3
+Traceback (most recent call last):
+  File "/data/scratch/medhaven/nanochat/.venv/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts.ablation_train FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-04-23_18:25:00
+  host      : andreas-h100-1.csail.mit.edu
+  rank      : 0 (local_rank: 0)
+  exitcode  : 2 (pid: 3506306)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

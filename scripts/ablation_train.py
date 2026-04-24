@@ -67,7 +67,7 @@ parser.add_argument("--sample-every", type=int, default=2000)
 parser.add_argument("--save-every", type=int, default=-1)
 parser.add_argument("--model-tag", type=str, default=None)
 # Ablation-specific
-parser.add_argument("--update-mode", type=str, default="muon", choices=UPDATE_MODES,
+parser.add_argument("--update-mode", type=str, default="muon",
                     help=f"Update mode for matrix params. One of: {UPDATE_MODES}")
 args = parser.parse_args()
 user_config = vars(args).copy()

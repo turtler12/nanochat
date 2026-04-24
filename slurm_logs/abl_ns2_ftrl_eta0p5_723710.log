@@ -1,0 +1,85 @@
+========================================
+Job ID: 723710
+Node: andreas-h100-1
+GPUs: 1
+Mode: ns2_ftrl_eta0p5
+Start Time: Fri Apr 24 10:48:45 EDT 2026
+========================================
+Fri Apr 24 10:48:45 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:21:00.0 Off |                    0 |
+| N/A   44C    P0             62W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting ablation mode: ns2_ftrl_eta0p5 (matrix-lr=0.02)
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+Update mode: ns2_ftrl_eta0p5
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+✓ Using Flash Attention 3 (Hopper GPU detected)
+Vocab size: 65,536
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 65536,
+  "n_layer": 12,
+  "n_head": 6,
+  "n_kv_head": 6,
+  "n_embd": 768,
+  "window_pattern": "SSSL"
+}
+Parameter counts:
+wte                     : 50,331,648
+value_embeds            : 301,989,888
+lm_head                 : 50,331,648
+transformer_matrices    : 84,935,808
+scalars                 : 24
+total                   : 487,589,016
+Auto-computed optimal batch size: 524,288 tokens
+dmodel_lr_scale: 1.000000
+Using user-provided number of iterations: 2,205
+Total training tokens: 1,156,055,040
+Tokens:Scaling params ratio: 8.55
+Total FLOPs estimate: 1.101908e+18
+Grad accum steps: 8
+Step 00000 | val bpb: 3.254653
+step 00000/02205 (0.00%) [ns2_ftrl_eta0p5] | loss: 11.090001 | lrm: 1.00 | dt: 15597.30ms | tok/s: 33,614 | mfu: 3.84 | epoch: 1
+step 00001/02205 (0.05%) [ns2_ftrl_eta0p5] | loss: 10.840813 | lrm: 1.00 | dt: 1597.83ms | tok/s: 328,125 | mfu: 37.46 | epoch: 1
+step 00002/02205 (0.09%) [ns2_ftrl_eta0p5] | loss: 10.131390 | lrm: 1.00 | dt: 1610.73ms | tok/s: 325,497 | mfu: 37.16 | epoch: 1
+step 00003/02205 (0.14%) [ns2_ftrl_eta0p5] | loss: 9.595017 | lrm: 1.00 | dt: 1603.90ms | tok/s: 326,882 | mfu: 37.31 | epoch: 1
+step 00004/02205 (0.18%) [ns2_ftrl_eta0p5] | loss: 9.050639 | lrm: 1.00 | dt: 1593.29ms | tok/s: 329,059 | mfu: 37.56 | epoch: 1
+step 00005/02205 (0.23%) [ns2_ftrl_eta0p5] | loss: 8.631894 | lrm: 1.00 | dt: 1592.57ms | tok/s: 329,208 | mfu: 37.58 | epoch: 1
+step 00006/02205 (0.27%) [ns2_ftrl_eta0p5] | loss: 8.318097 | lrm: 1.00 | dt: 1596.70ms | tok/s: 328,356 | mfu: 37.48 | epoch: 1
+step 00007/02205 (0.32%) [ns2_ftrl_eta0p5] | loss: 8.070550 | lrm: 1.00 | dt: 1617.72ms | tok/s: 324,091 | mfu: 37.00 | epoch: 1
+step 00008/02205 (0.36%) [ns2_ftrl_eta0p5] | loss: 7.871999 | lrm: 1.00 | dt: 1600.24ms | tok/s: 327,630 | mfu: 37.40 | epoch: 1
+step 00009/02205 (0.41%) [ns2_ftrl_eta0p5] | loss: 7.686288 | lrm: 1.00 | dt: 1612.22ms | tok/s: 325,196 | mfu: 37.12 | epoch: 1
+step 00010/02205 (0.45%) [ns2_ftrl_eta0p5] | loss: 7.511961 | lrm: 1.00 | dt: 1604.09ms | tok/s: 326,844 | mfu: 37.31 | epoch: 1
+step 00011/02205 (0.50%) [ns2_ftrl_eta0p5] | loss: 7.370404 | lrm: 1.00 | dt: 1606.81ms | tok/s: 326,290 | mfu: 37.25 | epoch: 1 | eta: 58.8m
+step 00012/02205 (0.54%) [ns2_ftrl_eta0p5] | loss: 7.247931 | lrm: 1.00 | dt: 1607.27ms | tok/s: 326,197 | mfu: 37.24 | epoch: 1 | eta: 58.7m
+step 00013/02205 (0.59%) [ns2_ftrl_eta0p5] | loss: 7.127831 | lrm: 1.00 | dt: 1599.88ms | tok/s: 327,704 | mfu: 37.41 | epoch: 1 | eta: 58.6m
+step 00014/02205 (0.63%) [ns2_ftrl_eta0p5] | loss: 7.035416 | lrm: 1.00 | dt: 1613.39ms | tok/s: 324,959 | mfu: 37.09 | epoch: 1 | eta: 58.7m
+step 00015/02205 (0.68%) [ns2_ftrl_eta0p5] | loss: 6.932324 | lrm: 1.00 | dt: 1605.77ms | tok/s: 326,501 | mfu: 37.27 | epoch: 1 | eta: 58.6m
+step 00016/02205 (0.73%) [ns2_ftrl_eta0p5] | loss: 6.849841 | lrm: 1.00 | dt: 1620.06ms | tok/s: 323,621 | mfu: 36.94 | epoch: 1 | eta: 58.7m

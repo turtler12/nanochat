@@ -46,13 +46,15 @@ if [ ! -f "$NANOCHAT_BASE_DIR/tokenizer/tokenizer.pkl" ]; then
     exit 1
 fi
 
-echo "Starting ablation mode: $ABLATION_MODE"
+MATRIX_LR="${MATRIX_LR:-0.02}"
+
+echo "Starting ablation mode: $ABLATION_MODE (matrix-lr=$MATRIX_LR)"
 torchrun --standalone --nproc_per_node=1 \
     -m scripts.ablation_train -- \
     --update-mode "$ABLATION_MODE" \
     --depth 12 \
     --num-iterations 2205 \
-    --matrix-lr 0.02 \
+    --matrix-lr "$MATRIX_LR" \
     --run dummy
 
 echo "========================================"
