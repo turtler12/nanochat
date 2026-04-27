@@ -1,0 +1,10 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [3732193]: mask 0x7800000000000000f00 set
+hostkeys_find_by_key_hostfile: hostkeys_foreach failed for /afs/csail.mit.edu/u/m/medhaven/.ssh/known_hosts: Permission denied
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Resolved 134 packages in 10ms
+Checked 121 packages in 547ms
+2026-04-27 17:03:56,806 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 1

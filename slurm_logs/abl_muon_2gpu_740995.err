@@ -1,0 +1,8 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [2224755]: mask 0x7f80000000000000ff00 set
+Resolved 134 packages in 10ms
+Checked 121 packages in 527ms
+2026-04-27 00:30:19,892 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
+2026-04-27 01:09:13,723 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat_cache/base_checkpoints/ablation_muon_d12/optim_002205_rank1.pt
+2026-04-27 01:09:13,931 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved model parameters to: /data/scratch/medhaven/nanochat_cache/base_checkpoints/ablation_muon_d12/model_002205.pt
+2026-04-27 01:09:13,946 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved metadata to: /data/scratch/medhaven/nanochat_cache/base_checkpoints/ablation_muon_d12/meta_002205.json
+2026-04-27 01:09:20,372 - nanochat.checkpoint_manager - [32m[1mINFO[0m - Saved optimizer state to: /data/scratch/medhaven/nanochat_cache/base_checkpoints/ablation_muon_d12/optim_002205_rank0.pt

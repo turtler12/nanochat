@@ -128,7 +128,7 @@ def _ns0_normalized_step(
     """No NS: normalized gradient scaled to match Muon's nuclear norm."""
     momentum = momentum_t.to(stacked_grads.dtype)
     momentum_buffer.lerp_(stacked_grads, 1 - momentum)
-    g = stacked_grads.lerp_(momentum_buffer, momentum)
+    g = stacked_grads * momentum + momentum_buffer * (1 - momentum)
 
     m, n = g.size(-2), g.size(-1)
     scale = float(min(m, n)) ** 0.5
@@ -161,7 +161,7 @@ def _ns0_sign_step(
     """No NS: elementwise sign, scaled so nuclear norm matches Muon's."""
     momentum = momentum_t.to(stacked_grads.dtype)
     momentum_buffer.lerp_(stacked_grads, 1 - momentum)
-    g = stacked_grads.lerp_(momentum_buffer, momentum)
+    g = stacked_grads * momentum + momentum_buffer * (1 - momentum)
 
     m, n = g.size(-2), g.size(-1)
     # sign(G) has nuclear norm ≈ min(m,n); divide by sqrt(m*n) and multiply by
@@ -212,7 +212,7 @@ def _make_ftrl_kernel(coeffs, ns_steps, eta: float, renorm: bool):
         # NS iterations → Q
         X = g.bfloat16()
         X = X / (X.norm(dim=(-2, -1), keepdim=True) * 1.02 + 1e-6)
-        G_scaled = X  # save the unit-norm gradient used as input to NS
+        G_scaled = X.clone()  # detach from X before NS mutates it; stacked_grads may be an NCCL buffer
         if g.size(-2) > g.size(-1):
             for a, b, c in _c:
                 A = X.mT @ X
