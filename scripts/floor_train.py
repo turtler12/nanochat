@@ -1,10 +1,8 @@
 """
-Ablation: how much does Q quality matter?
-Tests 7 update modes: muon, fast4, ns3, ns2, ns1, ns0_normalized, ns0_sign
+FloorMuon training: cheap degree-3 polynomial replaces Newton-Schulz.
 
 Run as:
-    python -m scripts.ablation_train --update-mode muon --depth 12 --num-iterations 2205
-    python -m scripts.ablation_train --update-mode ns0_normalized --depth 12 --num-iterations 2205
+    python -m scripts.floor_train --update-mode floor_e1p0 --depth 12 --num-iterations 2205
 """
 
 import os
@@ -23,7 +21,8 @@ import torch
 from nanochat.gpt import GPT, GPTConfig
 from nanochat.dataloader import tokenizing_distributed_data_loader_bos_bestfit, tokenizing_distributed_data_loader_with_state_bos_bestfit
 from nanochat.common import compute_init, compute_cleanup, print0, DummyWandb, print_banner, get_base_dir, autodetect_device_type, get_peak_flops
-from nanochat.optim_ablation import AblationMuonAdamW, DistAblationMuonAdamW, UPDATE_MODES
+from nanochat.optim_floor import FloorMuonAdamW, DistFloorMuonAdamW, FLOOR_MODES, _parse_eps
+from nanochat.optim import adamw_step_fused
 from nanochat.tokenizer import get_tokenizer, get_token_bytes
 from nanochat.checkpoint_manager import save_checkpoint, load_checkpoint
 from nanochat.loss_eval import evaluate_bpb
@@ -33,18 +32,15 @@ from scripts.base_eval import evaluate_core
 print_banner()
 
 # -----------------------------------------------------------------------------
-parser = argparse.ArgumentParser(description="Ablation: NS iteration count vs model quality")
+parser = argparse.ArgumentParser(description="FloorMuon: cheap polynomial SV lifting")
 parser.add_argument("--run", type=str, default="dummy")
 parser.add_argument("--device-type", type=str, default="")
-parser.add_argument("--fp8", action="store_true")
-parser.add_argument("--fp8-recipe", type=str, default="tensorwise", choices=["rowwise", "tensorwise"])
 parser.add_argument("--depth", type=int, default=12)
 parser.add_argument("--aspect-ratio", type=int, default=64)
 parser.add_argument("--head-dim", type=int, default=128)
 parser.add_argument("--max-seq-len", type=int, default=2048)
 parser.add_argument("--window-pattern", type=str, default="SSSL")
 parser.add_argument("--num-iterations", type=int, default=-1)
-parser.add_argument("--target-flops", type=float, default=-1.0)
 parser.add_argument("--target-param-data-ratio", type=float, default=10.5)
 parser.add_argument("--device-batch-size", type=int, default=32)
 parser.add_argument("--total-batch-size", type=int, default=-1)
@@ -66,13 +62,15 @@ parser.add_argument("--core-metric-max-per-task", type=int, default=500)
 parser.add_argument("--sample-every", type=int, default=2000)
 parser.add_argument("--save-every", type=int, default=-1)
 parser.add_argument("--model-tag", type=str, default=None)
-# Ablation-specific
-parser.add_argument("--update-mode", type=str, default="muon",
-                    help=f"Update mode for matrix params. One of: {UPDATE_MODES}")
+# Floor-specific
+parser.add_argument("--update-mode", type=str, default="floor_e1p0",
+                    help=f"Floor polynomial mode. One of: {FLOOR_MODES}")
 args = parser.parse_args()
 user_config = vars(args).copy()
 
 print0(f"Update mode: {args.update_mode}")
+floor_eps = _parse_eps(args.update_mode)
+print0(f"Floor epsilon: {floor_eps}")
 
 # -----------------------------------------------------------------------------
 device_type = autodetect_device_type() if args.device_type == "" else args.device_type
@@ -129,7 +127,7 @@ model.to_empty(device=device)
 model.init_weights()
 
 base_dir = get_base_dir()
-output_dirname = args.model_tag if args.model_tag else f"ablation_{args.update_mode}_d{args.depth}"
+output_dirname = args.model_tag if args.model_tag else f"floor_{args.update_mode}_d{args.depth}"
 checkpoint_dir = os.path.join(base_dir, "base_checkpoints", output_dirname)
 resuming = args.resume_from_step != -1
 if resuming:
@@ -137,52 +135,6 @@ if resuming:
     model_data, optimizer_data, meta_data = load_checkpoint(checkpoint_dir, args.resume_from_step, device, load_optimizer=True, rank=ddp_rank)
     model.load_state_dict(model_data, strict=True, assign=True)
     del model_data
-
-# -----------------------------------------------------------------------------
-if args.fp8:
-    if device_type != "cuda":
-        print0("Warning: FP8 training requires CUDA, ignoring --fp8 flag")
-    else:
-        from nanochat.fp8 import Float8LinearConfig, convert_to_float8_training
-        import torch.nn as nn
-        def fp8_module_filter(mod: nn.Module, fqn: str) -> bool:
-            if not isinstance(mod, nn.Linear):
-                return False
-            return mod.in_features % 16 == 0 and mod.out_features % 16 == 0
-        fp8_config = Float8LinearConfig.from_recipe_name(args.fp8_recipe)
-        convert_to_float8_training(model, config=fp8_config, module_filter_fn=fp8_module_filter)
-        num_fp8_layers = sum(1 for m in model.modules() if 'Float8' in type(m).__name__)
-        num_skipped = sum(1 for m in model.modules() if isinstance(m, nn.Linear)) - num_fp8_layers
-        print0(f"✓ FP8 enabled ({args.fp8_recipe}) - {num_fp8_layers} layers converted, {num_skipped} skipped")
-
-@contextmanager
-def disable_fp8(model):
-    import torch.nn as nn
-    fp8_locations = []
-    for name, module in model.named_modules():
-        if 'Float8' in type(module).__name__:
-            if '.' in name:
-                parent_name, attr_name = name.rsplit('.', 1)
-                parent = model.get_submodule(parent_name)
-            else:
-                parent, attr_name = model, name
-            fp8_locations.append((parent, attr_name, module))
-    if not fp8_locations:
-        yield
-        return
-    for parent, attr_name, fp8_module in fp8_locations:
-        linear = nn.Linear(fp8_module.in_features, fp8_module.out_features,
-                           bias=fp8_module.bias is not None,
-                           device=fp8_module.weight.device, dtype=fp8_module.weight.dtype)
-        linear.weight = fp8_module.weight
-        if fp8_module.bias is not None:
-            linear.bias = fp8_module.bias
-        setattr(parent, attr_name, linear)
-    try:
-        yield
-    finally:
-        for parent, attr_name, fp8_module in fp8_locations:
-            setattr(parent, attr_name, fp8_module)
 
 # -----------------------------------------------------------------------------
 orig_model = model
@@ -225,9 +177,7 @@ if weight_decay_scaled != args.weight_decay:
     print0(f"Scaling weight decay {args.weight_decay:.6f} -> {weight_decay_scaled:.6f}")
 
 # -----------------------------------------------------------------------------
-# Build the optimizer using AblationMuonAdamW.
-# We replicate GPT.setup_optimizer here, injecting update_mode into muon groups.
-def setup_ablation_optimizer(model, update_mode):
+def setup_floor_optimizer(model, floor_eps):
     model_dim = orig_model.config.n_embd
     dmodel_lr_scale = (model_dim / 768) ** -0.5
     print0(f"dmodel_lr_scale: {dmodel_lr_scale:.6f}")
@@ -256,18 +206,18 @@ def setup_ablation_optimizer(model, update_mode):
         group_params = [p for p in matrix_params if p.shape == shape]
         param_groups.append(dict(
             kind='muon', params=group_params, lr=matrix_lr,
-            momentum=0.95, ns_steps=5, beta2=0.95,
+            momentum=0.95, beta2=0.95,
             weight_decay=weight_decay_scaled,
-            update_mode=update_mode,
+            floor_eps=floor_eps,
         ))
 
-    Factory = DistAblationMuonAdamW if ddp else AblationMuonAdamW
+    Factory = DistFloorMuonAdamW if ddp else FloorMuonAdamW
     optimizer = Factory(param_groups)
     for group in optimizer.param_groups:
         group["initial_lr"] = group["lr"]
     return optimizer
 
-optimizer = setup_ablation_optimizer(orig_model, args.update_mode)
+optimizer = setup_floor_optimizer(orig_model, floor_eps)
 
 if resuming:
     optimizer.load_state_dict(optimizer_data)
@@ -280,13 +230,10 @@ build_val_loader = lambda: tokenizing_distributed_data_loader_bos_bestfit(tokeni
 x, y, dataloader_state_dict = next(train_loader)
 
 # -----------------------------------------------------------------------------
-assert args.num_iterations > 0 or args.target_param_data_ratio > 0 or args.target_flops > 0
+assert args.num_iterations > 0 or args.target_param_data_ratio > 0
 if args.num_iterations > 0:
     num_iterations = args.num_iterations
     print0(f"Using user-provided number of iterations: {num_iterations:,}")
-elif args.target_flops > 0:
-    num_iterations = round(args.target_flops / (num_flops_per_token * total_batch_size))
-    print0(f"Calculated number of iterations from target FLOPs: {num_iterations:,}")
 else:
     num_iterations = target_tokens // total_batch_size
     print0(f"Calculated number of iterations from target data:param ratio: {num_iterations:,}")
@@ -352,7 +299,7 @@ while True:
         model.eval()
         val_loader = build_val_loader()
         eval_steps = args.eval_tokens // (args.device_batch_size * args.max_seq_len * ddp_world_size)
-        with disable_fp8(model), autocast_ctx:
+        with autocast_ctx:
             val_bpb = evaluate_bpb(model, val_loader, eval_steps, token_bytes)
         print0(f"Step {step:05d} | val bpb: {val_bpb:.6f}")
         if val_bpb < min_val_bpb:
@@ -367,7 +314,7 @@ while True:
     results = {}
     if args.core_metric_every > 0 and (last_step or (step > 0 and step % args.core_metric_every == 0)):
         model.eval()
-        with disable_fp8(orig_model), autocast_ctx:
+        with autocast_ctx:
             results = evaluate_core(orig_model, tokenizer, device, max_per_task=args.core_metric_max_per_task)
         print0(f"Step {step:05d} | CORE metric: {results['core_metric']:.4f}")
         wandb_run.log({"step": step, "total_training_flops": flops_so_far,
@@ -386,7 +333,7 @@ while True:
         engine = Engine(orig_model, tokenizer)
         for prompt in prompts:
             tokens = tokenizer(prompt, prepend="<|bos|>")
-            with disable_fp8(orig_model), autocast_ctx:
+            with autocast_ctx:
                 sample, _ = engine.generate_batch(tokens, num_samples=1, max_tokens=16, temperature=0)
             print0(tokenizer.decode(sample[0]))
         model.train()
@@ -476,9 +423,9 @@ if val_bpb is not None:
     print0(f"Min val bpb: {min_val_bpb:.6f}")
 
 from nanochat.report import get_report
-get_report().log(section="Ablation training", data=[
+get_report().log(section="FloorMuon training", data=[
     user_config,
-    {"update_mode": args.update_mode, "num_params": num_params,
+    {"update_mode": args.update_mode, "floor_eps": floor_eps, "num_params": num_params,
      "num_iterations": num_iterations, "total_tokens": total_tokens,
      "min_val_bpb": min_val_bpb if val_bpb is not None else None,
      "final_val_bpb": val_bpb,

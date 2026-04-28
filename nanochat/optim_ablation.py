@@ -2,13 +2,24 @@
 Ablation optimizer: multiple update modes to test how much Q quality matters.
 
 Modes (controlled by update_mode in the muon param group):
-  muon          - standard Muon: 5×quintic Polar Express (15 matmuls)
-  fast4         - optimized 4×quintic σ_lb=0.02 (12 matmuls)
-  ns3           - 3 Polar Express iterations (9 matmuls)
-  ns2           - 2 Polar Express iterations (6 matmuls)
-  ns1           - 1 Polar Express iteration (3 matmuls)
+  muon           - standard Muon: 5×quintic Polar Express (15 matmuls)
+  fast4          - optimized 4×quintic σ_lb=0.02 (12 matmuls)
+  fast3          - optimized 3×quintic σ_lb=0.02 (9 matmuls)
+  ns3            - 3 Polar Express iterations (9 matmuls)
+  ns2            - 2 Polar Express iterations (6 matmuls)
+  ns1            - 1 Polar Express iteration (3 matmuls)
   ns0_normalized - no NS: G / ||G||_F * sqrt(min(m,n))  (0 matmuls)
-  ns0_sign      - no NS: sign(G) * sqrt(min(m,n)) / sqrt(m*n)  (0 matmuls)
+  ns0_sign       - no NS: sign(G) * sqrt(min(m,n)) / sqrt(m*n)  (0 matmuls)
+
+  FTRL modes (exact first-order FTRL with adaptive shrinkage, +renorm):
+  ns2_ftrl_eta<E>  - 2 NS iters + FTRL correction at eta=E (6 matmuls)
+  ns3_ftrl_eta<E>  - 3 NS iters + FTRL correction at eta=E (9 matmuls)
+
+  No-renorm FTRL mode (keeps FTRL's natural Frobenius norm):
+  ns3_ftrl_norenorm_eta<E> - ns3 + FTRL, no renorm (9 matmuls)
+
+  Eta values are encoded in the mode string, e.g. "ns2_ftrl_eta0p1" for η=0.1.
+  Supported etas: 0.05, 0.1, 0.2, 0.3, 0.5, 1.0, 2.0
 """
 
 import torch
@@ -24,15 +35,42 @@ fast4_coeffs = [
     (2.4258, -2.6320,  0.7884),
 ]
 
-# Map mode → (coeffs, ns_steps).  ns0_* handled separately.
+# 3×quintic coefficients optimized for σ_lb=0.05 (Experiment A)
+# Optimized by sequential greedy + Nelder-Mead on σ ∈ [0.05, 0.98], max_err=1.72e-02
+fast3_coeffs = [
+    (6.508438, -16.193838, 10.685400),
+    (2.389784,  -1.838636,  0.448852),
+    (1.969975,  -1.362467,  0.392492),
+]
+
+# Map mode → (coeffs, ns_steps).  ns0_* and ftrl_* handled separately.
 _NS_MODES = {
     "muon":  (polar_express_coeffs, 5),
     "fast4": (fast4_coeffs,         4),
+    "fast3": (fast3_coeffs,         3),
     "ns3":   (polar_express_coeffs, 3),
     "ns2":   (polar_express_coeffs, 2),
     "ns1":   (polar_express_coeffs, 1),
 }
-UPDATE_MODES = list(_NS_MODES.keys()) + ["ns0_normalized", "ns0_sign"]
+
+# Supported FTRL etas encoded as "0p05" → 0.05, "0p1" → 0.1, etc.
+_FTRL_ETAS = {
+    "0p05": 0.05,
+    "0p1":  0.1,
+    "0p2":  0.2,
+    "0p3":  0.3,
+    "0p5":  0.5,
+    "1p0":  1.0,
+    "2p0":  2.0,
+}
+
+UPDATE_MODES = (
+    list(_NS_MODES.keys())
+    + ["ns0_normalized", "ns0_sign"]
+    + [f"ns2_ftrl_eta{k}" for k in _FTRL_ETAS]
+    + [f"ns3_ftrl_eta{k}" for k in _FTRL_ETAS]
+    + [f"ns3_ftrl_norenorm_eta{k}" for k in _FTRL_ETAS]
+)
 
 
 # One compiled kernel per NS mode (compile doesn't like dynamic coeff lists)
@@ -90,7 +128,7 @@ def _ns0_normalized_step(
     """No NS: normalized gradient scaled to match Muon's nuclear norm."""
     momentum = momentum_t.to(stacked_grads.dtype)
     momentum_buffer.lerp_(stacked_grads, 1 - momentum)
-    g = stacked_grads.lerp_(momentum_buffer, momentum)
+    g = stacked_grads * momentum + momentum_buffer * (1 - momentum)
 
     m, n = g.size(-2), g.size(-1)
     scale = float(min(m, n)) ** 0.5
@@ -123,7 +161,7 @@ def _ns0_sign_step(
     """No NS: elementwise sign, scaled so nuclear norm matches Muon's."""
     momentum = momentum_t.to(stacked_grads.dtype)
     momentum_buffer.lerp_(stacked_grads, 1 - momentum)
-    g = stacked_grads.lerp_(momentum_buffer, momentum)
+    g = stacked_grads * momentum + momentum_buffer * (1 - momentum)
 
     m, n = g.size(-2), g.size(-1)
     # sign(G) has nuclear norm ≈ min(m,n); divide by sqrt(m*n) and multiply by
@@ -149,6 +187,77 @@ def _ns0_sign_step(
     stacked_params.sub_(lr * g + lr * wd * stacked_params * mask)
 
 
+def _make_ftrl_kernel(coeffs, ns_steps, eta: float, renorm: bool):
+    """
+    NS iterations to get Q, then exact first-order FTRL correction:
+      nuclear_norm = (Q * G).sum()           # ⟨Q, G⟩ ≈ nuclear norm of G
+      s_bar = nuclear_norm / sqrt_r           # mean singular value estimate
+      update = (1 - eta*s_bar) * Q + eta * G
+    Optionally renormalize to sqrt(min(m,n)) Frobenius norm (renorm=True).
+    G here is the momentum-blended gradient before NS (scaled to unit norm).
+    """
+    _c = coeffs[:ns_steps]
+    _eta = eta
+    _renorm = renorm
+
+    @torch.compile(dynamic=False, fullgraph=True)
+    def _step(
+        stacked_grads, stacked_params, momentum_buffer, second_momentum_buffer,
+        momentum_t, lr_t, wd_t, beta2_t, red_dim: int,
+    ) -> None:
+        momentum = momentum_t.to(stacked_grads.dtype)
+        momentum_buffer.lerp_(stacked_grads, 1 - momentum)
+        g = stacked_grads.lerp_(momentum_buffer, momentum)
+
+        # NS iterations → Q
+        X = g.bfloat16()
+        X = X / (X.norm(dim=(-2, -1), keepdim=True) * 1.02 + 1e-6)
+        G_scaled = X.clone()  # detach from X before NS mutates it; stacked_grads may be an NCCL buffer
+        if g.size(-2) > g.size(-1):
+            for a, b, c in _c:
+                A = X.mT @ X
+                B = b * A + c * (A @ A)
+                X = a * X + X @ B
+        else:
+            for a, b, c in _c:
+                A = X @ X.mT
+                B = b * A + c * (A @ A)
+                X = a * X + B @ X
+        Q = X  # approximate polar factor
+
+        # Exact FTRL correction: update = (1 - η·s̄)·Q + η·G_scaled
+        # s̄ = ⟨Q, G_scaled⟩ / sqrt_r  (adaptive per-layer nuclear norm estimate)
+        m, n = g.size(-2), g.size(-1)
+        sqrt_r = float(min(m, n)) ** 0.5
+        nuclear_norm = (Q * G_scaled).sum(dim=(-2, -1), keepdim=True)
+        s_bar = nuclear_norm / sqrt_r
+        update = (1.0 - _eta * s_bar) * Q + _eta * G_scaled
+
+        if _renorm:
+            update = update * (sqrt_r / (update.norm(dim=(-2, -1), keepdim=True).clamp_min(1e-6)))
+
+        g = update
+
+        beta2 = beta2_t.to(g.dtype)
+        v_mean = g.float().square().mean(dim=red_dim, keepdim=True)
+        red_dim_size = g.size(red_dim)
+        v_norm_sq = v_mean.sum(dim=(-2, -1), keepdim=True) * red_dim_size
+        v_norm = v_norm_sq.sqrt()
+        second_momentum_buffer.lerp_(v_mean.to(dtype=second_momentum_buffer.dtype), 1 - beta2)
+        step_size = second_momentum_buffer.clamp_min(1e-10).rsqrt()
+        scaled_sq_sum = (v_mean * red_dim_size) * step_size.float().square()
+        v_norm_new = scaled_sq_sum.sum(dim=(-2, -1), keepdim=True).sqrt()
+        final_scale = step_size * (v_norm / v_norm_new.clamp_min(1e-10))
+        g = g * final_scale.to(g.dtype)
+
+        lr = lr_t.to(g.dtype)
+        wd = wd_t.to(g.dtype)
+        mask = (g * stacked_params) >= 0
+        stacked_params.sub_(lr * g + lr * wd * stacked_params * mask)
+
+    return _step
+
+
 def _get_step_fn(mode: str):
     if mode in _NS_MODES:
         coeffs, ns_steps = _NS_MODES[mode]
@@ -157,6 +266,19 @@ def _get_step_fn(mode: str):
         return _ns0_normalized_step
     elif mode == "ns0_sign":
         return _ns0_sign_step
+    elif mode.startswith("ns3_ftrl_norenorm_eta"):
+        # must check norenorm before the plain ns3_ftrl_eta branch
+        eta_key = mode.split("_eta")[1]
+        eta = _FTRL_ETAS[eta_key]
+        return _make_ftrl_kernel(polar_express_coeffs, 3, eta, renorm=False)
+    elif mode.startswith("ns2_ftrl_eta") or mode.startswith("ns3_ftrl_eta"):
+        # e.g. "ns2_ftrl_eta0p1" or "ns3_ftrl_eta0p3"
+        parts = mode.split("_eta")
+        ns_key = parts[0]  # "ns2_ftrl" or "ns3_ftrl"
+        eta_key = parts[1]
+        ns_steps = 2 if ns_key == "ns2_ftrl" else 3
+        eta = _FTRL_ETAS[eta_key]
+        return _make_ftrl_kernel(polar_express_coeffs, ns_steps, eta, renorm=True)
     else:
         raise ValueError(f"Unknown update_mode '{mode}'. Choose from: {UPDATE_MODES}")
 

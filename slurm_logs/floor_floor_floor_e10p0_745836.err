@@ -1,0 +1,47 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [4070887]: mask 0x6800000000000000f0008 set
+hostkeys_find_by_key_hostfile: hostkeys_foreach failed for /afs/csail.mit.edu/u/m/medhaven/.ssh/known_hosts: Permission denied
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Resolved 134 packages in 9ms
+Checked 121 packages in 545ms
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/scratch/medhaven/nanochat/scripts/floor_train.py", line 24, in <module>
+    from nanochat.optim_floor import FloorMuonAdamW, DistFloorMuonAdamW, FLOOR_MODES, _parse_eps
+ModuleNotFoundError: No module named 'nanochat.optim_floor'
+E0427 18:14:31.491000 4070968 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: 1) local_rank: 0 (pid: 4071397) of binary: /data/scratch/medhaven/nanochat/.venv/bin/python3
+Traceback (most recent call last):
+  File "/data/scratch/medhaven/nanochat/.venv/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data/scratch/medhaven/nanochat/.venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts.floor_train FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-04-27_18:14:31
+  host      : andreas-h100-1.csail.mit.edu
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 4071397)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

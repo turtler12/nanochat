@@ -1,0 +1,73 @@
+========================================
+Job ID: 725962
+Node: andreas-h100-1
+GPUs: 2
+Mode: ns3_ftrl_eta0p1 (2 GPU)
+Start Time: Fri Apr 24 17:58:52 EDT 2026
+========================================
+Fri Apr 24 17:58:52 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   50C    P0             69W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:81:00.0 Off |                    0 |
+| N/A   48C    P0             66W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+Update mode: ns3_ftrl_eta0p1
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+✓ Using Flash Attention 3 (Hopper GPU detected)
+Vocab size: 65,536
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 65536,
+  "n_layer": 12,
+  "n_head": 6,
+  "n_kv_head": 6,
+  "n_embd": 768,
+  "window_pattern": "SSSL"
+}
+Parameter counts:
+wte                     : 50,331,648
+value_embeds            : 301,989,888
+lm_head                 : 50,331,648
+transformer_matrices    : 84,935,808
+scalars                 : 24
+total                   : 487,589,016
+Auto-computed optimal batch size: 524,288 tokens
+dmodel_lr_scale: 1.000000
+Using user-provided number of iterations: 2,205
+Total training tokens: 1,156,055,040
+Tokens:Scaling params ratio: 8.55
+Total FLOPs estimate: 1.101908e+18
+Grad accum steps: 4
+========================================
+Job completed at: Fri Apr 24 18:02:06 EDT 2026
+========================================

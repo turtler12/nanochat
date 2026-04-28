@@ -1,0 +1,8 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [4079138]: mask 0xff00000000000000fe01 set
+Resolved 134 packages in 10ms
+Checked 121 packages in 835ms
+2026-04-25 17:32:41,195 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 2
+[2026-04-25T17:33:36.075] error: *** JOB 732850 ON andreas-h100-1 CANCELLED AT 2026-04-25T17:33:36 DUE to SIGNAL Terminated ***
+W0425 17:33:36.078000 4079255 torch/distributed/elastic/agent/server/api.py:725] Received Signals.SIGTERM death signal, shutting down workers
+W0425 17:33:36.081000 4079255 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 4079445 closing signal SIGTERM
+W0425 17:33:36.083000 4079255 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 4079446 closing signal SIGTERM

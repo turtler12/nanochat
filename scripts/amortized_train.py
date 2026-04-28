@@ -1,10 +1,8 @@
 """
-Ablation: how much does Q quality matter?
-Tests 7 update modes: muon, fast4, ns3, ns2, ns1, ns0_normalized, ns0_sign
+Amortized NS training: full Newton-Schulz every N steps, cheap cached-Q on others.
 
 Run as:
-    python -m scripts.ablation_train --update-mode muon --depth 12 --num-iterations 2205
-    python -m scripts.ablation_train --update-mode ns0_normalized --depth 12 --num-iterations 2205
+    python -m scripts.amortized_train --update-mode amort_4_e01 --depth 12 --num-iterations 2205
 """
 
 import os
@@ -23,7 +21,8 @@ import torch
 from nanochat.gpt import GPT, GPTConfig
 from nanochat.dataloader import tokenizing_distributed_data_loader_bos_bestfit, tokenizing_distributed_data_loader_with_state_bos_bestfit
 from nanochat.common import compute_init, compute_cleanup, print0, DummyWandb, print_banner, get_base_dir, autodetect_device_type, get_peak_flops
-from nanochat.optim_ablation import AblationMuonAdamW, DistAblationMuonAdamW, UPDATE_MODES
+from nanochat.optim_amortized import AmortizedMuonAdamW, DistAmortizedMuonAdamW, AMORT_MODES, _parse_mode
+from nanochat.optim import adamw_step_fused
 from nanochat.tokenizer import get_tokenizer, get_token_bytes
 from nanochat.checkpoint_manager import save_checkpoint, load_checkpoint
 from nanochat.loss_eval import evaluate_bpb
@@ -33,18 +32,15 @@ from scripts.base_eval import evaluate_core
 print_banner()
 
 # -----------------------------------------------------------------------------
-parser = argparse.ArgumentParser(description="Ablation: NS iteration count vs model quality")
+parser = argparse.ArgumentParser(description="Amortized NS training")
 parser.add_argument("--run", type=str, default="dummy")
 parser.add_argument("--device-type", type=str, default="")
-parser.add_argument("--fp8", action="store_true")
-parser.add_argument("--fp8-recipe", type=str, default="tensorwise", choices=["rowwise", "tensorwise"])
 parser.add_argument("--depth", type=int, default=12)
 parser.add_argument("--aspect-ratio", type=int, default=64)
 parser.add_argument("--head-dim", type=int, default=128)
 parser.add_argument("--max-seq-len", type=int, default=2048)
 parser.add_argument("--window-pattern", type=str, default="SSSL")
 parser.add_argument("--num-iterations", type=int, default=-1)
-parser.add_argument("--target-flops", type=float, default=-1.0)
 parser.add_argument("--target-param-data-ratio", type=float, default=10.5)
 parser.add_argument("--device-batch-size", type=int, default=32)
 parser.add_argument("--total-batch-size", type=int, default=-1)
@@ -66,13 +62,14 @@ parser.add_argument("--core-metric-max-per-task", type=int, default=500)
 parser.add_argument("--sample-every", type=int, default=2000)
 parser.add_argument("--save-every", type=int, default=-1)
 parser.add_argument("--model-tag", type=str, default=None)
-# Ablation-specific
-parser.add_argument("--update-mode", type=str, default="muon",
-                    help=f"Update mode for matrix params. One of: {UPDATE_MODES}")
+parser.add_argument("--update-mode", type=str, default="amort_4_e01",
+                    help=f"Amortized update mode. One of: {AMORT_MODES}")
 args = parser.parse_args()
 user_config = vars(args).copy()
 
 print0(f"Update mode: {args.update_mode}")
+interval, eta = _parse_mode(args.update_mode)
+print0(f"  recompute_interval={interval}, eta={eta}")
 
 # -----------------------------------------------------------------------------
 device_type = autodetect_device_type() if args.device_type == "" else args.device_type
@@ -129,7 +126,7 @@ model.to_empty(device=device)
 model.init_weights()
 
 base_dir = get_base_dir()
-output_dirname = args.model_tag if args.model_tag else f"ablation_{args.update_mode}_d{args.depth}"
+output_dirname = args.model_tag if args.model_tag else f"amortized_{args.update_mode}_d{args.depth}"
 checkpoint_dir = os.path.join(base_dir, "base_checkpoints", output_dirname)
 resuming = args.resume_from_step != -1
 if resuming:
@@ -139,50 +136,9 @@ if resuming:
     del model_data
 
 # -----------------------------------------------------------------------------
-if args.fp8:
-    if device_type != "cuda":
-        print0("Warning: FP8 training requires CUDA, ignoring --fp8 flag")
-    else:
-        from nanochat.fp8 import Float8LinearConfig, convert_to_float8_training
-        import torch.nn as nn
-        def fp8_module_filter(mod: nn.Module, fqn: str) -> bool:
-            if not isinstance(mod, nn.Linear):
-                return False
-            return mod.in_features % 16 == 0 and mod.out_features % 16 == 0
-        fp8_config = Float8LinearConfig.from_recipe_name(args.fp8_recipe)
-        convert_to_float8_training(model, config=fp8_config, module_filter_fn=fp8_module_filter)
-        num_fp8_layers = sum(1 for m in model.modules() if 'Float8' in type(m).__name__)
-        num_skipped = sum(1 for m in model.modules() if isinstance(m, nn.Linear)) - num_fp8_layers
-        print0(f"✓ FP8 enabled ({args.fp8_recipe}) - {num_fp8_layers} layers converted, {num_skipped} skipped")
-
 @contextmanager
 def disable_fp8(model):
-    import torch.nn as nn
-    fp8_locations = []
-    for name, module in model.named_modules():
-        if 'Float8' in type(module).__name__:
-            if '.' in name:
-                parent_name, attr_name = name.rsplit('.', 1)
-                parent = model.get_submodule(parent_name)
-            else:
-                parent, attr_name = model, name
-            fp8_locations.append((parent, attr_name, module))
-    if not fp8_locations:
-        yield
-        return
-    for parent, attr_name, fp8_module in fp8_locations:
-        linear = nn.Linear(fp8_module.in_features, fp8_module.out_features,
-                           bias=fp8_module.bias is not None,
-                           device=fp8_module.weight.device, dtype=fp8_module.weight.dtype)
-        linear.weight = fp8_module.weight
-        if fp8_module.bias is not None:
-            linear.bias = fp8_module.bias
-        setattr(parent, attr_name, linear)
-    try:
-        yield
-    finally:
-        for parent, attr_name, fp8_module in fp8_locations:
-            setattr(parent, attr_name, fp8_module)
+    yield
 
 # -----------------------------------------------------------------------------
 orig_model = model
@@ -225,9 +181,7 @@ if weight_decay_scaled != args.weight_decay:
     print0(f"Scaling weight decay {args.weight_decay:.6f} -> {weight_decay_scaled:.6f}")
 
 # -----------------------------------------------------------------------------
-# Build the optimizer using AblationMuonAdamW.
-# We replicate GPT.setup_optimizer here, injecting update_mode into muon groups.
-def setup_ablation_optimizer(model, update_mode):
+def setup_amortized_optimizer(model, update_mode):
     model_dim = orig_model.config.n_embd
     dmodel_lr_scale = (model_dim / 768) ** -0.5
     print0(f"dmodel_lr_scale: {dmodel_lr_scale:.6f}")
@@ -261,13 +215,13 @@ def setup_ablation_optimizer(model, update_mode):
             update_mode=update_mode,
         ))
 
-    Factory = DistAblationMuonAdamW if ddp else AblationMuonAdamW
+    Factory = DistAmortizedMuonAdamW if ddp else AmortizedMuonAdamW
     optimizer = Factory(param_groups)
     for group in optimizer.param_groups:
         group["initial_lr"] = group["lr"]
     return optimizer
 
-optimizer = setup_ablation_optimizer(orig_model, args.update_mode)
+optimizer = setup_amortized_optimizer(orig_model, args.update_mode)
 
 if resuming:
     optimizer.load_state_dict(optimizer_data)
@@ -280,20 +234,15 @@ build_val_loader = lambda: tokenizing_distributed_data_loader_bos_bestfit(tokeni
 x, y, dataloader_state_dict = next(train_loader)
 
 # -----------------------------------------------------------------------------
-assert args.num_iterations > 0 or args.target_param_data_ratio > 0 or args.target_flops > 0
+assert args.num_iterations > 0 or args.target_param_data_ratio > 0
 if args.num_iterations > 0:
     num_iterations = args.num_iterations
     print0(f"Using user-provided number of iterations: {num_iterations:,}")
-elif args.target_flops > 0:
-    num_iterations = round(args.target_flops / (num_flops_per_token * total_batch_size))
-    print0(f"Calculated number of iterations from target FLOPs: {num_iterations:,}")
 else:
     num_iterations = target_tokens // total_batch_size
     print0(f"Calculated number of iterations from target data:param ratio: {num_iterations:,}")
 total_tokens = total_batch_size * num_iterations
 print0(f"Total training tokens: {total_tokens:,}")
-print0(f"Tokens:Scaling params ratio: {total_tokens / num_scaling_params:.2f}")
-print0(f"Total FLOPs estimate: {num_flops_per_token * total_tokens:e}")
 
 def get_lr_multiplier(it):
     warmup_iters   = round(args.warmup_ratio   * num_iterations)
@@ -343,7 +292,26 @@ if master_process and not resuming:
     with open(val_log_path, "w") as f:
         f.write(json.dumps({"_config": user_config}) + "\n")
 
+
+def _get_timing_stats(optimizer):
+    """Aggregate full/cheap step timing across all muon groups."""
+    full_time = 0.0
+    cheap_time = 0.0
+    full_count = 0
+    cheap_count = 0
+    for group in optimizer.param_groups:
+        if group['kind'] != 'muon' or not group['params']:
+            continue
+        state = optimizer.state.get(group['params'][0], {})
+        full_time  += state.get("full_step_time", 0.0)
+        cheap_time += state.get("cheap_step_time", 0.0)
+        full_count += state.get("full_step_count", 0)
+        cheap_count += state.get("cheap_step_count", 0)
+    return full_time, cheap_time, full_count, cheap_count
+
+
 # -----------------------------------------------------------------------------
+results = {}
 while True:
     last_step = step == num_iterations
     flops_so_far = num_flops_per_token * total_batch_size * step
@@ -352,7 +320,7 @@ while True:
         model.eval()
         val_loader = build_val_loader()
         eval_steps = args.eval_tokens // (args.device_batch_size * args.max_seq_len * ddp_world_size)
-        with disable_fp8(model), autocast_ctx:
+        with autocast_ctx:
             val_bpb = evaluate_bpb(model, val_loader, eval_steps, token_bytes)
         print0(f"Step {step:05d} | val bpb: {val_bpb:.6f}")
         if val_bpb < min_val_bpb:
@@ -364,10 +332,9 @@ while True:
                        "total_training_time": total_training_time, "val/bpb": val_bpb})
         model.train()
 
-    results = {}
     if args.core_metric_every > 0 and (last_step or (step > 0 and step % args.core_metric_every == 0)):
         model.eval()
-        with disable_fp8(orig_model), autocast_ctx:
+        with autocast_ctx:
             results = evaluate_core(orig_model, tokenizer, device, max_per_task=args.core_metric_max_per_task)
         print0(f"Step {step:05d} | CORE metric: {results['core_metric']:.4f}")
         wandb_run.log({"step": step, "total_training_flops": flops_so_far,
@@ -386,7 +353,7 @@ while True:
         engine = Engine(orig_model, tokenizer)
         for prompt in prompts:
             tokens = tokenizer(prompt, prepend="<|bos|>")
-            with disable_fp8(orig_model), autocast_ctx:
+            with autocast_ctx:
                 sample, _ = engine.generate_batch(tokens, num_samples=1, max_tokens=16, temperature=0)
             print0(tokenizer.decode(sample[0]))
         model.train()
@@ -447,17 +414,31 @@ while True:
     else:
         eta_str = ""
     epoch = dataloader_state_dict["epoch"]
-    print0(f"step {step:05d}/{num_iterations:05d} ({pct_done:.2f}%) [{args.update_mode}] | loss: {debiased_smooth_loss:.6f} | lrm: {lrm:.2f} | dt: {dt*1000:.2f}ms | tok/s: {tok_per_sec:,} | mfu: {mfu:.2f} | epoch: {epoch}{eta_str}")
+
+    # Per-step type indicator
+    is_full = (step % interval == 0)
+    step_type = "FULL" if is_full else "cheap"
+    print0(f"step {step:05d}/{num_iterations:05d} ({pct_done:.2f}%) [{args.update_mode}|{step_type}] | loss: {debiased_smooth_loss:.6f} | lrm: {lrm:.2f} | dt: {dt*1000:.2f}ms | tok/s: {tok_per_sec:,} | mfu: {mfu:.2f} | epoch: {epoch}{eta_str}")
+
     if master_process:
         with open(train_log_path, "a") as f:
-            f.write(json.dumps({"step": step, "loss": debiased_smooth_loss, "dt": dt, "total_training_time": total_training_time}) + "\n")
+            f.write(json.dumps({"step": step, "loss": debiased_smooth_loss, "dt": dt,
+                                "step_type": step_type, "total_training_time": total_training_time}) + "\n")
+
     if step % 100 == 0:
+        full_time, cheap_time, full_count, cheap_count = _get_timing_stats(optimizer)
+        avg_full  = full_time  / max(full_count, 1)
+        avg_cheap = cheap_time / max(cheap_count, 1)
+        speedup   = avg_full / avg_cheap if avg_cheap > 0 else float('nan')
         wandb_run.log({
             "step": step, "total_training_flops": flops_so_far,
             "total_training_time": total_training_time,
             "train/loss": debiased_smooth_loss, "train/lrm": lrm,
             "train/dt": dt, "train/tok_per_sec": tok_per_sec,
             "train/mfu": mfu, "train/epoch": epoch,
+            "timing/avg_full_step_ms": avg_full * 1000,
+            "timing/avg_cheap_step_ms": avg_cheap * 1000,
+            "timing/full_vs_cheap_speedup": speedup,
         })
 
     first_step_of_run = (step == 0) or (resuming and step == args.resume_from_step)
@@ -475,14 +456,28 @@ print0(f"Total training time: {total_training_time/60:.2f}m")
 if val_bpb is not None:
     print0(f"Min val bpb: {min_val_bpb:.6f}")
 
+# Log timing summary
+full_time, cheap_time, full_count, cheap_count = _get_timing_stats(optimizer)
+if full_count > 0:
+    avg_full = full_time / full_count
+    print0(f"Avg full-step time (optimizer): {avg_full*1000:.2f}ms ({full_count} steps)")
+if cheap_count > 0:
+    avg_cheap = cheap_time / cheap_count
+    speedup = avg_full / avg_cheap if cheap_count > 0 and avg_cheap > 0 else float('nan')
+    print0(f"Avg cheap-step time (optimizer): {avg_cheap*1000:.2f}ms ({cheap_count} steps)")
+    print0(f"Optimizer step speedup (full/cheap): {speedup:.2f}x")
+
 from nanochat.report import get_report
-get_report().log(section="Ablation training", data=[
+get_report().log(section="Amortized NS training", data=[
     user_config,
-    {"update_mode": args.update_mode, "num_params": num_params,
-     "num_iterations": num_iterations, "total_tokens": total_tokens,
+    {"update_mode": args.update_mode, "recompute_interval": interval, "eta": eta,
+     "num_params": num_params, "num_iterations": num_iterations, "total_tokens": total_tokens,
      "min_val_bpb": min_val_bpb if val_bpb is not None else None,
      "final_val_bpb": val_bpb,
-     "core_metric": results.get("core_metric", None)},
+     "core_metric": results.get("core_metric", None),
+     "avg_full_step_ms": (full_time / full_count * 1000) if full_count > 0 else None,
+     "avg_cheap_step_ms": (cheap_time / cheap_count * 1000) if cheap_count > 0 else None,
+    },
 ])
 
 wandb_run.finish()

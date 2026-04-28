@@ -1,0 +1,67 @@
+========================================
+Job ID: 720856
+Node: andreas-h100-1
+GPUs: 1
+Mode: ns0_normalized
+Start Time: Thu Apr 23 18:48:14 EDT 2026
+========================================
+Thu Apr 23 18:48:14 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   46C    P0             67W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting ablation mode: ns0_normalized
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+Update mode: ns0_normalized
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+✓ Using Flash Attention 3 (Hopper GPU detected)
+Vocab size: 265
+Padding vocab_size from 265 to 320 for efficiency
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 265,
+  "n_layer": 12,
+  "n_head": 6,
+  "n_kv_head": 6,
+  "n_embd": 768,
+  "window_pattern": "SSSL"
+}
+Parameter counts:
+wte                     : 245,760
+value_embeds            : 1,474,560
+lm_head                 : 245,760
+transformer_matrices    : 84,935,808
+scalars                 : 24
+total                   : 86,901,912
+Padding vocab_size from 265 to 320 for efficiency
+Auto-computed optimal batch size: 524,288 tokens
+dmodel_lr_scale: 1.000000
+========================================
+[ns0_normalized] Job completed at: Thu Apr 23 18:48:48 EDT 2026
+========================================

@@ -1,0 +1,153 @@
+========================================
+Job ID: 726904
+Node: andreas-h100-1
+GPUs: 2
+Mode: ns3_ftrl_eta0p1 (2 GPU)
+Start Time: Fri Apr 24 21:50:08 EDT 2026
+========================================
+Fri Apr 24 21:50:08 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 575.57.08              Driver Version: 575.57.08      CUDA Version: 12.9     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 NVL                On  |   00000000:01:00.0 Off |                    0 |
+| N/A   44C    P0             66W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 NVL                On  |   00000000:A1:00.0 Off |                    0 |
+| N/A   71C    P0             80W /  400W |       0MiB /  95830MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+                                                       █████                █████
+                                                      ░░███                ░░███
+     ████████    ██████   ████████    ██████   ██████  ░███████    ██████  ███████
+    ░░███░░███  ░░░░░███ ░░███░░███  ███░░███ ███░░███ ░███░░███  ░░░░░███░░░███░
+     ░███ ░███   ███████  ░███ ░███ ░███ ░███░███ ░░░  ░███ ░███   ███████  ░███
+     ░███ ░███  ███░░███  ░███ ░███ ░███ ░███░███  ███ ░███ ░███  ███░░███  ░███ ███
+     ████ █████░░████████ ████ █████░░██████ ░░██████  ████ █████░░███████  ░░█████
+    ░░░░ ░░░░░  ░░░░░░░░ ░░░░ ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░   ░░░░░
+    
+Update mode: ns3_ftrl_eta0p1
+Autodetected device type: cuda
+GPU: NVIDIA H100 NVL | Peak FLOPS (BF16): 8.35e+14
+✓ Using Flash Attention 3 (Hopper GPU detected)
+Vocab size: 65,536
+Model config:
+{
+  "sequence_len": 2048,
+  "vocab_size": 65536,
+  "n_layer": 12,
+  "n_head": 6,
+  "n_kv_head": 6,
+  "n_embd": 768,
+  "window_pattern": "SSSL"
+}
+Parameter counts:
+wte                     : 50,331,648
+value_embeds            : 301,989,888
+lm_head                 : 50,331,648
+transformer_matrices    : 84,935,808
+scalars                 : 24
+total                   : 487,589,016
+Auto-computed optimal batch size: 524,288 tokens
+dmodel_lr_scale: 1.000000
+Using user-provided number of iterations: 2,205
+Total training tokens: 1,156,055,040
+Tokens:Scaling params ratio: 8.55
+Total FLOPs estimate: 1.101908e+18
+Grad accum steps: 4
+Step 00000 | val bpb: 3.251830
+step 00000/02205 (0.00%) [ns3_ftrl_eta0p1] | loss: 11.089952 | lrm: 1.00 | dt: 15314.71ms | tok/s: 34,234 | mfu: 1.95 | epoch: 1
+step 00001/02205 (0.05%) [ns3_ftrl_eta0p1] | loss: 10.849559 | lrm: 1.00 | dt: 822.88ms | tok/s: 637,134 | mfu: 36.36 | epoch: 1
+step 00002/02205 (0.09%) [ns3_ftrl_eta0p1] | loss: 10.245057 | lrm: 1.00 | dt: 844.16ms | tok/s: 621,074 | mfu: 35.45 | epoch: 1
+step 00003/02205 (0.14%) [ns3_ftrl_eta0p1] | loss: 9.604113 | lrm: 1.00 | dt: 846.08ms | tok/s: 619,664 | mfu: 35.37 | epoch: 1
+step 00004/02205 (0.18%) [ns3_ftrl_eta0p1] | loss: 9.033725 | lrm: 1.00 | dt: 848.49ms | tok/s: 617,907 | mfu: 35.27 | epoch: 1
+step 00005/02205 (0.23%) [ns3_ftrl_eta0p1] | loss: 8.601890 | lrm: 1.00 | dt: 849.39ms | tok/s: 617,255 | mfu: 35.23 | epoch: 1
+step 00006/02205 (0.27%) [ns3_ftrl_eta0p1] | loss: 8.270494 | lrm: 1.00 | dt: 850.57ms | tok/s: 616,395 | mfu: 35.18 | epoch: 1
+step 00007/02205 (0.32%) [ns3_ftrl_eta0p1] | loss: 7.994794 | lrm: 1.00 | dt: 843.08ms | tok/s: 621,871 | mfu: 35.49 | epoch: 1
+step 00008/02205 (0.36%) [ns3_ftrl_eta0p1] | loss: 7.776181 | lrm: 1.00 | dt: 845.39ms | tok/s: 620,174 | mfu: 35.40 | epoch: 1
+step 00009/02205 (0.41%) [ns3_ftrl_eta0p1] | loss: 7.587609 | lrm: 1.00 | dt: 841.58ms | tok/s: 622,980 | mfu: 35.56 | epoch: 1
+step 00010/02205 (0.45%) [ns3_ftrl_eta0p1] | loss: 7.427335 | lrm: 1.00 | dt: 847.22ms | tok/s: 618,833 | mfu: 35.32 | epoch: 1
+step 00011/02205 (0.50%) [ns3_ftrl_eta0p1] | loss: 7.275262 | lrm: 1.00 | dt: 858.88ms | tok/s: 610,429 | mfu: 34.84 | epoch: 1 | eta: 31.4m
+step 00012/02205 (0.54%) [ns3_ftrl_eta0p1] | loss: 7.165978 | lrm: 1.00 | dt: 850.29ms | tok/s: 616,601 | mfu: 35.19 | epoch: 1 | eta: 31.2m
+step 00013/02205 (0.59%) [ns3_ftrl_eta0p1] | loss: 7.050755 | lrm: 1.00 | dt: 847.73ms | tok/s: 618,464 | mfu: 35.30 | epoch: 1 | eta: 31.1m
+step 00014/02205 (0.63%) [ns3_ftrl_eta0p1] | loss: 6.954254 | lrm: 1.00 | dt: 851.70ms | tok/s: 615,580 | mfu: 35.13 | epoch: 1 | eta: 31.1m
+step 00015/02205 (0.68%) [ns3_ftrl_eta0p1] | loss: 6.866583 | lrm: 1.00 | dt: 854.81ms | tok/s: 613,339 | mfu: 35.01 | epoch: 1 | eta: 31.1m
+step 00016/02205 (0.73%) [ns3_ftrl_eta0p1] | loss: 6.791409 | lrm: 1.00 | dt: 846.61ms | tok/s: 619,278 | mfu: 35.35 | epoch: 1 | eta: 31.1m
+step 00017/02205 (0.77%) [ns3_ftrl_eta0p1] | loss: 6.721238 | lrm: 1.00 | dt: 854.88ms | tok/s: 613,291 | mfu: 35.00 | epoch: 1 | eta: 31.1m
+step 00018/02205 (0.82%) [ns3_ftrl_eta0p1] | loss: 6.651143 | lrm: 1.00 | dt: 860.62ms | tok/s: 609,200 | mfu: 34.77 | epoch: 1 | eta: 31.1m
+step 00019/02205 (0.86%) [ns3_ftrl_eta0p1] | loss: 6.582750 | lrm: 1.00 | dt: 853.61ms | tok/s: 614,202 | mfu: 35.06 | epoch: 1 | eta: 31.1m
+step 00020/02205 (0.91%) [ns3_ftrl_eta0p1] | loss: 6.536460 | lrm: 1.00 | dt: 853.34ms | tok/s: 614,395 | mfu: 35.07 | epoch: 1 | eta: 31.1m
+step 00021/02205 (0.95%) [ns3_ftrl_eta0p1] | loss: 6.485092 | lrm: 1.00 | dt: 851.39ms | tok/s: 615,800 | mfu: 35.15 | epoch: 1 | eta: 31.1m
+step 00022/02205 (1.00%) [ns3_ftrl_eta0p1] | loss: 6.434777 | lrm: 1.00 | dt: 857.95ms | tok/s: 611,090 | mfu: 34.88 | epoch: 1 | eta: 31.1m
+step 00023/02205 (1.04%) [ns3_ftrl_eta0p1] | loss: 6.381806 | lrm: 1.00 | dt: 854.04ms | tok/s: 613,889 | mfu: 35.04 | epoch: 1 | eta: 31.0m
+step 00024/02205 (1.09%) [ns3_ftrl_eta0p1] | loss: 6.334488 | lrm: 1.00 | dt: 854.40ms | tok/s: 613,629 | mfu: 35.02 | epoch: 1 | eta: 31.0m
+step 00025/02205 (1.13%) [ns3_ftrl_eta0p1] | loss: 6.293823 | lrm: 1.00 | dt: 857.19ms | tok/s: 611,635 | mfu: 34.91 | epoch: 1 | eta: 31.0m
+step 00026/02205 (1.18%) [ns3_ftrl_eta0p1] | loss: 6.254570 | lrm: 1.00 | dt: 866.39ms | tok/s: 605,142 | mfu: 34.54 | epoch: 1 | eta: 31.0m
+step 00027/02205 (1.22%) [ns3_ftrl_eta0p1] | loss: 6.220072 | lrm: 1.00 | dt: 860.77ms | tok/s: 609,088 | mfu: 34.76 | epoch: 1 | eta: 31.0m
+step 00028/02205 (1.27%) [ns3_ftrl_eta0p1] | loss: 6.184696 | lrm: 1.00 | dt: 862.98ms | tok/s: 607,534 | mfu: 34.68 | epoch: 1 | eta: 31.0m
+step 00029/02205 (1.32%) [ns3_ftrl_eta0p1] | loss: 6.146127 | lrm: 1.00 | dt: 868.65ms | tok/s: 603,568 | mfu: 34.45 | epoch: 1 | eta: 31.0m
+step 00030/02205 (1.36%) [ns3_ftrl_eta0p1] | loss: 6.110438 | lrm: 1.00 | dt: 857.68ms | tok/s: 611,287 | mfu: 34.89 | epoch: 1 | eta: 31.0m
+step 00031/02205 (1.41%) [ns3_ftrl_eta0p1] | loss: 6.075671 | lrm: 1.00 | dt: 864.32ms | tok/s: 606,592 | mfu: 34.62 | epoch: 1 | eta: 31.0m
+step 00032/02205 (1.45%) [ns3_ftrl_eta0p1] | loss: 6.042945 | lrm: 1.00 | dt: 861.32ms | tok/s: 608,699 | mfu: 34.74 | epoch: 1 | eta: 31.0m
+step 00033/02205 (1.50%) [ns3_ftrl_eta0p1] | loss: 6.010837 | lrm: 1.00 | dt: 866.22ms | tok/s: 605,256 | mfu: 34.55 | epoch: 1 | eta: 31.0m
+step 00034/02205 (1.54%) [ns3_ftrl_eta0p1] | loss: 5.983510 | lrm: 1.00 | dt: 858.25ms | tok/s: 610,881 | mfu: 34.87 | epoch: 1 | eta: 31.0m
+step 00035/02205 (1.59%) [ns3_ftrl_eta0p1] | loss: 5.949246 | lrm: 1.00 | dt: 868.57ms | tok/s: 603,625 | mfu: 34.45 | epoch: 1 | eta: 31.0m
+step 00036/02205 (1.63%) [ns3_ftrl_eta0p1] | loss: 5.911112 | lrm: 1.00 | dt: 863.44ms | tok/s: 607,210 | mfu: 34.66 | epoch: 1 | eta: 31.0m
+step 00037/02205 (1.68%) [ns3_ftrl_eta0p1] | loss: 5.883656 | lrm: 1.00 | dt: 863.62ms | tok/s: 607,079 | mfu: 34.65 | epoch: 1 | eta: 31.0m
+step 00038/02205 (1.72%) [ns3_ftrl_eta0p1] | loss: 5.852472 | lrm: 1.00 | dt: 872.13ms | tok/s: 601,160 | mfu: 34.31 | epoch: 1 | eta: 31.0m
+step 00039/02205 (1.77%) [ns3_ftrl_eta0p1] | loss: 5.827092 | lrm: 1.00 | dt: 868.22ms | tok/s: 603,868 | mfu: 34.47 | epoch: 1 | eta: 31.0m
+step 00040/02205 (1.81%) [ns3_ftrl_eta0p1] | loss: 5.807475 | lrm: 1.00 | dt: 869.50ms | tok/s: 602,977 | mfu: 34.42 | epoch: 1 | eta: 31.0m
+step 00041/02205 (1.86%) [ns3_ftrl_eta0p1] | loss: 5.788043 | lrm: 1.00 | dt: 867.64ms | tok/s: 604,266 | mfu: 34.49 | epoch: 1 | eta: 31.0m
+step 00042/02205 (1.90%) [ns3_ftrl_eta0p1] | loss: 5.765594 | lrm: 1.00 | dt: 871.94ms | tok/s: 601,290 | mfu: 34.32 | epoch: 1 | eta: 31.0m
+step 00043/02205 (1.95%) [ns3_ftrl_eta0p1] | loss: 5.743256 | lrm: 1.00 | dt: 879.88ms | tok/s: 595,860 | mfu: 34.01 | epoch: 1 | eta: 31.0m
+step 00044/02205 (2.00%) [ns3_ftrl_eta0p1] | loss: 5.715963 | lrm: 1.00 | dt: 872.38ms | tok/s: 600,983 | mfu: 34.30 | epoch: 1 | eta: 31.0m
+step 00045/02205 (2.04%) [ns3_ftrl_eta0p1] | loss: 5.700345 | lrm: 1.00 | dt: 869.75ms | tok/s: 602,802 | mfu: 34.41 | epoch: 1 | eta: 31.0m
+step 00046/02205 (2.09%) [ns3_ftrl_eta0p1] | loss: 5.670295 | lrm: 1.00 | dt: 877.19ms | tok/s: 597,692 | mfu: 34.11 | epoch: 1 | eta: 31.0m
+step 00047/02205 (2.13%) [ns3_ftrl_eta0p1] | loss: 5.644403 | lrm: 1.00 | dt: 874.13ms | tok/s: 599,784 | mfu: 34.23 | epoch: 1 | eta: 31.0m
+step 00048/02205 (2.18%) [ns3_ftrl_eta0p1] | loss: 5.617143 | lrm: 1.00 | dt: 869.43ms | tok/s: 603,024 | mfu: 34.42 | epoch: 1 | eta: 31.0m
+step 00049/02205 (2.22%) [ns3_ftrl_eta0p1] | loss: 5.593705 | lrm: 1.00 | dt: 878.87ms | tok/s: 596,545 | mfu: 34.05 | epoch: 1 | eta: 31.0m
+step 00050/02205 (2.27%) [ns3_ftrl_eta0p1] | loss: 5.579770 | lrm: 1.00 | dt: 868.35ms | tok/s: 603,777 | mfu: 34.46 | epoch: 1 | eta: 31.0m
+step 00051/02205 (2.31%) [ns3_ftrl_eta0p1] | loss: 5.559063 | lrm: 1.00 | dt: 878.46ms | tok/s: 596,829 | mfu: 34.06 | epoch: 1 | eta: 31.0m
+step 00052/02205 (2.36%) [ns3_ftrl_eta0p1] | loss: 5.536730 | lrm: 1.00 | dt: 875.72ms | tok/s: 598,697 | mfu: 34.17 | epoch: 1 | eta: 31.0m
+step 00053/02205 (2.40%) [ns3_ftrl_eta0p1] | loss: 5.515845 | lrm: 1.00 | dt: 872.53ms | tok/s: 600,883 | mfu: 34.30 | epoch: 1 | eta: 31.0m
+step 00054/02205 (2.45%) [ns3_ftrl_eta0p1] | loss: 5.490220 | lrm: 1.00 | dt: 880.11ms | tok/s: 595,708 | mfu: 34.00 | epoch: 1 | eta: 31.0m
+step 00055/02205 (2.49%) [ns3_ftrl_eta0p1] | loss: 5.472113 | lrm: 1.00 | dt: 876.95ms | tok/s: 597,853 | mfu: 34.12 | epoch: 1 | eta: 31.0m
+step 00056/02205 (2.54%) [ns3_ftrl_eta0p1] | loss: 5.446266 | lrm: 1.00 | dt: 874.82ms | tok/s: 599,310 | mfu: 34.21 | epoch: 1 | eta: 31.0m
+step 00057/02205 (2.59%) [ns3_ftrl_eta0p1] | loss: 5.421300 | lrm: 1.00 | dt: 878.40ms | tok/s: 596,867 | mfu: 34.07 | epoch: 1 | eta: 31.0m
+step 00058/02205 (2.63%) [ns3_ftrl_eta0p1] | loss: 5.408011 | lrm: 1.00 | dt: 880.27ms | tok/s: 595,599 | mfu: 33.99 | epoch: 1 | eta: 31.0m
+step 00059/02205 (2.68%) [ns3_ftrl_eta0p1] | loss: 5.382765 | lrm: 1.00 | dt: 880.07ms | tok/s: 595,731 | mfu: 34.00 | epoch: 1 | eta: 31.0m
+step 00060/02205 (2.72%) [ns3_ftrl_eta0p1] | loss: 5.361905 | lrm: 1.00 | dt: 878.10ms | tok/s: 597,072 | mfu: 34.08 | epoch: 1 | eta: 30.9m
+step 00061/02205 (2.77%) [ns3_ftrl_eta0p1] | loss: 5.343721 | lrm: 1.00 | dt: 880.12ms | tok/s: 595,699 | mfu: 34.00 | epoch: 1 | eta: 30.9m
+step 00062/02205 (2.81%) [ns3_ftrl_eta0p1] | loss: 5.339034 | lrm: 1.00 | dt: 882.90ms | tok/s: 593,824 | mfu: 33.89 | epoch: 1 | eta: 30.9m
+step 00063/02205 (2.86%) [ns3_ftrl_eta0p1] | loss: 5.316320 | lrm: 1.00 | dt: 877.77ms | tok/s: 597,293 | mfu: 34.09 | epoch: 1 | eta: 30.9m
+step 00064/02205 (2.90%) [ns3_ftrl_eta0p1] | loss: 5.298662 | lrm: 1.00 | dt: 883.60ms | tok/s: 593,355 | mfu: 33.87 | epoch: 1 | eta: 30.9m
+step 00065/02205 (2.95%) [ns3_ftrl_eta0p1] | loss: 5.269625 | lrm: 1.00 | dt: 878.44ms | tok/s: 596,838 | mfu: 34.06 | epoch: 1 | eta: 30.9m
+step 00066/02205 (2.99%) [ns3_ftrl_eta0p1] | loss: 5.253053 | lrm: 1.00 | dt: 898.25ms | tok/s: 583,677 | mfu: 33.31 | epoch: 1 | eta: 30.9m
+step 00067/02205 (3.04%) [ns3_ftrl_eta0p1] | loss: 5.248695 | lrm: 1.00 | dt: 913.18ms | tok/s: 574,133 | mfu: 32.77 | epoch: 1 | eta: 30.9m
+step 00068/02205 (3.08%) [ns3_ftrl_eta0p1] | loss: 5.220321 | lrm: 1.00 | dt: 897.17ms | tok/s: 584,379 | mfu: 33.35 | epoch: 1 | eta: 30.9m
+step 00069/02205 (3.13%) [ns3_ftrl_eta0p1] | loss: 5.202738 | lrm: 1.00 | dt: 886.84ms | tok/s: 591,187 | mfu: 33.74 | epoch: 1 | eta: 30.9m
+step 00070/02205 (3.17%) [ns3_ftrl_eta0p1] | loss: 5.178622 | lrm: 1.00 | dt: 891.50ms | tok/s: 588,096 | mfu: 33.57 | epoch: 1 | eta: 30.9m
+step 00071/02205 (3.22%) [ns3_ftrl_eta0p1] | loss: 5.165254 | lrm: 1.00 | dt: 886.95ms | tok/s: 591,111 | mfu: 33.74 | epoch: 1 | eta: 30.9m
+step 00072/02205 (3.27%) [ns3_ftrl_eta0p1] | loss: 5.147947 | lrm: 1.00 | dt: 909.21ms | tok/s: 576,639 | mfu: 32.91 | epoch: 1 | eta: 30.9m
+step 00073/02205 (3.31%) [ns3_ftrl_eta0p1] | loss: 5.144308 | lrm: 1.00 | dt: 866.15ms | tok/s: 605,307 | mfu: 34.55 | epoch: 1 | eta: 30.9m
+step 00074/02205 (3.36%) [ns3_ftrl_eta0p1] | loss: 5.124986 | lrm: 1.00 | dt: 893.06ms | tok/s: 587,069 | mfu: 33.51 | epoch: 1 | eta: 30.9m
+step 00075/02205 (3.40%) [ns3_ftrl_eta0p1] | loss: 5.103472 | lrm: 1.00 | dt: 888.99ms | tok/s: 589,756 | mfu: 33.66 | epoch: 1 | eta: 30.9m
+step 00076/02205 (3.45%) [ns3_ftrl_eta0p1] | loss: 5.089121 | lrm: 1.00 | dt: 893.13ms | tok/s: 587,021 | mfu: 33.50 | epoch: 1 | eta: 30.9m
+step 00077/02205 (3.49%) [ns3_ftrl_eta0p1] | loss: 5.074942 | lrm: 1.00 | dt: 883.76ms | tok/s: 593,244 | mfu: 33.86 | epoch: 1 | eta: 30.9m
+step 00078/02205 (3.54%) [ns3_ftrl_eta0p1] | loss: 5.053705 | lrm: 1.00 | dt: 884.24ms | tok/s: 592,924 | mfu: 33.84 | epoch: 1 | eta: 30.9m
+========================================
+Job completed at: Fri Apr 24 21:52:53 EDT 2026
+========================================
