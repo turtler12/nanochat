@@ -17,7 +17,10 @@ import argparse
 from dataclasses import asdict
 from contextlib import nullcontext, contextmanager
 
-import wandb
+try:
+    import wandb
+except ImportError:
+    wandb = None
 import torch
 
 from nanochat.gpt import GPT, GPTConfig
@@ -88,7 +91,7 @@ if device_type == "cuda":
 else:
     gpu_peak_flops = float('inf')
 
-use_dummy_wandb = args.run == "dummy" or not master_process
+use_dummy_wandb = args.run == "dummy" or not master_process or wandb is None
 wandb_run = DummyWandb() if use_dummy_wandb else wandb.init(project="nanochat", name=args.run, config=user_config)
 
 if HAS_FA3:
