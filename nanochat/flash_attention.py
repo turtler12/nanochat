@@ -41,6 +41,9 @@ def _load_flash_attention_3():
 _fa3 = _load_flash_attention_3()
 HAS_FA3 = _fa3 is not None
 
+# enable_gqa was added in PyTorch 2.5
+_SDPA_SUPPORTS_GQA = tuple(int(x) for x in torch.__version__.split(".")[:2] if x.isdigit()) >= (2, 5)
+
 # Override for testing: set to 'fa3', 'sdpa', or None (auto)
 _override_impl = None
 
@@ -66,10 +69,11 @@ def _sdpa_attention(q, k, v, window_size, enable_gqa):
     Tq = q.size(2)
     Tk = k.size(2)
     window = window_size[0]
+    gqa_kwargs = {"enable_gqa": enable_gqa} if _SDPA_SUPPORTS_GQA else {}
 
     # Full context, same length
     if (window < 0 or window >= Tq) and Tq == Tk:
-        return F.scaled_dot_product_attention(q, k, v, is_causal=True, enable_gqa=enable_gqa)
+        return F.scaled_dot_product_attention(q, k, v, is_causal=True, **gqa_kwargs)
 
     # Single token generation
     if Tq == 1:
@@ -78,7 +82,7 @@ def _sdpa_attention(q, k, v, window_size, enable_gqa):
             start = max(0, Tk - (window + 1))
             k = k[:, :, start:, :]
             v = v[:, :, start:, :]
-        return F.scaled_dot_product_attention(q, k, v, is_causal=False, enable_gqa=enable_gqa)
+        return F.scaled_dot_product_attention(q, k, v, is_causal=False, **gqa_kwargs)
 
     # Need explicit mask for sliding window/chunk inference
     device = q.device
@@ -90,8 +94,8 @@ def _sdpa_attention(q, k, v, window_size, enable_gqa):
     # sliding window (left)
     if window >= 0 and window < Tk:
         mask = mask & ((row_idx - col_idx) <= window)
-    
-    return F.scaled_dot_product_attention(q, k, v, attn_mask=mask, enable_gqa=enable_gqa)
+
+    return F.scaled_dot_product_attention(q, k, v, attn_mask=mask, **gqa_kwargs)
 
 # =============================================================================
 # Public API: Same interface as FA3
