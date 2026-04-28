@@ -20,6 +20,11 @@ Modes (controlled by update_mode in the muon param group):
 
   Eta values are encoded in the mode string, e.g. "ns2_ftrl_eta0p1" for η=0.1.
   Supported etas: 0.05, 0.1, 0.2, 0.3, 0.5, 1.0, 2.0
+
+  Decaying-eta FTRL modes (eta scheduled by training loop via group['ftrl_eta']):
+  ns3_ftrl_linear_eta0p3 - η(t) = 0.3 * (1 - t/T), linear decay to 0
+  ns3_ftrl_exp_eta0p3    - η(t) = 0.3 * exp(-5t/T), exponential decay
+  Training loop must update group['ftrl_eta'] each step; kernel reads it as a tensor.
 """
 
 import torch
@@ -70,6 +75,7 @@ UPDATE_MODES = (
     + [f"ns2_ftrl_eta{k}" for k in _FTRL_ETAS]
     + [f"ns3_ftrl_eta{k}" for k in _FTRL_ETAS]
     + [f"ns3_ftrl_norenorm_eta{k}" for k in _FTRL_ETAS]
+    + ["ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3"]
 )
 
 
@@ -258,6 +264,66 @@ def _make_ftrl_kernel(coeffs, ns_steps, eta: float, renorm: bool):
     return _step
 
 
+def _make_ftrl_dynamic_eta_kernel(coeffs, ns_steps):
+    """
+    Same as _make_ftrl_kernel but eta is passed as a tensor each step,
+    allowing the training loop to schedule it (linear, exponential, etc.).
+    """
+    _c = coeffs[:ns_steps]
+
+    @torch.compile(dynamic=False, fullgraph=True)
+    def _step(
+        stacked_grads, stacked_params, momentum_buffer, second_momentum_buffer,
+        momentum_t, lr_t, wd_t, beta2_t, red_dim: int, eta_t,
+    ) -> None:
+        momentum = momentum_t.to(stacked_grads.dtype)
+        momentum_buffer.lerp_(stacked_grads, 1 - momentum)
+        g = stacked_grads.lerp_(momentum_buffer, momentum)
+
+        X = g.bfloat16()
+        X = X / (X.norm(dim=(-2, -1), keepdim=True) * 1.02 + 1e-6)
+        G_scaled = X.clone()
+        if g.size(-2) > g.size(-1):
+            for a, b, c in _c:
+                A = X.mT @ X
+                B = b * A + c * (A @ A)
+                X = a * X + X @ B
+        else:
+            for a, b, c in _c:
+                A = X @ X.mT
+                B = b * A + c * (A @ A)
+                X = a * X + B @ X
+        Q = X
+
+        m, n = g.size(-2), g.size(-1)
+        sqrt_r = float(min(m, n)) ** 0.5
+        nuclear_norm = (Q * G_scaled).sum(dim=(-2, -1), keepdim=True)
+        s_bar = nuclear_norm / sqrt_r
+        eta = eta_t.to(g.dtype)
+        update = (1.0 - eta * s_bar) * Q + eta * G_scaled
+        update = update * (sqrt_r / (update.norm(dim=(-2, -1), keepdim=True).clamp_min(1e-6)))
+        g = update
+
+        beta2 = beta2_t.to(g.dtype)
+        v_mean = g.float().square().mean(dim=red_dim, keepdim=True)
+        red_dim_size = g.size(red_dim)
+        v_norm_sq = v_mean.sum(dim=(-2, -1), keepdim=True) * red_dim_size
+        v_norm = v_norm_sq.sqrt()
+        second_momentum_buffer.lerp_(v_mean.to(dtype=second_momentum_buffer.dtype), 1 - beta2)
+        step_size = second_momentum_buffer.clamp_min(1e-10).rsqrt()
+        scaled_sq_sum = (v_mean * red_dim_size) * step_size.float().square()
+        v_norm_new = scaled_sq_sum.sum(dim=(-2, -1), keepdim=True).sqrt()
+        final_scale = step_size * (v_norm / v_norm_new.clamp_min(1e-10))
+        g = g * final_scale.to(g.dtype)
+
+        lr = lr_t.to(g.dtype)
+        wd = wd_t.to(g.dtype)
+        mask = (g * stacked_params) >= 0
+        stacked_params.sub_(lr * g + lr * wd * stacked_params * mask)
+
+    return _step
+
+
 def _get_step_fn(mode: str):
     if mode in _NS_MODES:
         coeffs, ns_steps = _NS_MODES[mode]
@@ -279,8 +345,13 @@ def _get_step_fn(mode: str):
         ns_steps = 2 if ns_key == "ns2_ftrl" else 3
         eta = _FTRL_ETAS[eta_key]
         return _make_ftrl_kernel(polar_express_coeffs, ns_steps, eta, renorm=True)
+    elif mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3"):
+        return _make_ftrl_dynamic_eta_kernel(polar_express_coeffs, 3)
     else:
         raise ValueError(f"Unknown update_mode '{mode}'. Choose from: {UPDATE_MODES}")
+
+
+_DYNAMIC_ETA_MODES = {"ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3"}
 
 
 class AblationMuonAdamW(torch.optim.Optimizer):
@@ -300,6 +371,7 @@ class AblationMuonAdamW(torch.optim.Optimizer):
         self._muon_lr_t      = torch.tensor(0.0, dtype=torch.float32, device="cpu")
         self._muon_wd_t      = torch.tensor(0.0, dtype=torch.float32, device="cpu")
         self._muon_beta2_t   = torch.tensor(0.0, dtype=torch.float32, device="cpu")
+        self._muon_eta_t     = torch.tensor(0.0, dtype=torch.float32, device="cpu")
         # Cache compiled kernels per mode string
         self._step_fns: dict[str, object] = {}
 
@@ -358,12 +430,21 @@ class AblationMuonAdamW(torch.optim.Optimizer):
         self._muon_lr_t.fill_(group["lr"] * max(1.0, shape[-2] / shape[-1]) ** 0.5)
         self._muon_wd_t.fill_(group["weight_decay"])
 
-        step_fn(
-            stacked_grads, stacked_params,
-            state["momentum_buffer"], state["second_momentum_buffer"],
-            self._muon_momentum_t, self._muon_lr_t, self._muon_wd_t, self._muon_beta2_t,
-            red_dim,
-        )
+        if mode in _DYNAMIC_ETA_MODES:
+            self._muon_eta_t.fill_(group.get("ftrl_eta", 0.0))
+            step_fn(
+                stacked_grads, stacked_params,
+                state["momentum_buffer"], state["second_momentum_buffer"],
+                self._muon_momentum_t, self._muon_lr_t, self._muon_wd_t, self._muon_beta2_t,
+                red_dim, self._muon_eta_t,
+            )
+        else:
+            step_fn(
+                stacked_grads, stacked_params,
+                state["momentum_buffer"], state["second_momentum_buffer"],
+                self._muon_momentum_t, self._muon_lr_t, self._muon_wd_t, self._muon_beta2_t,
+                red_dim,
+            )
         torch._foreach_copy_(params, list(stacked_params.unbind(0)))
 
     @torch.no_grad()
@@ -391,6 +472,7 @@ class DistAblationMuonAdamW(torch.optim.Optimizer):
         self._muon_lr_t      = torch.tensor(0.0, dtype=torch.float32, device="cpu")
         self._muon_wd_t      = torch.tensor(0.0, dtype=torch.float32, device="cpu")
         self._muon_beta2_t   = torch.tensor(0.0, dtype=torch.float32, device="cpu")
+        self._muon_eta_t     = torch.tensor(0.0, dtype=torch.float32, device="cpu")
         self._step_fns: dict[str, object] = {}
 
     def _get_fn(self, mode: str):
@@ -484,12 +566,21 @@ class DistAblationMuonAdamW(torch.optim.Optimizer):
             self._muon_beta2_t.fill_(group["beta2"])
             self._muon_lr_t.fill_(group["lr"] * max(1.0, shape[-2] / shape[-1]) ** 0.5)
             self._muon_wd_t.fill_(group["weight_decay"])
-            step_fn(
-                grad_chunk[:num_owned], stacked_owned,
-                state["momentum_buffer"][:num_owned], state["second_momentum_buffer"][:num_owned],
-                self._muon_momentum_t, self._muon_lr_t, self._muon_wd_t, self._muon_beta2_t,
-                red_dim,
-            )
+            if mode in _DYNAMIC_ETA_MODES:
+                self._muon_eta_t.fill_(group.get("ftrl_eta", 0.0))
+                step_fn(
+                    grad_chunk[:num_owned], stacked_owned,
+                    state["momentum_buffer"][:num_owned], state["second_momentum_buffer"][:num_owned],
+                    self._muon_momentum_t, self._muon_lr_t, self._muon_wd_t, self._muon_beta2_t,
+                    red_dim, self._muon_eta_t,
+                )
+            else:
+                step_fn(
+                    grad_chunk[:num_owned], stacked_owned,
+                    state["momentum_buffer"][:num_owned], state["second_momentum_buffer"][:num_owned],
+                    self._muon_momentum_t, self._muon_lr_t, self._muon_wd_t, self._muon_beta2_t,
+                    red_dim,
+                )
             updated_params[:num_owned].copy_(stacked_owned)
         if num_owned < chunk_size:
             updated_params[num_owned:].zero_()

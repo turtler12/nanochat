@@ -309,6 +309,17 @@ def get_lr_multiplier(it):
         progress = (num_iterations - it) / warmdown_iters
         return progress + (1 - progress) * args.final_lr_frac
 
+import math as _math
+def get_ftrl_eta(it, mode):
+    """Scheduled eta for dynamic-eta FTRL modes."""
+    eta0 = 0.3
+    t = it / max(num_iterations, 1)
+    if mode == "ns3_ftrl_linear_eta0p3":
+        return eta0 * (1.0 - t)
+    elif mode == "ns3_ftrl_exp_eta0p3":
+        return eta0 * _math.exp(-5.0 * t)
+    return 0.0
+
 def get_muon_momentum(it):
     frac = min(it / 300, 1)
     return (1 - frac) * 0.85 + frac * 0.95
@@ -427,6 +438,8 @@ while True:
         if group['kind'] == 'muon':
             group["momentum"] = muon_momentum
             group["weight_decay"] = muon_weight_decay
+            if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3"):
+                group["ftrl_eta"] = get_ftrl_eta(step, args.update_mode)
     optimizer.step()
     model.zero_grad(set_to_none=True)
     train_loss_f = train_loss.item()
