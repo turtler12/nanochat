@@ -2246,3 +2246,99 @@ step 02142/02205 (97.14%) [amort_2_e01|FULL] | loss: 3.093130 | lrm: 0.06 | dt: 
 step 02143/02205 (97.19%) [amort_2_e01|cheap] | loss: 3.095560 | lrm: 0.06 | dt: 1715.66ms | tok/s: 305,590 | mfu: 34.88 | epoch: 1 | eta: 1.8m
 step 02144/02205 (97.23%) [amort_2_e01|FULL] | loss: 3.098224 | lrm: 0.06 | dt: 1720.04ms | tok/s: 304,811 | mfu: 34.79 | epoch: 1 | eta: 1.7m
 step 02145/02205 (97.28%) [amort_2_e01|cheap] | loss: 3.096419 | lrm: 0.05 | dt: 1712.93ms | tok/s: 306,076 | mfu: 34.94 | epoch: 1 | eta: 1.7m
+step 02146/02205 (97.32%) [amort_2_e01|FULL] | loss: 3.101429 | lrm: 0.05 | dt: 1720.77ms | tok/s: 304,681 | mfu: 34.78 | epoch: 1 | eta: 1.7m
+step 02147/02205 (97.37%) [amort_2_e01|cheap] | loss: 3.093170 | lrm: 0.05 | dt: 1712.82ms | tok/s: 306,096 | mfu: 34.94 | epoch: 1 | eta: 1.7m
+step 02148/02205 (97.41%) [amort_2_e01|FULL] | loss: 3.097221 | lrm: 0.05 | dt: 1721.80ms | tok/s: 304,499 | mfu: 34.76 | epoch: 1 | eta: 1.6m
+step 02149/02205 (97.46%) [amort_2_e01|cheap] | loss: 3.092577 | lrm: 0.05 | dt: 1711.70ms | tok/s: 306,296 | mfu: 34.96 | epoch: 1 | eta: 1.6m
+step 02150/02205 (97.51%) [amort_2_e01|FULL] | loss: 3.091314 | lrm: 0.05 | dt: 1719.34ms | tok/s: 304,936 | mfu: 34.81 | epoch: 1 | eta: 1.6m
+step 02151/02205 (97.55%) [amort_2_e01|cheap] | loss: 3.098040 | lrm: 0.05 | dt: 1715.31ms | tok/s: 305,651 | mfu: 34.89 | epoch: 1 | eta: 1.5m
+step 02152/02205 (97.60%) [amort_2_e01|FULL] | loss: 3.098943 | lrm: 0.05 | dt: 1719.60ms | tok/s: 304,889 | mfu: 34.80 | epoch: 1 | eta: 1.5m
+step 02153/02205 (97.64%) [amort_2_e01|cheap] | loss: 3.091346 | lrm: 0.05 | dt: 1714.57ms | tok/s: 305,784 | mfu: 34.91 | epoch: 1 | eta: 1.5m
+step 02154/02205 (97.69%) [amort_2_e01|FULL] | loss: 3.088868 | lrm: 0.05 | dt: 1714.54ms | tok/s: 305,789 | mfu: 34.91 | epoch: 1 | eta: 1.5m
+step 02155/02205 (97.73%) [amort_2_e01|cheap] | loss: 3.092229 | lrm: 0.05 | dt: 1715.31ms | tok/s: 305,651 | mfu: 34.89 | epoch: 1 | eta: 1.4m
+step 02156/02205 (97.78%) [amort_2_e01|FULL] | loss: 3.091592 | lrm: 0.04 | dt: 1713.13ms | tok/s: 306,041 | mfu: 34.93 | epoch: 1 | eta: 1.4m
+step 02157/02205 (97.82%) [amort_2_e01|cheap] | loss: 3.093911 | lrm: 0.04 | dt: 1713.06ms | tok/s: 306,053 | mfu: 34.94 | epoch: 1 | eta: 1.4m
+step 02158/02205 (97.87%) [amort_2_e01|FULL] | loss: 3.096997 | lrm: 0.04 | dt: 1716.44ms | tok/s: 305,451 | mfu: 34.87 | epoch: 1 | eta: 1.3m
+step 02159/02205 (97.91%) [amort_2_e01|cheap] | loss: 3.090939 | lrm: 0.04 | dt: 1711.31ms | tok/s: 306,366 | mfu: 34.97 | epoch: 1 | eta: 1.3m
+step 02160/02205 (97.96%) [amort_2_e01|FULL] | loss: 3.088931 | lrm: 0.04 | dt: 1716.73ms | tok/s: 305,399 | mfu: 34.86 | epoch: 1 | eta: 1.3m
+step 02161/02205 (98.00%) [amort_2_e01|cheap] | loss: 3.087500 | lrm: 0.04 | dt: 1716.85ms | tok/s: 305,378 | mfu: 34.86 | epoch: 1 | eta: 1.3m
+step 02162/02205 (98.05%) [amort_2_e01|FULL] | loss: 3.081595 | lrm: 0.04 | dt: 1722.29ms | tok/s: 304,412 | mfu: 34.75 | epoch: 1 | eta: 1.2m
+step 02163/02205 (98.10%) [amort_2_e01|cheap] | loss: 3.084787 | lrm: 0.04 | dt: 1711.19ms | tok/s: 306,387 | mfu: 34.97 | epoch: 1 | eta: 1.2m
+step 02164/02205 (98.14%) [amort_2_e01|FULL] | loss: 3.085999 | lrm: 0.04 | dt: 1715.49ms | tok/s: 305,620 | mfu: 34.89 | epoch: 1 | eta: 1.2m
+step 02165/02205 (98.19%) [amort_2_e01|cheap] | loss: 3.086114 | lrm: 0.04 | dt: 1710.79ms | tok/s: 306,459 | mfu: 34.98 | epoch: 1 | eta: 1.1m
+step 02166/02205 (98.23%) [amort_2_e01|FULL] | loss: 3.091661 | lrm: 0.04 | dt: 1717.59ms | tok/s: 305,246 | mfu: 34.84 | epoch: 1 | eta: 1.1m
+step 02167/02205 (98.28%) [amort_2_e01|cheap] | loss: 3.086749 | lrm: 0.03 | dt: 1714.87ms | tok/s: 305,731 | mfu: 34.90 | epoch: 1 | eta: 1.1m
+step 02168/02205 (98.32%) [amort_2_e01|FULL] | loss: 3.081874 | lrm: 0.03 | dt: 1721.11ms | tok/s: 304,621 | mfu: 34.77 | epoch: 1 | eta: 1.1m
+step 02169/02205 (98.37%) [amort_2_e01|cheap] | loss: 3.071806 | lrm: 0.03 | dt: 1714.82ms | tok/s: 305,739 | mfu: 34.90 | epoch: 1 | eta: 1.0m
+step 02170/02205 (98.41%) [amort_2_e01|FULL] | loss: 3.082227 | lrm: 0.03 | dt: 1718.24ms | tok/s: 305,131 | mfu: 34.83 | epoch: 1 | eta: 1.0m
+step 02171/02205 (98.46%) [amort_2_e01|cheap] | loss: 3.089034 | lrm: 0.03 | dt: 1710.07ms | tok/s: 306,587 | mfu: 35.00 | epoch: 1 | eta: 1.0m
+step 02172/02205 (98.50%) [amort_2_e01|FULL] | loss: 3.097645 | lrm: 0.03 | dt: 1718.41ms | tok/s: 305,100 | mfu: 34.83 | epoch: 1 | eta: 0.9m
+step 02173/02205 (98.55%) [amort_2_e01|cheap] | loss: 3.092482 | lrm: 0.03 | dt: 1716.63ms | tok/s: 305,416 | mfu: 34.86 | epoch: 1 | eta: 0.9m
+step 02174/02205 (98.59%) [amort_2_e01|FULL] | loss: 3.091808 | lrm: 0.03 | dt: 1722.23ms | tok/s: 304,424 | mfu: 34.75 | epoch: 1 | eta: 0.9m
+step 02175/02205 (98.64%) [amort_2_e01|cheap] | loss: 3.090204 | lrm: 0.03 | dt: 1712.11ms | tok/s: 306,222 | mfu: 34.96 | epoch: 1 | eta: 0.9m
+step 02176/02205 (98.68%) [amort_2_e01|FULL] | loss: 3.096742 | lrm: 0.03 | dt: 1720.81ms | tok/s: 304,674 | mfu: 34.78 | epoch: 1 | eta: 0.8m
+step 02177/02205 (98.73%) [amort_2_e01|cheap] | loss: 3.093232 | lrm: 0.03 | dt: 1712.40ms | tok/s: 306,171 | mfu: 34.95 | epoch: 1 | eta: 0.8m
+step 02178/02205 (98.78%) [amort_2_e01|FULL] | loss: 3.107927 | lrm: 0.02 | dt: 1718.39ms | tok/s: 305,104 | mfu: 34.83 | epoch: 1 | eta: 0.8m
+step 02179/02205 (98.82%) [amort_2_e01|cheap] | loss: 3.105091 | lrm: 0.02 | dt: 1713.79ms | tok/s: 305,923 | mfu: 34.92 | epoch: 1 | eta: 0.7m
+step 02180/02205 (98.87%) [amort_2_e01|FULL] | loss: 3.117248 | lrm: 0.02 | dt: 1721.74ms | tok/s: 304,511 | mfu: 34.76 | epoch: 1 | eta: 0.7m
+step 02181/02205 (98.91%) [amort_2_e01|cheap] | loss: 3.115991 | lrm: 0.02 | dt: 1715.83ms | tok/s: 305,559 | mfu: 34.88 | epoch: 1 | eta: 0.7m
+step 02182/02205 (98.96%) [amort_2_e01|FULL] | loss: 3.106861 | lrm: 0.02 | dt: 1720.76ms | tok/s: 304,683 | mfu: 34.78 | epoch: 1 | eta: 0.7m
+step 02183/02205 (99.00%) [amort_2_e01|cheap] | loss: 3.104793 | lrm: 0.02 | dt: 1716.37ms | tok/s: 305,463 | mfu: 34.87 | epoch: 1 | eta: 0.6m
+step 02184/02205 (99.05%) [amort_2_e01|FULL] | loss: 3.096735 | lrm: 0.02 | dt: 1716.06ms | tok/s: 305,517 | mfu: 34.88 | epoch: 1 | eta: 0.6m
+step 02185/02205 (99.09%) [amort_2_e01|cheap] | loss: 3.101545 | lrm: 0.02 | dt: 1713.73ms | tok/s: 305,933 | mfu: 34.92 | epoch: 1 | eta: 0.6m
+step 02186/02205 (99.14%) [amort_2_e01|FULL] | loss: 3.101355 | lrm: 0.02 | dt: 1716.86ms | tok/s: 305,376 | mfu: 34.86 | epoch: 1 | eta: 0.5m
+step 02187/02205 (99.18%) [amort_2_e01|cheap] | loss: 3.101919 | lrm: 0.02 | dt: 1714.24ms | tok/s: 305,842 | mfu: 34.91 | epoch: 1 | eta: 0.5m
+step 02188/02205 (99.23%) [amort_2_e01|FULL] | loss: 3.099071 | lrm: 0.02 | dt: 1718.69ms | tok/s: 305,050 | mfu: 34.82 | epoch: 1 | eta: 0.5m
+step 02189/02205 (99.27%) [amort_2_e01|cheap] | loss: 3.096880 | lrm: 0.01 | dt: 1717.60ms | tok/s: 305,244 | mfu: 34.84 | epoch: 1 | eta: 0.5m
+step 02190/02205 (99.32%) [amort_2_e01|FULL] | loss: 3.092638 | lrm: 0.01 | dt: 1719.09ms | tok/s: 304,979 | mfu: 34.81 | epoch: 1 | eta: 0.4m
+step 02191/02205 (99.37%) [amort_2_e01|cheap] | loss: 3.081573 | lrm: 0.01 | dt: 1714.60ms | tok/s: 305,777 | mfu: 34.90 | epoch: 1 | eta: 0.4m
+step 02192/02205 (99.41%) [amort_2_e01|FULL] | loss: 3.080705 | lrm: 0.01 | dt: 1715.95ms | tok/s: 305,537 | mfu: 34.88 | epoch: 1 | eta: 0.4m
+step 02193/02205 (99.46%) [amort_2_e01|cheap] | loss: 3.073964 | lrm: 0.01 | dt: 1714.55ms | tok/s: 305,788 | mfu: 34.91 | epoch: 1 | eta: 0.3m
+step 02194/02205 (99.50%) [amort_2_e01|FULL] | loss: 3.075450 | lrm: 0.01 | dt: 1722.99ms | tok/s: 304,289 | mfu: 34.74 | epoch: 1 | eta: 0.3m
+step 02195/02205 (99.55%) [amort_2_e01|cheap] | loss: 3.063942 | lrm: 0.01 | dt: 1715.58ms | tok/s: 305,603 | mfu: 34.88 | epoch: 1 | eta: 0.3m
+step 02196/02205 (99.59%) [amort_2_e01|FULL] | loss: 3.071055 | lrm: 0.01 | dt: 1716.56ms | tok/s: 305,430 | mfu: 34.87 | epoch: 1 | eta: 0.3m
+step 02197/02205 (99.64%) [amort_2_e01|cheap] | loss: 3.067419 | lrm: 0.01 | dt: 1714.28ms | tok/s: 305,835 | mfu: 34.91 | epoch: 1 | eta: 0.2m
+step 02198/02205 (99.68%) [amort_2_e01|FULL] | loss: 3.078806 | lrm: 0.01 | dt: 1721.96ms | tok/s: 304,471 | mfu: 34.76 | epoch: 1 | eta: 0.2m
+step 02199/02205 (99.73%) [amort_2_e01|cheap] | loss: 3.086877 | lrm: 0.01 | dt: 1716.37ms | tok/s: 305,462 | mfu: 34.87 | epoch: 1 | eta: 0.2m
+step 02200/02205 (99.77%) [amort_2_e01|FULL] | loss: 3.087873 | lrm: 0.00 | dt: 1718.18ms | tok/s: 305,142 | mfu: 34.83 | epoch: 1 | eta: 0.1m
+step 02201/02205 (99.82%) [amort_2_e01|cheap] | loss: 3.089636 | lrm: 0.00 | dt: 1712.92ms | tok/s: 306,078 | mfu: 34.94 | epoch: 1 | eta: 0.1m
+step 02202/02205 (99.86%) [amort_2_e01|FULL] | loss: 3.088805 | lrm: 0.00 | dt: 1719.71ms | tok/s: 304,870 | mfu: 34.80 | epoch: 1 | eta: 0.1m
+step 02203/02205 (99.91%) [amort_2_e01|cheap] | loss: 3.093719 | lrm: 0.00 | dt: 1720.96ms | tok/s: 304,649 | mfu: 34.78 | epoch: 1 | eta: 0.1m
+step 02204/02205 (99.95%) [amort_2_e01|FULL] | loss: 3.086876 | lrm: 0.00 | dt: 1717.70ms | tok/s: 305,227 | mfu: 34.84 | epoch: 1 | eta: 0.0m
+Step 02205 | val bpb: 0.904896
+Evaluating: hellaswag_zeroshot (0-shot, type: multiple_choice)... accuracy: 0.3520 | centered: 0.1360 | time: 4.56s
+Evaluating: jeopardy (10-shot, type: language_modeling)... accuracy: 0.0140 | centered: 0.0140 | time: 4.56s
+Evaluating: bigbench_qa_wikidata (10-shot, type: language_modeling)... accuracy: 0.3120 | centered: 0.3120 | time: 4.41s
+Evaluating: arc_easy (10-shot, type: multiple_choice)... accuracy: 0.5380 | centered: 0.3840 | time: 5.55s
+Evaluating: arc_challenge (10-shot, type: multiple_choice)... accuracy: 0.2640 | centered: 0.0187 | time: 5.65s
+Evaluating: copa (0-shot, type: multiple_choice)... accuracy: 0.6000 | centered: 0.2000 | time: 0.85s
+Evaluating: commonsense_qa (10-shot, type: multiple_choice)... accuracy: 0.3920 | centered: 0.2400 | time: 5.84s
+Evaluating: piqa (10-shot, type: multiple_choice)... accuracy: 0.6280 | centered: 0.2560 | time: 4.93s
+Evaluating: openbook_qa (0-shot, type: multiple_choice)... accuracy: 0.2920 | centered: 0.0560 | time: 4.25s
+Evaluating: lambada_openai (0-shot, type: language_modeling)... accuracy: 0.3080 | centered: 0.3080 | time: 4.35s
+Evaluating: hellaswag (10-shot, type: multiple_choice)... accuracy: 0.3480 | centered: 0.1307 | time: 7.75s
+Evaluating: winograd (0-shot, type: schema)... accuracy: 0.5751 | centered: 0.1502 | time: 3.03s
+Evaluating: winogrande (0-shot, type: schema)... accuracy: 0.5420 | centered: 0.0840 | time: 5.37s
+Evaluating: bigbench_dyck_languages (10-shot, type: language_modeling)... accuracy: 0.1160 | centered: 0.1160 | time: 5.52s
+Evaluating: agi_eval_lsat_ar (3-shot, type: multiple_choice)... accuracy: 0.2826 | centered: 0.1033 | time: 3.23s
+Evaluating: bigbench_cs_algorithms (10-shot, type: language_modeling)... accuracy: 0.4380 | centered: 0.4380 | time: 6.08s
+Evaluating: bigbench_operators (10-shot, type: language_modeling)... accuracy: 0.1048 | centered: 0.1048 | time: 2.50s
+Evaluating: bigbench_repeat_copy_logic (10-shot, type: language_modeling)... accuracy: 0.0000 | centered: 0.0000 | time: 0.38s
+Evaluating: squad (10-shot, type: language_modeling)... accuracy: 0.1060 | centered: 0.1060 | time: 6.92s
+Evaluating: coqa (0-shot, type: language_modeling)... accuracy: 0.1240 | centered: 0.1240 | time: 4.76s
+Evaluating: boolq (10-shot, type: multiple_choice)... accuracy: 0.4960 | centered: -0.3263 | time: 7.10s
+Evaluating: bigbench_language_identification (10-shot, type: multiple_choice)... accuracy: 0.2880 | centered: 0.2167 | time: 9.83s
+Step 02205 | CORE metric: 0.1442
+<|bos|>The capital of France is Paris. It is the capital of the French Republic. It is the largest city
+<|bos|>The chemical symbol of gold is the symbol of the United States of America. The symbol is also known as the
+<|bos|>If yesterday was Friday, then tomorrow will be Friday. If today was Friday, then tomorrow will be Saturday. If today was
+<|bos|>If 5*x + 3 = 13, then x is 5*x + 3 = 13. If 5*x
+Peak memory: 38555.71MiB
+Total training time: 62.61m
+Min val bpb: 0.904896
+Avg full-step time (optimizer): 3.88ms (4412 steps)
+Avg cheap-step time (optimizer): 1.74ms (4408 steps)
+Optimizer step speedup (full/cheap): 2.23x
+========================================
+[amort_2_e01] Job completed at: Mon Apr 27 18:17:21 EDT 2026
+========================================
