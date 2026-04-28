@@ -310,6 +310,8 @@ def get_lr_multiplier(it):
         return progress + (1 - progress) * args.final_lr_frac
 
 import math as _math
+_D12_REF_STEPS = 2205  # reference step count from d12 runs
+
 def get_ftrl_eta(it, mode):
     """Scheduled eta for dynamic-eta FTRL modes."""
     eta0 = 0.3
@@ -318,6 +320,9 @@ def get_ftrl_eta(it, mode):
         return eta0 * (1.0 - t)
     elif mode == "ns3_ftrl_exp_eta0p3":
         return eta0 * _math.exp(-5.0 * t)
+    elif mode == "ns3_ftrl_exp_abs_eta0p3":
+        # decay at same absolute rate as d12: always reaches ~0 by step 2205
+        return eta0 * _math.exp(-5.0 * it / _D12_REF_STEPS)
     return 0.0
 
 def get_muon_momentum(it):
@@ -438,7 +443,7 @@ while True:
         if group['kind'] == 'muon':
             group["momentum"] = muon_momentum
             group["weight_decay"] = muon_weight_decay
-            if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3"):
+            if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3", "ns3_ftrl_exp_abs_eta0p3"):
                 group["ftrl_eta"] = get_ftrl_eta(step, args.update_mode)
     optimizer.step()
     model.zero_grad(set_to_none=True)
