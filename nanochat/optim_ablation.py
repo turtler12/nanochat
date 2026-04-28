@@ -351,7 +351,7 @@ def _get_step_fn(mode: str):
         raise ValueError(f"Unknown update_mode '{mode}'. Choose from: {UPDATE_MODES}")
 
 
-_DYNAMIC_ETA_MODES = {"ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3"}
+_DYNAMIC_ETA_MODES = {"ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3", "ns3_ftrl_exp_abs_eta0p3"}
 
 
 class AblationMuonAdamW(torch.optim.Optimizer):
