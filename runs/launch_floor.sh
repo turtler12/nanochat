@@ -19,7 +19,7 @@
 
 set -e
 
-cd /data/scratch/medhaven/nanochat
+cd "$(dirname "$0")/.."
 
 BATCH="${1:-}"
 
