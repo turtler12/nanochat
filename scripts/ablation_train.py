@@ -311,6 +311,8 @@ def get_lr_multiplier(it):
 
 import math as _math
 _D12_REF_STEPS = 2205  # reference step count from d12 runs
+# λ = ln(3)/100 so that η(100) = 0.3 * exp(-λ*100) = 0.1 (reaches 0.1 at ~step 100 / ~10 min)
+_ETA_LAMBDA = _math.log(3.0) / 100.0
 
 def get_ftrl_eta(it, mode):
     """Scheduled eta for dynamic-eta FTRL modes."""
@@ -321,8 +323,8 @@ def get_ftrl_eta(it, mode):
     elif mode == "ns3_ftrl_exp_eta0p3":
         return eta0 * _math.exp(-5.0 * t)
     elif mode in ("ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon"):
-        # decay at same absolute rate as d12: always reaches ~0 by step 2205
-        return eta0 * _math.exp(-5.0 * it / _D12_REF_STEPS)
+        # η(t) = 0.3 * exp(-λ*step), λ = ln(3)/100 => η(100)=0.1, η(200)≈0.033
+        return eta0 * _math.exp(-_ETA_LAMBDA * it)
     return 0.0
 
 def get_muon_momentum(it):
