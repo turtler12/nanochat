@@ -1,0 +1,14 @@
+cpu-bind=MASK - andreas-h100-1, task  0  0 [310378]: mask 0x780000000000000078 set
+Resolved 134 packages in 9ms
+Checked 121 packages in 545ms
+2026-04-27 23:28:04,750 - nanochat.common - [32m[1mINFO[0m - Distributed world size: 1
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/scratch/medhaven/nanochat/scripts/count_optimizer_flops.py", line 287, in <module>
+    muon_model, muon_opt = make_optimizer("muon")
+  File "/data/scratch/medhaven/nanochat/scripts/count_optimizer_flops.py", line 211, in make_optimizer
+    if p not in embedding_params and p not in lm_head_params:
+RuntimeError: The size of tensor a (384) must match the size of tensor b (6) at non-singleton dimension 1
