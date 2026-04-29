@@ -322,7 +322,8 @@ def get_ftrl_eta(it, mode):
         return eta0 * (1.0 - t)
     elif mode == "ns3_ftrl_exp_eta0p3":
         return eta0 * _math.exp(-5.0 * t)
-    elif mode in ("ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon"):
+    elif mode in ("ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon",
+                  "ns3_ftrl_exp_abs_then_muon_s100"):
         # η(t) = 0.3 * exp(-λ*step), λ = ln(3)/100 => η(100)=0.1, η(200)≈0.033
         return eta0 * _math.exp(-_ETA_LAMBDA * it)
     return 0.0
@@ -446,10 +447,11 @@ while True:
             group["momentum"] = muon_momentum
             group["weight_decay"] = muon_weight_decay
             if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3",
-                                    "ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon"):
-                if args.update_mode == "ns3_ftrl_exp_abs_then_muon" and step >= 200:
-                    # Switch to pure Muon at step 200: empirical crossover where
-                    # Muon's loss improvement outpaces FTRL on d12.
+                                    "ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon",
+                                    "ns3_ftrl_exp_abs_then_muon_s100"):
+                switch_step = 100 if args.update_mode == "ns3_ftrl_exp_abs_then_muon_s100" else 200
+                if args.update_mode in ("ns3_ftrl_exp_abs_then_muon",
+                                        "ns3_ftrl_exp_abs_then_muon_s100") and step >= switch_step:
                     group["update_mode"] = "muon"
                 else:
                     group["ftrl_eta"] = get_ftrl_eta(step, args.update_mode)
