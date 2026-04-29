@@ -11,12 +11,16 @@ LOGS = {
     "ns3+ftrl η=0.1":   "/Users/medha/Desktop/muon_local/nanochat_cache/base_checkpoints/ablation_ns3_ftrl_eta0p1_d12_train_log.jsonl",
     "ns3+ftrl linear η=0.3→0": "/Users/medha/Desktop/muon_local/nanochat_cache/base_checkpoints/ablation_ns3_ftrl_linear_eta0p3_d12_train_log.jsonl",
     "ns3+ftrl exp η=0.3→0":    "/Users/medha/Desktop/muon_local/nanochat_cache/base_checkpoints/ablation_ns3_ftrl_exp_eta0p3_d12_train_log.jsonl",
+    "ns3+ftrl exp abs →muon @200 (run1)": "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon.jsonl",
+    "ns3+ftrl exp abs →muon @200 (run2)": "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon_run2.jsonl",
 }
 COLORS = {
     "muon":              "#1f77b4",
     "ns3+ftrl η=0.1":   "#ff7f0e",
     "ns3+ftrl linear η=0.3→0": "#2ca02c",
     "ns3+ftrl exp η=0.3→0":    "#d62728",
+    "ns3+ftrl exp abs →muon @200 (run1)": "#e377c2",
+    "ns3+ftrl exp abs →muon @200 (run2)": "#c7429a",
 }
 SMOOTH = 30  # window for derivative smoothing
 
@@ -34,11 +38,30 @@ def load_log(path):
             times.append(cumtime / 60)
     return np.array(steps), np.array(losses), np.array(times)
 
+VAL_LOGS = {
+    "muon":                                "/Users/medha/Desktop/muon_local/nanochat_cache/base_checkpoints/ablation_muon_d12/val_log.jsonl",
+    "ns3+ftrl exp abs →muon @200 (run1)":  "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log.jsonl",
+    "ns3+ftrl exp abs →muon @200 (run2)":  "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ftrl_then_muon_run2.jsonl",
+}
+
+def load_val_log(path):
+    steps, bpbs, times = [], [], []
+    with open(path) as f:
+        for line in f:
+            d = json.loads(line)
+            if "_config" in d:
+                continue
+            steps.append(d["step"])
+            bpbs.append(d["val_bpb"])
+            times.append(d["total_training_time"] / 60)
+    return np.array(steps), np.array(bpbs), np.array(times)
+
 def smooth(x, w):
     kernel = np.ones(w) / w
     return np.convolve(x, kernel, mode='valid')
 
 data = {name: load_log(path) for name, path in LOGS.items()}
+val_data = {name: load_val_log(path) for name, path in VAL_LOGS.items()}
 
 # Find crossover: first step >50 where muon <= fixed-eta ns3+ftrl
 muon_loss = data["muon"][1]
@@ -57,9 +80,11 @@ T = len(ref_steps)
 eta_linear = 0.3 * (1.0 - ref_steps / max(ref_steps[-1], 1))
 eta_exp    = 0.3 * np.exp(-5.0 * ref_steps / max(ref_steps[-1], 1))
 eta_fixed  = np.full_like(ref_steps, 0.1, dtype=float)
+# Pink: exp abs decay for steps 0-199, then 0 (pure Muon)
+eta_hybrid = np.where(ref_steps < 200, 0.3 * np.exp(-5.0 * ref_steps / 2205.0), 0.0)
 
-fig, axes = plt.subplots(2, 3, figsize=(16, 8),
-                         gridspec_kw={"height_ratios": [3, 1.2]})
+fig, axes = plt.subplots(3, 3, figsize=(16, 12),
+                         gridspec_kw={"height_ratios": [3, 1.2, 2]})
 
 # ── Row 0: loss plots ──────────────────────────────────────────────────────────
 
@@ -114,6 +139,7 @@ ax = axes[1, 0]
 ax.plot(ref_steps, eta_fixed,  label="ns3+ftrl η=0.1",            color=COLORS["ns3+ftrl η=0.1"],            linewidth=1.5)
 ax.plot(ref_steps, eta_linear, label="ns3+ftrl linear η=0.3→0",   color=COLORS["ns3+ftrl linear η=0.3→0"],   linewidth=1.5)
 ax.plot(ref_steps, eta_exp,    label="ns3+ftrl exp η=0.3→0",       color=COLORS["ns3+ftrl exp η=0.3→0"],      linewidth=1.5)
+ax.plot(ref_steps, eta_hybrid, label="ns3+ftrl exp abs →muon @200", color=COLORS["ns3+ftrl exp abs →muon @200 (run1)"], linewidth=1.5)
 if crossover_step is not None:
     ax.axvline(crossover_step, color="gray", linestyle="--", linewidth=0.8, alpha=0.7)
 ax.set_xlabel("Step")
@@ -127,6 +153,7 @@ ax = axes[1, 1]
 ax.plot(ref_times, eta_fixed,  label="ns3+ftrl η=0.1",            color=COLORS["ns3+ftrl η=0.1"],            linewidth=1.5)
 ax.plot(ref_times, eta_linear, label="ns3+ftrl linear η=0.3→0",   color=COLORS["ns3+ftrl linear η=0.3→0"],   linewidth=1.5)
 ax.plot(ref_times, eta_exp,    label="ns3+ftrl exp η=0.3→0",       color=COLORS["ns3+ftrl exp η=0.3→0"],      linewidth=1.5)
+ax.plot(ref_times, eta_hybrid, label="ns3+ftrl exp abs →muon @200", color=COLORS["ns3+ftrl exp abs →muon @200 (run1)"], linewidth=1.5)
 if crossover_time is not None:
     ax.axvline(crossover_time, color="gray", linestyle="--", linewidth=0.8, alpha=0.7)
     ax.text(crossover_time + 0.3, 0.22, f"{crossover_time:.1f}m", fontsize=7, color="gray")
@@ -138,6 +165,31 @@ ax.grid(True, alpha=0.3)
 
 # --- Panel [1,2]: empty / hide ---
 axes[1, 2].axis("off")
+
+# ── Row 2: val BPB ────────────────────────────────────────────────────────────
+
+# --- Panel [2,0]: Val BPB vs Step ---
+ax = axes[2, 0]
+for name, (steps, bpbs, times) in val_data.items():
+    ax.plot(steps, bpbs, label=name, color=COLORS[name], linewidth=1.5, marker='o', markersize=3)
+ax.set_xlabel("Step")
+ax.set_ylabel("Val BPB")
+ax.set_title("Val BPB vs Step")
+ax.legend(fontsize=8)
+ax.grid(True, alpha=0.3)
+
+# --- Panel [2,1]: Val BPB vs Time ---
+ax = axes[2, 1]
+for name, (steps, bpbs, times) in val_data.items():
+    ax.plot(times, bpbs, label=name, color=COLORS[name], linewidth=1.5, marker='o', markersize=3)
+ax.set_xlabel("Time (minutes)")
+ax.set_ylabel("Val BPB")
+ax.set_title("Val BPB vs Time")
+ax.legend(fontsize=8)
+ax.grid(True, alpha=0.3)
+
+# --- Panel [2,2]: empty ---
+axes[2, 2].axis("off")
 
 plt.suptitle("Muon vs NS3+FTRL variants (depth-12, 2×H100, 2205 steps)", fontsize=12)
 plt.tight_layout()

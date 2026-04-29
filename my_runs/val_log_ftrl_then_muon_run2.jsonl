@@ -1,0 +1,10 @@
+{"_config": {"run": "dummy", "device_type": "", "fp8": false, "fp8_recipe": "tensorwise", "depth": 12, "aspect_ratio": 64, "head_dim": 128, "max_seq_len": 2048, "window_pattern": "SSSL", "num_iterations": 2205, "target_flops": -1.0, "target_param_data_ratio": 10.5, "device_batch_size": 32, "total_batch_size": -1, "embedding_lr": 0.3, "unembedding_lr": 0.004, "weight_decay": 0.2, "matrix_lr": 0.02, "scalar_lr": 0.5, "adam_beta1": 0.8, "adam_beta2": 0.95, "warmup_ratio": 0.0, "warmdown_ratio": 0.5, "final_lr_frac": 0.0, "resume_from_step": -1, "eval_every": 250, "eval_tokens": 20971520, "core_metric_every": 2000, "core_metric_max_per_task": 500, "sample_every": 2000, "save_every": -1, "model_tag": null, "update_mode": "ns3_ftrl_exp_abs_then_muon"}}
+{"step": 250, "val_bpb": 1.1437906595056022, "total_training_time": 240.03307819366455}
+{"step": 500, "val_bpb": 1.0491644058242997, "total_training_time": 475.6215150356293}
+{"step": 750, "val_bpb": 1.017985777997983, "total_training_time": 711.1682734489441}
+{"step": 1000, "val_bpb": 1.001956276733464, "total_training_time": 946.756382226944}
+{"step": 1250, "val_bpb": 0.989751394169542, "total_training_time": 1182.3260827064514}
+{"step": 1500, "val_bpb": 0.976274316031636, "total_training_time": 1417.9505350589752}
+{"step": 1750, "val_bpb": 0.9684643226520654, "total_training_time": 1653.6516814231873}
+{"step": 2000, "val_bpb": 0.9650205827068965, "total_training_time": 1889.4275887012482}
+{"step": 2205, "val_bpb": 0.963878353859818, "total_training_time": 2082.6769149303436}
