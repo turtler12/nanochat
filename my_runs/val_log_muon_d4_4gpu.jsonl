@@ -1,0 +1,11 @@
+{"_config": {"run": "dummy", "device_type": "", "fp8": false, "fp8_recipe": "tensorwise", "depth": 4, "aspect_ratio": 64, "head_dim": 128, "max_seq_len": 2048, "window_pattern": "SSSL", "num_iterations": 2205, "target_flops": -1.0, "target_param_data_ratio": 10.5, "device_batch_size": 32, "total_batch_size": -1, "embedding_lr": 0.3, "unembedding_lr": 0.004, "weight_decay": 0.2, "matrix_lr": 0.02, "scalar_lr": 0.5, "adam_beta1": 0.8, "adam_beta2": 0.95, "warmup_ratio": 0.0, "warmdown_ratio": 0.5, "final_lr_frac": 0.0, "resume_from_step": -1, "eval_every": 250, "eval_tokens": 20971520, "core_metric_every": 2000, "core_metric_max_per_task": 500, "sample_every": 2000, "save_every": -1, "model_tag": null, "update_mode": "muon"}}
+{"step": 0, "val_bpb": 3.165462884732003, "total_training_time": 0}
+{"step": 250, "val_bpb": 1.335529441368048, "total_training_time": 17.304164171218872}
+{"step": 500, "val_bpb": 1.2467449723770287, "total_training_time": 34.43172073364258}
+{"step": 750, "val_bpb": 1.2194961551446204, "total_training_time": 51.36333894729614}
+{"step": 1000, "val_bpb": 1.2019051230044875, "total_training_time": 68.42672562599182}
+{"step": 1250, "val_bpb": 1.1819585902387286, "total_training_time": 85.37051129341125}
+{"step": 1500, "val_bpb": 1.161177866111229, "total_training_time": 102.62397694587708}
+{"step": 1750, "val_bpb": 1.1426410295491087, "total_training_time": 119.3117208480835}
+{"step": 2000, "val_bpb": 1.1262342584836365, "total_training_time": 136.17766761779785}
+{"step": 2205, "val_bpb": 1.1175204175956779, "total_training_time": 150.49073386192322}
