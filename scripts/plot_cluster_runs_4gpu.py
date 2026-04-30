@@ -8,7 +8,6 @@ import matplotlib.ticker as ticker
 
 LOGS = {
     "muon (4gpu)":                              "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_muon_d12_4gpu.jsonl",
-    "ns3 only (4gpu)":                          "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ns3_d12_4gpu.jsonl",
     "ns3+ftrl exp abs η→0 @100 (4gpu)":        "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ns3_ftrl_exp_abs_zero_s100_d12_4gpu.jsonl",
     "ns3+ftrl exp abs →muon @100 (4gpu)":       "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon_s100_d12_4gpu.jsonl",
     "ns3+ftrl exp abs →muon @150 (4gpu)":       "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon_s150_d12_4gpu.jsonl",
@@ -19,7 +18,6 @@ LOGS = {
 }
 COLORS = {
     "muon (4gpu)":                              "#17becf",
-    "ns3 only (4gpu)":                          "#7f7f7f",
     "ns3+ftrl exp abs η→0 @100 (4gpu)":        "#17a589",
     "ns3+ftrl exp abs →muon @100 (4gpu)":       "#bcbd22",
     "ns3+ftrl exp abs →muon @150 (4gpu)":       "#f39c12",
@@ -46,7 +44,6 @@ def load_log(path):
 
 VAL_LOGS = {
     "muon (4gpu)":                              "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_muon_d12_4gpu.jsonl",
-    "ns3 only (4gpu)":                          "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ns3_d12_4gpu.jsonl",
     "ns3+ftrl exp abs η→0 @100 (4gpu)":        "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ns3_ftrl_exp_abs_zero_s100_d12_4gpu.jsonl",
     "ns3+ftrl exp abs →muon @100 (4gpu)":       "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ftrl_then_muon_s100_d12_4gpu.jsonl",
     "ns3+ftrl exp abs →muon @150 (4gpu)":       "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ftrl_then_muon_s150_d12_4gpu.jsonl",
@@ -181,10 +178,6 @@ _4GPU_ROWS = [
      "muon (4gpu)", "muon (4gpu)",
      _OPT_MUON * _TOTAL_STEPS / 1e3,
      (_OPT_MUON + _FWD_BWD_PER_STEP) * _TOTAL_STEPS / 1e6),
-    ("ns3 only (4gpu)",
-     "ns3 only (4gpu)", "ns3 only (4gpu)",
-     _OPT_NS3 * _TOTAL_STEPS / 1e3,
-     (_OPT_NS3 + _FWD_BWD_PER_STEP) * _TOTAL_STEPS / 1e6),
     ("ns3+ftrl η→0 @100 (4gpu)",
      "ns3+ftrl exp abs η→0 @100 (4gpu)", "ns3+ftrl exp abs η→0 @100 (4gpu)",
      _OPT_FTRL * _TOTAL_STEPS / 1e3,

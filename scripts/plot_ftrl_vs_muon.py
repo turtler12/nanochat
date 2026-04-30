@@ -1,7 +1,8 @@
 """
 Plot val BPB vs step and val BPB vs wall-clock time for:
   - muon (baseline)
-  - ns3_ftrl_eta0p1 (winner)
+  - ns3 (stock, 1gpu)
+  - ns3+FTRL η=0.1 (winner)
 
 Usage:
     python -m scripts.plot_ftrl_vs_muon
@@ -19,17 +20,20 @@ OUT = Path("plots/ftrl_vs_muon.png")
 
 RUNS = {
     "Muon (15 matmuls)":           "abl_abl_muon_720980.log",
+    "ns3 stock (9 matmuls)":       "abl_abl_ns3_720982.log",
     "ns3+FTRL η=0.1 (9 matmuls)": "abl_ns3_ftrl_eta0p1_723737.log",
 }
 
 STYLES = {
     "Muon (15 matmuls)":           dict(color="black",   linestyle="--", linewidth=2, marker="o", markersize=4),
+    "ns3 stock (9 matmuls)":       dict(color="#4CAF50", linestyle="-.",  linewidth=2, marker="s", markersize=4),
     "ns3+FTRL η=0.1 (9 matmuls)": dict(color="#2196F3", linestyle="-",  linewidth=2, marker="o", markersize=4),
 }
 
 LABEL_YOFFSET = {
     "Muon (15 matmuls)":           -10,
-    "ns3+FTRL η=0.1 (9 matmuls)":  +10,
+    "ns3 stock (9 matmuls)":       +10,
+    "ns3+FTRL η=0.1 (9 matmuls)":  +22,
 }
 
 
@@ -120,13 +124,23 @@ for label, d in data.items():
                  xytext=(6, yoff), textcoords="offset points",
                  color=sty["color"], fontsize=9, va="center", fontweight="bold")
 
-# gap arrow on step plot
-muon_final = data["Muon (15 matmuls)"]["bpb"][-1]
-ftrl_final = data["ns3+FTRL η=0.1 (9 matmuls)"]["bpb"][-1]
-gap = ftrl_final - muon_final
+# gap arrows on step plot
+muon_final  = data["Muon (15 matmuls)"]["bpb"][-1]
+ns3_final   = data["ns3 stock (9 matmuls)"]["bpb"][-1]
+ftrl_final  = data["ns3+FTRL η=0.1 (9 matmuls)"]["bpb"][-1]
+
+# muon vs ns3 stock gap
+gap_ns3 = ns3_final - muon_final
+ax1.annotate("", xy=(1900, muon_final), xytext=(1900, ns3_final),
+             arrowprops=dict(arrowstyle="<->", color="#4CAF50", lw=1.5))
+ax1.text(1890, (muon_final + ns3_final) / 2, f"Δ{gap_ns3:.4f}",
+         color="#4CAF50", fontsize=9, ha="right", va="center")
+
+# muon vs ftrl gap
+gap_ftrl = ftrl_final - muon_final
 ax1.annotate("", xy=(2050, muon_final), xytext=(2050, ftrl_final),
              arrowprops=dict(arrowstyle="<->", color="red", lw=1.5))
-ax1.text(2040, (muon_final + ftrl_final) / 2, f"Δ{gap:.4f}",
+ax1.text(2040, (muon_final + ftrl_final) / 2, f"Δ{gap_ftrl:.4f}",
          color="red", fontsize=9, ha="right", va="center")
 
 ax1.set_xlabel("Step")
@@ -144,7 +158,7 @@ ax3.set_ylabel("Wall Time (minutes)")
 ax3.set_title("Wall Time vs Step")
 ax3.legend(fontsize=9)
 
-plt.suptitle("Muon vs ns3+FTRL η=0.1  —  d12, lr=0.02, 1×H100", fontsize=12)
+plt.suptitle("Muon vs ns3 stock vs ns3+FTRL η=0.1  —  d12, lr=0.02, 1×H100", fontsize=12)
 plt.tight_layout()
 OUT.parent.mkdir(exist_ok=True)
 plt.savefig(OUT, dpi=150, bbox_inches="tight")
