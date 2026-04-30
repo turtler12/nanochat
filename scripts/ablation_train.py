@@ -325,7 +325,7 @@ def get_ftrl_eta(it, mode):
     elif mode == "ns3_ftrl_exp_eta0p3":
         return eta0 * _math.exp(-5.0 * t)
     elif mode in ("ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon",
-                  "ns3_ftrl_exp_abs_then_muon_s100"):
+                  "ns3_ftrl_exp_abs_then_muon_s100", "ns3_ftrl_exp_abs_then_muon_s250"):
         # η(t) = 0.3 * exp(-λ*step), λ = ln(3)/100 => η(100)=0.1, η(200)≈0.033
         return eta0 * _math.exp(-_ETA_LAMBDA * it)
     elif mode in ("ns3_ftrl_exp_abs_zero_s100", "ns3_ftrl_exp_abs_then_muon_s150"):
@@ -454,10 +454,11 @@ while True:
             if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3",
                                     "ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon",
                                     "ns3_ftrl_exp_abs_then_muon_s100", "ns3_ftrl_exp_abs_zero_s100",
-                                    "ns3_ftrl_exp_abs_then_muon_s150"):
+                                    "ns3_ftrl_exp_abs_then_muon_s150", "ns3_ftrl_exp_abs_then_muon_s250"):
                 switch_step = {"ns3_ftrl_exp_abs_then_muon_s100": 100,
                                "ns3_ftrl_exp_abs_then_muon_s150": 150,
-                               "ns3_ftrl_exp_abs_then_muon":      200}.get(args.update_mode)
+                               "ns3_ftrl_exp_abs_then_muon":      200,
+                               "ns3_ftrl_exp_abs_then_muon_s250": 250}.get(args.update_mode)
                 if switch_step is not None and step >= switch_step:
                     group["update_mode"] = "muon"
                 else:
