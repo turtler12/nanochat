@@ -78,7 +78,8 @@ UPDATE_MODES = (
     + ["ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3", "ns3_ftrl_exp_abs_eta0p3",
        "ns3_ftrl_exp_abs_then_muon", "ns3_ftrl_exp_abs_then_muon_s100",
        "ns3_ftrl_exp_abs_zero_s100", "ns3_ftrl_exp_abs_then_muon_s150",
-       "ns3_ftrl_exp_abs_then_muon_s250", "ns3_ftrl_exp_abs_then_muon_s300"]
+       "ns3_ftrl_exp_abs_then_muon_s250", "ns3_ftrl_exp_abs_then_muon_s300",
+       "ns3_ftrl_exp_abs_then_muon_s400"]
 )
 
 
@@ -351,7 +352,8 @@ def _get_step_fn(mode: str):
     elif mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3", "ns3_ftrl_exp_abs_eta0p3",
                   "ns3_ftrl_exp_abs_then_muon", "ns3_ftrl_exp_abs_then_muon_s100",
                   "ns3_ftrl_exp_abs_zero_s100", "ns3_ftrl_exp_abs_then_muon_s150",
-                  "ns3_ftrl_exp_abs_then_muon_s250", "ns3_ftrl_exp_abs_then_muon_s300"):
+                  "ns3_ftrl_exp_abs_then_muon_s250", "ns3_ftrl_exp_abs_then_muon_s300",
+                  "ns3_ftrl_exp_abs_then_muon_s400"):
         return _make_ftrl_dynamic_eta_kernel(polar_express_coeffs, 3)
     else:
         raise ValueError(f"Unknown update_mode '{mode}'. Choose from: {UPDATE_MODES}")
@@ -360,7 +362,8 @@ def _get_step_fn(mode: str):
 _DYNAMIC_ETA_MODES = {"ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3", "ns3_ftrl_exp_abs_eta0p3",
                       "ns3_ftrl_exp_abs_then_muon", "ns3_ftrl_exp_abs_then_muon_s100",
                       "ns3_ftrl_exp_abs_zero_s100", "ns3_ftrl_exp_abs_then_muon_s150",
-                      "ns3_ftrl_exp_abs_then_muon_s250", "ns3_ftrl_exp_abs_then_muon_s300"}
+                      "ns3_ftrl_exp_abs_then_muon_s250", "ns3_ftrl_exp_abs_then_muon_s300",
+                      "ns3_ftrl_exp_abs_then_muon_s400"}
 
 
 class AblationMuonAdamW(torch.optim.Optimizer):
