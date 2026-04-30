@@ -1,5 +1,5 @@
 """
-Plot d4 runs: train loss vs step, train loss vs time, eta vs step schedule, val BPB vs step.
+Plot d4 4gpu runs: train loss vs step, train loss vs time, eta vs step schedule, val BPB vs step.
 """
 import json
 import math
@@ -7,21 +7,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 TRAIN_LOGS = {
-    "muon (d4, 2gpu)": (
-        "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_muon_d4.jsonl",
-        "#1f77b4",
-    ),
     "muon (d4, 4gpu)": (
         "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_muon_d4_4gpu.jsonl",
         "#17becf",
-    ),
-    "ns3+ftrl exp abs →muon @100 (d4, 2gpu)": (
-        "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon_s100_d4.jsonl",
-        "#e377c2",
-    ),
-    "ns3+ftrl exp abs →muon @200 (d4, 2gpu)": (
-        "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon_s200_d4.jsonl",
-        "#2ca02c",
     ),
     "ns3+ftrl exp abs →muon @100 (d4, 4gpu)": (
         "/Users/medha/Desktop/muon_local/nanochat/my_runs/train_log_ftrl_then_muon_s100_d4_4gpu.jsonl",
@@ -33,21 +21,9 @@ TRAIN_LOGS = {
     ),
 }
 VAL_LOGS = {
-    "muon (d4, 2gpu)": (
-        "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_muon_d4.jsonl",
-        "#1f77b4",
-    ),
     "muon (d4, 4gpu)": (
         "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_muon_d4_4gpu.jsonl",
         "#17becf",
-    ),
-    "ns3+ftrl exp abs →muon @100 (d4, 2gpu)": (
-        "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ftrl_then_muon_s100_d4.jsonl",
-        "#e377c2",
-    ),
-    "ns3+ftrl exp abs →muon @200 (d4, 2gpu)": (
-        "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ftrl_then_muon_s200_d4.jsonl",
-        "#2ca02c",
     ),
     "ns3+ftrl exp abs →muon @100 (d4, 4gpu)": (
         "/Users/medha/Desktop/muon_local/nanochat/my_runs/val_log_ftrl_then_muon_s100_d4_4gpu.jsonl",
@@ -63,7 +39,6 @@ SMOOTH = 30
 def load_train_log(path):
     steps, losses, times = [], [], []
     cumtime = 0.0
-    # First pass: compute median dt to detect compile-stall outliers
     dts = []
     with open(path) as f:
         for line in f:
@@ -77,7 +52,6 @@ def load_train_log(path):
             d = json.loads(line)
             if "_config" in d:
                 continue
-            # skip compile-stall steps entirely (dt > 10x median)
             if d["step"] > 0 and d["dt"] >= 10 * median_dt:
                 continue
             steps.append(d["step"])
@@ -103,21 +77,17 @@ def smooth(x, w):
     return np.convolve(x, np.ones(w) / w, mode='valid')
 
 SWITCH_STEPS = {
-    "ns3+ftrl exp abs →muon @100 (d4, 2gpu)": 100,
-    "ns3+ftrl exp abs →muon @200 (d4, 2gpu)": 200,
     "ns3+ftrl exp abs →muon @100 (d4, 4gpu)": 100,
 }
 
 _ETA_LAMBDA = math.log(3.0) / 100.0
 
 def get_eta_schedule(name, num_steps):
-    """Returns (steps, etas) for the eta vs step schedule of an optimizer."""
     steps = np.arange(num_steps + 1)
     switch = SWITCH_STEPS.get(name)
     if switch is not None:
         etas = np.where(steps < switch, 0.3 * np.exp(-_ETA_LAMBDA * steps), 0.0)
     else:
-        # pure muon: eta is always 0
         etas = np.zeros(len(steps))
     return steps, etas
 
@@ -185,9 +155,9 @@ ax.set_title("Val BPB vs Step")
 ax.legend(fontsize=8)
 ax.grid(True, alpha=0.3)
 
-plt.suptitle("FTRL→Muon @100 (depth-4, 2×H100, 2205 steps)", fontsize=12)
+plt.suptitle("FTRL→Muon (depth-4, 4×H100, 2205 steps)", fontsize=12)
 plt.tight_layout()
-out = "/Users/medha/Desktop/muon_local/nanochat/plots/headline/d4_ftrl_then_muon.png"
+out = "/Users/medha/Desktop/muon_local/nanochat/plots/headline/d4_ftrl_then_muon_4gpu.png"
 plt.savefig(out, dpi=150, bbox_inches="tight")
 plt.show()
 print(f"Saved to {out}")

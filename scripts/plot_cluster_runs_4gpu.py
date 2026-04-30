@@ -203,7 +203,7 @@ table_data = []
 for short_label, data_key, val_key, opt_tf, total_pf in _4GPU_ROWS:
     saved_pct = (1.0 - opt_tf / muon_opt_total) * 100.0
     final_train = f"{data[data_key][1][-1]:.4f}" if data_key in data else "—"
-    best_val = f"{min(val_data[val_key][1]):.4f}" if val_key in val_data else "—"
+    best_val = f"{int(min(val_data[val_key][1]) * 1000) / 1000:.3f}" if val_key in val_data else "—"
     table_data.append([short_label, f"{opt_tf:.0f}", f"{total_pf:.3f}", f"{saved_pct:.1f}%", final_train, best_val])
 
 tbl = ax.table(
@@ -228,6 +228,6 @@ ax.set_title("FLOPs Comparison (d12, 4gpu runs)", fontsize=9, pad=4)
 
 plt.suptitle("Muon vs NS3+FTRL variants (depth-12, 4×H100, 2205 steps) — 4gpu runs", fontsize=12)
 plt.tight_layout()
-plt.savefig("/Users/medha/Desktop/muon_local/nanochat/plots/cluster_muon_vs_ns3ftrl_4gpu.png", dpi=150, bbox_inches="tight")
+plt.savefig("/Users/medha/Desktop/muon_local/nanochat/plots/headline/cluster_muon_vs_ns3ftrl_4gpu.png", dpi=150, bbox_inches="tight")
 plt.show()
-print("Saved to plots/cluster_muon_vs_ns3ftrl_4gpu.png")
+print("Saved to plots/headline/cluster_muon_vs_ns3ftrl_4gpu.png")

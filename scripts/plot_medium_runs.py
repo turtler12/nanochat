@@ -136,6 +136,6 @@ axes[1, 2].axis("off")
 
 plt.suptitle("Depth-20 runs (2×H100, 4777 steps total) — partial results", fontsize=12)
 plt.tight_layout()
-plt.savefig("/Users/medha/Desktop/muon_local/nanochat/plots/cluster_muon_vs_ns3ftrl_medium.png", dpi=150, bbox_inches="tight")
+plt.savefig("/Users/medha/Desktop/muon_local/nanochat/plots/headline/cluster_muon_vs_ns3ftrl_medium.png", dpi=150, bbox_inches="tight")
 plt.show()
-print("Saved to plots/cluster_muon_vs_ns3ftrl_medium.png")
+print("Saved to plots/headline/cluster_muon_vs_ns3ftrl_medium.png")
