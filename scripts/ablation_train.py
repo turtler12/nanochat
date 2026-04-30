@@ -313,6 +313,8 @@ import math as _math
 _D12_REF_STEPS = 2205  # reference step count from d12 runs
 # λ = ln(3)/100 so that η(100) = 0.3 * exp(-λ*100) = 0.1 (reaches 0.1 at ~step 100 / ~10 min)
 _ETA_LAMBDA = _math.log(3.0) / 100.0
+# λ_zero: η(100) ≈ 0.001 (effectively 0), i.e. λ = ln(300)/100
+_ETA_LAMBDA_ZERO_S100 = _math.log(300.0) / 100.0
 
 def get_ftrl_eta(it, mode):
     """Scheduled eta for dynamic-eta FTRL modes."""
@@ -326,6 +328,9 @@ def get_ftrl_eta(it, mode):
                   "ns3_ftrl_exp_abs_then_muon_s100"):
         # η(t) = 0.3 * exp(-λ*step), λ = ln(3)/100 => η(100)=0.1, η(200)≈0.033
         return eta0 * _math.exp(-_ETA_LAMBDA * it)
+    elif mode == "ns3_ftrl_exp_abs_zero_s100":
+        # η(t) = 0.3 * exp(-λ*step), λ = ln(300)/100 => η(100)≈0.001 (~0)
+        return eta0 * _math.exp(-_ETA_LAMBDA_ZERO_S100 * it)
     return 0.0
 
 def get_muon_momentum(it):
@@ -448,7 +453,7 @@ while True:
             group["weight_decay"] = muon_weight_decay
             if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3",
                                     "ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon",
-                                    "ns3_ftrl_exp_abs_then_muon_s100"):
+                                    "ns3_ftrl_exp_abs_then_muon_s100", "ns3_ftrl_exp_abs_zero_s100"):
                 switch_step = 100 if args.update_mode == "ns3_ftrl_exp_abs_then_muon_s100" else 200
                 if args.update_mode in ("ns3_ftrl_exp_abs_then_muon",
                                         "ns3_ftrl_exp_abs_then_muon_s100") and step >= switch_step:
