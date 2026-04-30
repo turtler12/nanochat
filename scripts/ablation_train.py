@@ -328,7 +328,7 @@ def get_ftrl_eta(it, mode):
                   "ns3_ftrl_exp_abs_then_muon_s100"):
         # η(t) = 0.3 * exp(-λ*step), λ = ln(3)/100 => η(100)=0.1, η(200)≈0.033
         return eta0 * _math.exp(-_ETA_LAMBDA * it)
-    elif mode == "ns3_ftrl_exp_abs_zero_s100":
+    elif mode in ("ns3_ftrl_exp_abs_zero_s100", "ns3_ftrl_exp_abs_then_muon_s150"):
         # η(t) = 0.3 * exp(-λ*step), λ = ln(300)/100 => η(100)≈0.001 (~0)
         return eta0 * _math.exp(-_ETA_LAMBDA_ZERO_S100 * it)
     return 0.0
@@ -453,10 +453,12 @@ while True:
             group["weight_decay"] = muon_weight_decay
             if args.update_mode in ("ns3_ftrl_linear_eta0p3", "ns3_ftrl_exp_eta0p3",
                                     "ns3_ftrl_exp_abs_eta0p3", "ns3_ftrl_exp_abs_then_muon",
-                                    "ns3_ftrl_exp_abs_then_muon_s100", "ns3_ftrl_exp_abs_zero_s100"):
-                switch_step = 100 if args.update_mode == "ns3_ftrl_exp_abs_then_muon_s100" else 200
-                if args.update_mode in ("ns3_ftrl_exp_abs_then_muon",
-                                        "ns3_ftrl_exp_abs_then_muon_s100") and step >= switch_step:
+                                    "ns3_ftrl_exp_abs_then_muon_s100", "ns3_ftrl_exp_abs_zero_s100",
+                                    "ns3_ftrl_exp_abs_then_muon_s150"):
+                switch_step = {"ns3_ftrl_exp_abs_then_muon_s100": 100,
+                               "ns3_ftrl_exp_abs_then_muon_s150": 150,
+                               "ns3_ftrl_exp_abs_then_muon":      200}.get(args.update_mode)
+                if switch_step is not None and step >= switch_step:
                     group["update_mode"] = "muon"
                 else:
                     group["ftrl_eta"] = get_ftrl_eta(step, args.update_mode)
