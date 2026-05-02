@@ -85,6 +85,28 @@ def make_svd_map_random(lo: float = 0.1, hi: float = 1.0):
     return _map
 
 
+def make_svd_map_random_large(threshold: float = 0.1, hi: float = 1.0):
+    """
+    Selective random mapping: keep small singular values (s_norm < threshold)
+    unchanged; replace large ones (s_norm >= threshold) with Uniform[threshold, hi].
+
+    Tests whether the structure of the *large* singular values matters.
+    """
+    thr = float(threshold)
+    hi_val = float(hi)
+
+    def _map(s: torch.Tensor) -> torch.Tensor:
+        s = s.to(torch.float32)
+        s_max = s.amax(dim=-1, keepdim=True).clamp_min(1e-12)
+        s_norm = s / s_max
+        large = (s_norm >= thr)
+        rand_vals = torch.empty_like(s_norm).uniform_(thr, hi_val)
+        s_new = torch.where(large, rand_vals, s_norm)
+        return s_new
+
+    return _map
+
+
 # =============================================================================
 # Modified Muon step: replaces Polar Express with random SV mapping
 # =============================================================================
@@ -295,6 +317,7 @@ parser = argparse.ArgumentParser(description="Random SV mapping experiment for M
 # Experiment-specific args
 parser.add_argument("--rand-lo", type=float, default=0.1, help="Lower bound for uniform random SV draw (default 0.1)")
 parser.add_argument("--rand-hi", type=float, default=1.0, help="Upper bound for uniform random SV draw (default 1.0)")
+parser.add_argument("--rand-mode", type=str, default="all", choices=["all", "large"], help="'all': randomize all SVs; 'large': only randomize SVs >= rand-lo, keep small ones")
 parser.add_argument("--results-dir", type=str, default="rand_sv_results", help="Directory to save results")
 # Logging
 parser.add_argument("--run", type=str, default="dummy", help="wandb run name ('dummy' disables wandb logging)")
@@ -339,9 +362,14 @@ user_config = vars(args).copy()
 # Build the SVD mapping function
 # =============================================================================
 
-svd_map_fn = make_svd_map_random(lo=args.rand_lo, hi=args.rand_hi)
-run_tag = f"rand_sv_lo{args.rand_lo:.2f}_hi{args.rand_hi:.2f}"
-print0(f"=== Random SV mapping: Uniform[{args.rand_lo}, {args.rand_hi}] ===")
+if args.rand_mode == "all":
+    svd_map_fn = make_svd_map_random(lo=args.rand_lo, hi=args.rand_hi)
+    run_tag = f"rand_sv_lo{args.rand_lo:.2f}_hi{args.rand_hi:.2f}"
+    print0(f"=== Random SV mapping: Uniform[{args.rand_lo}, {args.rand_hi}] ===")
+else:
+    svd_map_fn = make_svd_map_random_large(threshold=args.rand_lo, hi=args.rand_hi)
+    run_tag = f"rand_sv_large_thr{args.rand_lo:.2f}_hi{args.rand_hi:.2f}"
+    print0(f"=== Random SV mapping (large only): keep s<{args.rand_lo}, randomize s>={args.rand_lo} to Uniform[{args.rand_lo}, {args.rand_hi}] ===")
 
 # Monkey-patch GPT.setup_optimizer
 GPT.setup_optimizer = make_setup_optimizer_svd_rand(svd_map_fn)
