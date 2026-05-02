@@ -35,7 +35,6 @@ from nanochat.common import compute_init, compute_cleanup, print0, DummyWandb, p
 from nanochat.tokenizer import get_tokenizer, get_token_bytes
 from nanochat.checkpoint_manager import save_checkpoint, load_checkpoint
 from nanochat.loss_eval import evaluate_bpb
-from nanochat.engine import Engine
 from nanochat.flash_attention import HAS_FA3
 from nanochat.optim import adamw_step_fused, polar_express_coeffs, DistMuonAdamW, MuonAdamW
 print_banner()
@@ -565,80 +564,117 @@ def get_weight_decay(it):
 results_dir = os.path.join(args.results_dir, run_tag)
 if master_process:
     os.makedirs(results_dir, exist_ok=True)
-val_loss_log = []  # list of (step, val_bpb)
+val_loss_log = []
+min_val_bpb = float("inf")
+
+tokens_per_fwdbwd = args.device_batch_size * args.max_seq_len
+world_tokens_per_fwdbwd = tokens_per_fwdbwd * ddp_world_size
+assert total_batch_size % world_tokens_per_fwdbwd == 0
+grad_accum_steps = total_batch_size // world_tokens_per_fwdbwd
+print0(f"Gradient accumulation steps: {grad_accum_steps}")
 
 # =============================================================================
 # Training loop
 # =============================================================================
 
-engine = Engine(orig_model)
-timings = []
-tokens_processed = 0
+step = 0
+smooth_train_loss = 0
+total_training_time = 0
 
-print0(f"\n{'='*60}")
-print0(f"Starting training: {run_tag}")
-print0(f"  depth={args.depth}, num_iterations={num_iterations:,}")
-print0(f"  total_batch_size={total_batch_size:,}, device_batch_size={args.device_batch_size}")
-print0(f"{'='*60}\n")
-
-t0 = time.perf_counter()
-for step in range(num_iterations + 1):
+while True:
     last_step = step == num_iterations
 
     # Evaluation
-    if step % args.eval_every == 0 or last_step:
+    if args.eval_every > 0 and (last_step or step % args.eval_every == 0):
         model.eval()
         val_loader = build_val_loader()
-        val_bpb = evaluate_bpb(model, val_loader, args.eval_tokens, device, token_bytes, autocast_ctx, disable_fp8)
-        val_loss_log.append((step, val_bpb))
-        print0(f"step {step:5d} | val BPB: {val_bpb:.4f}")
-        wandb_run.log({"val/bpb": val_bpb, "step": step})
-        if master_process:
-            with open(os.path.join(results_dir, "val_loss.json"), "w") as f:
-                json.dump({"val_loss": val_loss_log, "config": user_config}, f, indent=2)
+        eval_steps = args.eval_tokens // (args.device_batch_size * args.max_seq_len * ddp_world_size)
+        with disable_fp8(model), autocast_ctx:
+            val_bpb = evaluate_bpb(model, val_loader, eval_steps, token_bytes)
+        if val_bpb < min_val_bpb:
+            min_val_bpb = val_bpb
+        val_loss_log.append({"step": step, "val_bpb": val_bpb})
+        print0(f"[{run_tag}] step {step:05d} | val_bpb: {val_bpb:.6f}")
+        wandb_run.log({"step": step, "val/bpb": val_bpb, "total_training_time": total_training_time})
         model.train()
-        gc.collect()
-        torch.cuda.empty_cache()
 
     if last_step:
         break
 
-    # Learning rate and weight decay schedule
-    lr_mult = get_lr_multiplier(step)
-    wd = get_weight_decay(step)
-    muon_mom = get_muon_momentum(step)
+    # Training step
+    synchronize()
+    t0 = time.time()
+    for micro_step in range(grad_accum_steps):
+        with autocast_ctx:
+            loss = model(x, y)
+        train_loss = loss.detach()
+        loss = loss / grad_accum_steps
+        loss.backward()
+        x, y, dataloader_state_dict = next(train_loader)
+
+    lrm = get_lr_multiplier(step)
     for group in optimizer.param_groups:
-        group["lr"] = group["initial_lr"] * lr_mult
-        if group.get("kind") == "muon":
-            group["weight_decay"] = wd
-            group["momentum"] = muon_mom
+        group["lr"] = group["initial_lr"] * lrm
+        if group['kind'] == 'muon':
+            group["momentum"] = get_muon_momentum(step)
+            group["weight_decay"] = get_weight_decay(step)
 
-    # Forward + backward
-    with autocast_ctx:
-        loss, _ = engine.forward_backward(x, y)
-
-    # Step
     optimizer.step()
-    optimizer.zero_grad(set_to_none=True)
+    model.zero_grad(set_to_none=True)
+    train_loss_f = train_loss.item()
+    synchronize()
+    t1 = time.time()
+    dt = t1 - t0
 
-    # Next batch
-    x, y, dataloader_state_dict = next(train_loader)
-    tokens_processed += total_batch_size
+    ema_beta = 0.9
+    smooth_train_loss = ema_beta * smooth_train_loss + (1 - ema_beta) * train_loss_f
+    debiased_smooth_loss = smooth_train_loss / (1 - ema_beta**(step + 1))
+    tok_per_sec = int(total_batch_size / dt)
+    if step > 10:
+        total_training_time += dt
 
-    # Timing + logging
     if step % 50 == 0:
-        synchronize()
-        t1 = time.perf_counter()
-        dt = t1 - t0
-        t0 = t1
-        tokens_per_sec = (50 * total_batch_size) / dt if step > 0 else 0
-        print0(f"step {step:5d} | loss: {loss.item():.4f} | lr: {lr_mult * args.matrix_lr:.6f} | tok/s: {tokens_per_sec:.0f}")
-        wandb_run.log({"train/loss": loss.item(), "train/lr": lr_mult * args.matrix_lr, "step": step})
+        steps_done = step - 10
+        if steps_done > 0:
+            avg_time_per_step = total_training_time / steps_done
+            eta_str = f" | eta: {(num_iterations - step) * avg_time_per_step / 60:.1f}m"
+        else:
+            eta_str = ""
+        pct_done = 100 * step / num_iterations
+        print0(f"[{run_tag}] step {step:05d}/{num_iterations:05d} ({pct_done:.2f}%) | loss: {debiased_smooth_loss:.6f} | dt: {dt*1000:.2f}ms | tok/s: {tok_per_sec:,}{eta_str}")
+
+    if step % 100 == 0:
+        wandb_run.log({"step": step, "train/loss": debiased_smooth_loss, "train/tok_per_sec": tok_per_sec})
+
+    first_step = step == 0
+    step += 1
+    if first_step:
+        gc.collect()
+        gc.freeze()
+        gc.disable()
+    elif step % 5000 == 0:
+        gc.collect()
 
 # =============================================================================
-# Cleanup
+# Save results
 # =============================================================================
+
+if master_process:
+    results_file = os.path.join(results_dir, "val_loss.json")
+    results_data = {
+        "run_tag": run_tag,
+        "rand_lo": args.rand_lo,
+        "rand_hi": args.rand_hi,
+        "depth": args.depth,
+        "num_iterations": num_iterations,
+        "total_batch_size": total_batch_size,
+        "min_val_bpb": min_val_bpb,
+        "val_loss_log": val_loss_log,
+        "user_config": user_config,
+    }
+    with open(results_file, "w") as f:
+        json.dump(results_data, f, indent=2)
+    print0(f"Results saved to {results_file}")
 
 compute_cleanup()
 wandb_run.finish()
-print0(f"\nDone. Results saved to {results_dir}/")
